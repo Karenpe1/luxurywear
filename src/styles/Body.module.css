@@ -79,3 +79,10 @@
         padding: 30px;
     }
 }
+
+@media (min-width: 1024px) {
+    .categoriesContainer {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
