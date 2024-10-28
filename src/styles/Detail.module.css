@@ -1,0 +1,21 @@
+.detailContainer {
+    padding: 20px;
+}
+
+.title {
+    text-align: left; /* Título alineado a la izquierda */
+}
+
+.backButton {
+    float: right; /* Flecha alineada a la derecha */
+    font-size: 24px;
+    text-decoration: none;
+}
+
+.productImage {
+    width: 100%; /* Imagen principal que cubre el ancho completo */
+    height: auto;
+    margin: 20px 0;
+}
+
+  
