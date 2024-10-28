@@ -23,7 +23,7 @@
           {/*recorre lista aleatorizada */}
           {topRentas.map((data,index) => (
             <div key={data.id || index} className={RentaStyle.producto}>
-              <img className={RentaStyle.card} src={data.images.url} alt={data.name} />
+              <img className={RentaStyle.card} src={data.images[0].url} alt={data.name} />
               {/* Añadiendo el botón debajo de la Card */}
               <button
               className={RentaStyle.detalle}
