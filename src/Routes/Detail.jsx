@@ -12,7 +12,7 @@ const Detail = () => {
       try {
         const response = await fetch(`http://localhost:8080/api/v1/products/${id}`);
         const data = await response.json();
-        setProduct(data);
+        setProduct(data.data);
       } catch (error) {
         console.error("Error fetching product detail:", error);
       }
@@ -33,7 +33,7 @@ const Detail = () => {
       <p>Material: {product.material}</p>
       <p>Color: {product.color}</p>
       <p>Diseñador: {product.designer}</p>
-      <p>Precio de Alquiler: ${product.rental_price}</p>
+      <p>Precio de Alquiler: ${product.price}</p>
     </div>
   );
 };

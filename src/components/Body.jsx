@@ -11,7 +11,7 @@ const Body = () => {
             <img className={bodyStyles.lens} src='./lens.svg'/>
           </div>
         </div>
-        <div>
+        <div className={bodyStyles.subcontainer2}>
           <p className={bodyStyles.title2}>Busca por tipo de evento</p>
           <div className={bodyStyles.categoriesContainer}>
             <CategoryCard/>
