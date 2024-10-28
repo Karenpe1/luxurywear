@@ -1,11 +1,13 @@
-import Header from './components/Header';
+import Body from "./components/Body.jsx";
+import Header from "./components/Header.jsx";
 
 function App() {
   return (
-    <div>
-      <Header />
-    </div>
-  );
+    <>
+      <Header/>
+      <Body/>
+    </>
+  )
 }
 
 export default App;
