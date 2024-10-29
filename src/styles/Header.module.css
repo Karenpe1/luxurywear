@@ -42,16 +42,16 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  width: 12rem;
-  height: 4rem;
-  padding: 8px 30px;
+  width: 8rem;
+  height: 3rem;
+  padding: 8px 20px;
   border: none;
   background-color: #c3b2fb;
   color: #000;
   cursor: pointer;
-  border-radius: 15px;
+  border-radius: 12px;
   font-family: 'Encode Sans';
-  font-size: 20px;
+  font-size: 14px;
   text-decoration: none;
   position: relative;
 }
