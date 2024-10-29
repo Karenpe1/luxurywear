@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import RentaStyle from "../styles/topRentas.module.css";
 import { Link } from "react-router-dom";
 
@@ -21,7 +21,7 @@ const TopRentas = () => {
       <h2 className={RentaStyle.titulo}>Top en Rentas</h2>
       <div className={RentaStyle.listaProductos}>
         {/*recorre lista aleatorizada */}
-        {topRentas.map((data, index) => (
+        {topRentas.map((data) => (
           <div key={data.productId} className={RentaStyle.producto}>
             <img
               className={RentaStyle.card}
