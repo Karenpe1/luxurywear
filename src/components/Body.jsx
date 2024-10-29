@@ -1,5 +1,6 @@
 import bodyStyles from '../styles/Body.module.css';
 import CategoryCard from './CategoryCard';
+import CategoryList from './CategoryList';
 
 const Body = () => {
   return (
@@ -12,14 +13,7 @@ const Body = () => {
           </div>
         </div>
         <div className={bodyStyles.subcontainer2}>
-          <p className={bodyStyles.title2}>Busca por tipo de evento</p>
-          <div className={bodyStyles.categoriesContainer}>
-            <CategoryCard/>
-            <CategoryCard/>
-            <CategoryCard/>
-            <CategoryCard/>
-            <CategoryCard/>
-          </div>
+          <CategoryList />
         </div>
     </div>
   )
