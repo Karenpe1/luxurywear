@@ -89,9 +89,13 @@
     }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1025px) {
     .categoriesContainer {
         justify-content: center;
         flex-wrap: wrap;
+    }
+
+    .title1 {
+      font-size: 25px;
     }
 }

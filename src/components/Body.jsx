@@ -1,5 +1,4 @@
 import bodyStyles from '../styles/Body.module.css';
-import CategoryCard from './CategoryCard';
 import CategoryList from './CategoryList';
 
 const Body = () => {
