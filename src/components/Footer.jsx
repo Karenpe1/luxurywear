@@ -11,9 +11,9 @@ const Footer = () => {
         <p>&copy; {currentYear} Luxury Wear. Todos los derechos reservados.</p>
       </div>
       <div className={footerStyles.socialSection}>
-        <FaFacebookSquare className={footerStyles.icon} />
-        <Link to={"/admin"}>
-          <FaInstagram className={footerStyles.icon} />
+        <FaFacebookSquare className={footerStyles.icon} aria-label='facebook-icon'/>
+        <Link a to={"/admin"}>
+          <FaInstagram className={footerStyles.icon} aria-label='instagram-icon'/>
         </Link>
       </div>
       <div className={footerStyles.contactSection}>
