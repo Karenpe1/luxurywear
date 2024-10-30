@@ -45,7 +45,10 @@ const Admin = () => {
 
     return (
         <>
-            <h1 className={styles.notAvailable}>No disponible</h1>
+            <div className={styles.notAvailable}>
+                <img style={{height: "98px", marginBottom: "20px"}} src="x.svg"/>
+                <h1 style={{fontSize: "20px", fontWeight: "bold"}}>No está disponible</h1>
+            </div>
             <header className={styles.header}>
                 <h1 className={styles.title}>Panel administrativo</h1>
                 <Link to="/" className={styles.backButton}> <img src={backButton} alt="Back" /></Link>
