@@ -1,5 +1,7 @@
 import bodyStyles from '../styles/Body.module.css';
 import CategoryList from './CategoryList';
+import PaginatedProductList from '../components/PaginatedProductList';
+import TopRentas from '../components/TopRentas';
 
 const Body = () => {
   return (
@@ -14,6 +16,8 @@ const Body = () => {
         <div className={bodyStyles.subcontainer2}>
           <CategoryList />
         </div>
+        <TopRentas/>
+        <PaginatedProductList />
     </div>
   )
 }
