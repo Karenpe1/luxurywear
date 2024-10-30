@@ -170,3 +170,15 @@
     padding: 10px 0;
   }
 }
+
+@media (max-width: 599px) {
+  .header {
+    height: 66px;
+  }
+
+  .logo {
+    width: 91px;
+    height: 52px;
+    margin-right: 10px;
+  }
+}

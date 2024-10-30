@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/PaginatedProductList.module.css";
+import { formatCurrency } from '../Utils/currencyFormatter';
 
 const baseUrl = "http://localhost:8080"; // Define the base URL
 
@@ -74,7 +75,7 @@ const PaginatedProductList = () => {
                             className={styles.productImage}
                         />
                         <h2>{product.name}</h2>
-                        <p><strong>Alquiler:</strong> ${product.price}</p>
+                        <p><strong>Alquiler: </strong>{formatCurrency(product.price, 'es-CO', 'COP')}</p>
                     </div>
                 ))}
             </div>

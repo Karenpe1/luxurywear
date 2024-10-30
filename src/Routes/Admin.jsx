@@ -3,6 +3,7 @@ import styles from "../styles/Admin.module.css";
 import backButton from '../Images/backArrow.png';
 import { useEffect, useState } from "react";
 import SidebarButton from "../components/SidebarButton";
+import { formatCurrency } from "../Utils/currencyFormatter";
 
 const Admin = () => {
     const [products, setProducts] = useState(null);
@@ -113,7 +114,7 @@ const Admin = () => {
                                 <td>{product.reference}</td>
                                 <td>{product.color}</td>
                                 <td>{product.designer}</td>
-                                <td>{product.price}</td>
+                                <td>{formatCurrency(product.price, 'es-CO', 'COP')}</td>
                                 <td>{product.categories[0].name}</td>
                                 <td><img className={styles.prodImage} src={product.images[0].url} /></td>
                                 <td>
