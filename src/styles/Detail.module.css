@@ -10,6 +10,7 @@
 .detailContainer {
   background-color: var(--background-pink);
   position: relative;
+  margin-bottom: 30px;
 }
 
 .header {
@@ -234,5 +235,23 @@
   .thumbnail {
     width: 90px;
     height: 85px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .content {
+    padding-left: 100px;
+  }
+}
+
+@media (min-width: 1300px) {
+  .content {
+    padding-left: 150px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .content {
+    padding-left: 250px;
   }
 }
