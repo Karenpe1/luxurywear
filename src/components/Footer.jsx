@@ -1,5 +1,6 @@
 import footerStyles from '../styles/Footer.module.css';
 import { FaFacebookSquare, FaInstagram } from 'react-icons/fa';
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -11,7 +12,9 @@ const Footer = () => {
       </div>
       <div className={footerStyles.socialSection}>
         <FaFacebookSquare className={footerStyles.icon} />
-        <FaInstagram className={footerStyles.icon} />
+        <Link to={"/admin"}>
+          <FaInstagram className={footerStyles.icon} />
+        </Link>
       </div>
       <div className={footerStyles.contactSection}>
         <p><strong>Correo electrónico:</strong> contacto@luxurywear.com</p>
