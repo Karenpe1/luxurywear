@@ -60,6 +60,8 @@
 .productImage {
   border-radius: 25px;
   margin-bottom: 15px;
+  object-fit: cover;
+  object-position: top;
 }
 
 .productInfo {
