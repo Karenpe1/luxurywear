@@ -21,7 +21,7 @@ h1 {
 /* Desktop layout: 3 items per row */
 @media (min-width: 768px) {
     .products {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
