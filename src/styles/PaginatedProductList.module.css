@@ -62,6 +62,7 @@ h1 {
     width: 100%; /* Ensure image fits within the card */
     height: 180px; /* Fixed height to make all images the same size */
     object-fit: cover; /* Crop the image to fit if necessary */
+    object-position: top;
     border-radius: 4px; /* Matches the card’s rounded corners */
 }
 
