@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Routes/Home.jsx";
 import appStyles from "./styles/App.module.css";
 import Admin from "./Routes/Admin.jsx";
+import Register from "./Routes/Register.jsx";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/detail/:id" element={<Detail />} />
           <Route path="/" element={<Home />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/register" element={<Register/>}/>
         </Routes>
       </div>
       <Footer /> {/* Coloca el footer aquí */}
