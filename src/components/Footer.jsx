@@ -12,7 +12,7 @@ const Footer = () => {
       </div>
       <div className={footerStyles.socialSection}>
         <FaFacebookSquare className={footerStyles.icon} aria-label='facebook-icon'/>
-        <Link a to={"/admin"}>
+        <Link to={"/admin"}>
           <FaInstagram className={footerStyles.icon} aria-label='instagram-icon'/>
         </Link>
       </div>
