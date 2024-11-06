@@ -23,7 +23,7 @@
 
 .containerFoto{
     width: 100%;
-    background-image:url('/public/imagen registro.png');
+    background-image:url('/public/imagen-registro.png');
     background-size: cover; 
     background-position: center; 
     background-repeat: no-repeat; 

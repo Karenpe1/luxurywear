@@ -65,7 +65,7 @@ const Register = () => {
       errors.correo = "El correo debe ser válido";
       formIsValid = false;
     }
-    if (user.contraseña.length < 6) {
+    if (user.contraseña.length < 7) {
       errors.contraseña = "La contraseña debe tener más de 6 caracteres";
       formIsValid = false;
     }
@@ -117,7 +117,7 @@ const Register = () => {
         <div className={StyleRegistro.formulario}>
           <h2>Registro de cuenta</h2>
           <form onSubmit={handdleSubmit} className={StyleRegistro.registro}>
-            
+
             <Input
               label="Nombre"
               placeholder="Ingresa tu nombre"
