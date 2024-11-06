@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import StyleRegistro from "../styles/registro.module.css";
 import logo from "../Images/Logo.png";
 import { useNavigate } from "react-router-dom";
+import Input from "../components/Input";
 
 const Register = () => {
   const [user, setUser] = useState({
@@ -18,7 +19,7 @@ const Register = () => {
     contraseña: "",
     contraseñaRepetida: "",
   });
-  const navigate= useNavigate();
+  const navigate = useNavigate();
   const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
   const noNumbersRegex = /^[^\d]*$/;
   const url = "http://localhost:8080/auth/register";
@@ -52,8 +53,12 @@ const Register = () => {
       errors.nombre = "El nombre debe ser válido y tener al menos 3 caracteres";
       formIsValid = false;
     }
-    if (!noNumbersRegex.test(user.apellido) || user.apellido.trim().length < 4) {
-      errors.apellido = "El apellido debe ser válido y tener al menos 3 caracteres";
+    if (
+      !noNumbersRegex.test(user.apellido) ||
+      user.apellido.trim().length < 4
+    ) {
+      errors.apellido =
+        "El apellido debe ser válido y tener al menos 3 caracteres";
       formIsValid = false;
     }
     if (!emailRegex.test(user.correo)) {
@@ -84,7 +89,7 @@ const Register = () => {
           "Content-Type": "application/json",
         },
       };
-  
+
       realizarRegister(settings);
       e.target.reset();
     }
@@ -92,11 +97,11 @@ const Register = () => {
 
   function realizarRegister(settings) {
     fetch(url, settings)
-      .then((respuesta) =>respuesta.json())
+      .then((respuesta) => respuesta.json())
       .then((data) => {
         console.log(data);
-        navigate("/")
-        alert('Usuario creado con exito')
+        navigate("/");
+        alert("Usuario creado con exito");
       })
       .catch((err) => console.log(err));
   }
@@ -112,61 +117,54 @@ const Register = () => {
         <div className={StyleRegistro.formulario}>
           <h2>Registro de cuenta</h2>
           <form onSubmit={handdleSubmit} className={StyleRegistro.registro}>
-            <label className={StyleRegistro.label}>Nombre</label>
-            <input
-              className={StyleRegistro.input}
+            
+            <Input
+              label="Nombre"
               placeholder="Ingresa tu nombre"
               type="text"
               value={user.nombre}
               onChange={handleNombre}
+              error={error.nombre}
             />
-            {error.nombre && <p className={StyleRegistro.error}>{error.nombre}</p>}
 
 
-            <label className={StyleRegistro.label}>Apellido</label>
-            <input
-              className={StyleRegistro.input}
-              placeholder="ingresa tus apellidos"
+            <Input
+              label="Apellido"
+              placeholder="Ingresa tu Apellido"
               type="text"
               value={user.apellido}
               onChange={handleApellido}
+              error={error.apellido}
             />
-            {error.apellido && <p className={StyleRegistro.error}>{error.apellido}</p>}
 
-            
-            <label className={StyleRegistro.label}>Correo Electronico</label>
-            <input
-              className={StyleRegistro.input}
-              placeholder="ingresa tu correo electronico"
+
+            <Input
+              label="Correo Eléctronico"
+              placeholder="Ingresa tu correo electronico"
               type="email"
               value={user.correo}
               onChange={handleCorreo}
+              error={error.correo}
             />
-            {error.correo && <p className={StyleRegistro.error}>{error.correo}</p>}
 
 
-            
-            <label className={StyleRegistro.label}>Contraseña</label>
-            <input
-              className={StyleRegistro.input}
-              placeholder="ingresa tu contraseña"
+            <Input
+              label="Contraseña"
+              placeholder="Ingresa tu contraseña"
               type="password"
               value={user.contraseña}
               onChange={handleContraseña}
+              error={error.contraseña}
             />
-            {error.contraseña && <p className={StyleRegistro.error}>{error.contraseña}</p>}
 
-
-            <label className={StyleRegistro.label}>Repetir contraseña</label>
-            <input
-              className={StyleRegistro.input}
-              placeholder="ingresa nuevamente la contraseña"
+            <Input
+              label="Repetir Contraseña"
+              placeholder="Ingresa nuevamente tu contraseña"
               type="password"
               value={user.contraseñaRepetida}
               onChange={handleRepetida}
+              error={error.contraseñaRepetida}
             />
-            {error.contraseñaRepetida && <p className={StyleRegistro.error}>{error.contraseñaRepetida}</p>}
-
 
             <button className={StyleRegistro.botonRegistro}>Registrar</button>
           </form>
