@@ -49,7 +49,7 @@ const Header = () => {
           </>
         ) : (
           <>
-            <Link to={"/register"}>
+            <Link to={"/register"} style={{textDecoration:"none"}}>
               <button className={styles.navButton}>
                 <i className="fas fa-user-plus"></i> Crear cuenta
               </button>

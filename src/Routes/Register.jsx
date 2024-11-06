@@ -48,11 +48,11 @@ const Register = () => {
     let errors = {};
     let formIsValid = true;
 
-    if (!noNumbersRegex.test(user.nombre) || user.nombre.trim().length < 3) {
+    if (!noNumbersRegex.test(user.nombre) || user.nombre.trim().length < 4) {
       errors.nombre = "El nombre debe ser válido y tener al menos 3 caracteres";
       formIsValid = false;
     }
-    if (!noNumbersRegex.test(user.apellido) || user.apellido.trim().length < 3) {
+    if (!noNumbersRegex.test(user.apellido) || user.apellido.trim().length < 4) {
       errors.apellido = "El apellido debe ser válido y tener al menos 3 caracteres";
       formIsValid = false;
     }
