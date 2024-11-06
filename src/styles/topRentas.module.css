@@ -13,13 +13,23 @@
     letter-spacing: -0.154px;
     padding-bottom: 1em;
 }
-@media(min-width:900px){
-    .titulo{
+
+@media (min-width: 600px) and (max-width: 1024px) {
+    .titulo {
         font-size: 18px;
         text-align:start;
         padding-left: 40px;
     }
 }
+
+@media(min-width:1025px){
+    .titulo{
+        font-size: 24px;
+        text-align:start;
+        padding-left: 40px;
+    }
+}
+
 .listaProductos{
     display: grid;
     grid-template-columns: 1fr;   
@@ -49,7 +59,7 @@
     height:140px;
     border-radius: 10px;
     object-fit: cover;
-
+    object-position: top;
 }
 @media(min-width:700px){
     .card{

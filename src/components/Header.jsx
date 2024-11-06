@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import styles from '../styles/Header.module.css';
-import logo from '../Images/Logo.png';
+import React, { useState, useEffect } from "react";
+import styles from "../styles/Header.module.css";
+import logo from "../Images/Logo.png";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,10 +13,10 @@ const Header = () => {
     };
     handleResize();
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -30,21 +31,29 @@ const Header = () => {
           <img src={logo} alt="App Logo" className={styles.logo} />
         </a>
       </div>
-      <div className={`${styles.rightSection} ${isMenuOpen ? styles.showMenu : ''}`}>
+      <div
+        className={`${styles.rightSection} ${
+          isMenuOpen ? styles.showMenu : ""
+        }`}
+      >
         {isMobile ? (
           <>
             <a href="/signup" className={styles.navButton}>
-              <i className="fas fa-user-plus"></i> Crear cuenta <span className={styles.arrow}>&gt;</span>
+              <i className="fas fa-user-plus"></i> Crear cuenta{" "}
+              <span className={styles.arrow}>&gt;</span>
             </a>
             <a href="/login" className={styles.navButton}>
-              <i className="fas fa-sign-in-alt"></i> Iniciar sesión <span className={styles.arrow}>&gt;</span>
+              <i className="fas fa-sign-in-alt"></i> Iniciar sesión{" "}
+              <span className={styles.arrow}>&gt;</span>
             </a>
           </>
         ) : (
           <>
-            <button className={styles.navButton}>
-              <i className="fas fa-user-plus"></i> Crear cuenta
-            </button>
+            <Link to={"register"}>
+              <button className={styles.navButton}>
+                <i className="fas fa-user-plus"></i> Crear cuenta
+              </button>
+            </Link>
             <button className={styles.navButton}>
               <i className="fas fa-sign-in-alt"></i> Iniciar sesión
             </button>

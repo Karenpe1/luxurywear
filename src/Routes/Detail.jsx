@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import styles from '../styles/Detail.module.css';
 import backButton from '../Images/backArrow.png';
+import { formatCurrency } from '../Utils/currencyFormatter';
+
 
 const Detail = () => {
   const { id } = useParams();
@@ -34,29 +36,29 @@ const Detail = () => {
       </header>
 
       <div className={styles.content}>
+        {/* Imagen principal */}
+        <img src={`/${mainImage}`} alt={product.name} className={styles.productImage} />
         <div className={styles.gallery}>
           {/* Galería de miniaturas */}
           {product.images.map((img, index) => (
-            <img 
-              key={index} 
-              src={`/${img.url}`} 
-              alt={`${product.name} thumbnail ${index + 1}`} 
+            <img
+              key={index}
+              src={`/${img.url}`}
+              alt={`${product.name} thumbnail ${index + 1}`}
               className={styles.thumbnail}
               onClick={() => setMainImage(img.url)} // Cambia la imagen principal
             />
           ))}
         </div>
-        
-        {/* Imagen principal */}
-        <img src={`/${mainImage}`} alt={product.name} className={styles.productImage} />
-
         <div className={styles.productInfo}>
           <p className={styles.description}>{product.description}</p>
-          <p className={styles.price}>Alquiler: <span>${product.price}</span></p>
+          <p className={styles.price}>Alquiler: <span>{formatCurrency(product.price, 'es-CO', 'COP')}</span></p>
           <hr className={styles.divider} />
-          <p><strong>Material:</strong> {product.material}</p>
-          <p><strong>Diseñador:</strong> {product.designer}</p>
-          <p><strong>Color:</strong> {product.color}</p>
+          <div className={styles.productDetails}>
+            <p><strong>Material:</strong> {product.material}</p>
+            <p><strong>Diseñador:</strong> {product.designer}</p>
+            <p><strong>Color:</strong> {product.color}</p>
+          </div>
         </div>
       </div>
     </div>

@@ -1,0 +1,60 @@
+.categoriesContainer {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  padding: 10px;
+  overflow-x: auto;
+  margin-top: 0;
+  scroll-behavior: smooth;
+}
+
+/* Mobile view - show 2 full cards on screens up to 600px */
+@media (max-width: 600px) {
+  .categoriesContainer {
+      justify-content: start;
+      padding-left: 6.5px;
+  }
+}
+
+/* Tablet view - show 3 full cards on screens between 601px and 1024px */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .categoriesContainer {
+      justify-content: start;
+      padding-left: 20px;
+      gap: 20px;
+  }
+}
+
+/* Desktop view - show all cards without scroll */
+@media (min-width: 1025px) {
+  .categoriesContainer {
+      justify-content: space-between;
+  }
+}
+
+.titulo {
+  font-family: "Noto Sans";
+  font-size: 14px; /* Default for mobile */
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: -0.154px;
+  padding-left: 15px;
+  margin-top: 15px;
+}
+
+/* Tablet: width between 601px and 1024px */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .titulo {
+      font-size: 18px;
+      text-align: start;
+      padding-left: 25px;
+  }
+}
+
+/* Desktop: min-width 1025px */
+@media (min-width: 1025px) {
+  .titulo {
+      font-size: 24px;
+      text-align: start;
+  }
+}

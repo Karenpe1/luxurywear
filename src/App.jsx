@@ -1,5 +1,4 @@
 // src/App.jsx
-import React from "react";
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx"; // Importa el Footer
 import Detail from "./Routes/Detail.jsx";
