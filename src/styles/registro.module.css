@@ -12,13 +12,12 @@
 }
 @media(min-width:700px){
     .container{
-        height:1300px;
+        max-height:1300px;
     }
 }
 @media(min-width:1024px){
     .container{
         display: flex;
-        height:1024px;
     }
 }
 
@@ -109,7 +108,7 @@
     .contenedorForm{
         background-color:  #E9E4F7;
         width: 50%;
-        height: auto; /* Deja que el contenido defina la altura */
+        height:900px; /* Deja que el contenido defina la altura */
         padding: 7em 0em;
         border-radius: 0;
         position: static; /* Elimina position absolute */

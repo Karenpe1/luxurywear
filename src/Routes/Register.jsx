@@ -52,12 +52,8 @@ const Register = () => {
       errors.nombre = "El nombre debe ser válido y tener al menos 3 caracteres";
       formIsValid = false;
     }
-    if (
-      !noNumbersRegex.test(user.apellido) ||
-      user.apellido.trim().length < 3
-    ) {
-      errors.apellido =
-        "El apellido debe ser válido y tener al menos 3 caracteres";
+    if (!noNumbersRegex.test(user.apellido) || user.apellido.trim().length < 3) {
+      errors.apellido = "El apellido debe ser válido y tener al menos 3 caracteres";
       formIsValid = false;
     }
     if (!emailRegex.test(user.correo)) {
@@ -73,7 +69,7 @@ const Register = () => {
       formIsValid = false;
     }
     setError(errors);
-    
+
     if (formIsValid) {
       const body = {
         first_name: user.nombre.trim().toLowerCase(),
