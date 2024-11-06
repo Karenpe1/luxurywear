@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import StyleRegistro from "../styles/registro.module.css";
 import logo from "../Images/Logo.png";
 import { useNavigate } from "react-router-dom";
@@ -44,7 +44,8 @@ const Register = () => {
     setUser({ ...user, contraseñaRepetida: e.target.value });
     setError({ ...error, contraseñaRepetida: "" });
   };
-  const handdleSubmit = (e) => {
+
+  const handdleSubmit = async (e) => {
     e.preventDefault();
     let errors = {};
     let formIsValid = true;
@@ -82,6 +83,7 @@ const Register = () => {
         email: user.correo,
         password: user.contraseña,
       };
+
       const settings = {
         method: "POST",
         body: JSON.stringify(body),
@@ -90,20 +92,46 @@ const Register = () => {
         },
       };
 
-      realizarRegister(settings);
-      e.target.reset();
+      try {
+        await realizarRegister(settings);
+        e.target.reset();
+      } catch (err) {
+        console.error("Error during form submission:", err);
+      }
     }
   };
 
-  function realizarRegister(settings) {
-    fetch(url, settings)
-      .then((respuesta) => respuesta.json())
-      .then((data) => {
-        console.log(data);
-        navigate("/");
-        alert("Usuario creado con exito");
-      })
-      .catch((err) => console.log(err));
+  async function realizarRegister(settings) {
+    try {
+      const response = await fetch(url, settings);
+  
+      // Handle non-201 status codes
+      if (response.status !== 201) {
+        const errorMessages = {
+          409: "Ya hay un usuario creado con ese correo electrónico.",
+          400: "Solicitud inválida. Por favor, verifica los datos ingresados.",
+          500: "Error del servidor. Por favor, intenta más tarde.",
+        };
+  
+        const message = errorMessages[response.status] || `Ocurrió un error inesperado (Código: ${response.status}).`;
+  
+        alert(message);
+        console.error(`Error: ${message}`);
+        return; // Stop further processing
+      }
+  
+      // Parse the successful response
+      const data = await response.json();
+      console.log(data);
+      alert("Usuario creado con éxito");
+      navigate("/"); // todo to be changed to `/login`
+    } catch (err) {
+      // Handle network or other fetch errors
+      console.error("Error al realizar el registro:", err);
+      alert(
+        "Hubo un problema al registrar el usuario. Por favor, verifica tu conexión e intenta nuevamente."
+      );
+    }
   }
 
   return (
