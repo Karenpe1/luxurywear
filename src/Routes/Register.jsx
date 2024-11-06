@@ -117,7 +117,7 @@ const Register = () => {
         <div className={StyleRegistro.formulario}>
           <h2>Registro de cuenta</h2>
           <form onSubmit={handdleSubmit} className={StyleRegistro.registro}>
-
+            
             <Input
               label="Nombre"
               placeholder="Ingresa tu nombre"
