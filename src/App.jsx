@@ -17,7 +17,7 @@ function App() {
           <Route path="/detail/:id" element={<Detail />} />
           <Route path="/" element={<Home />} />
           <Route path="/admin" element={<Admin />} />
-          <Route path="/register" element={<Register/>}/>
+          <Route path="/register" element={<Register/>} />
         </Routes>
       </div>
       <Footer /> {/* Coloca el footer aquí */}

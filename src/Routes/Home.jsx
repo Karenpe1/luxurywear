@@ -1,9 +1,12 @@
-import Body from '../components/Body';
+import Body from "../components/Body";
+import Register from "./Register";
 
 const Home = () => {
   return (
-    <Body />
-  )
-}
+    <>
+      <Body />
+    </>
+  );
+};
 
 export default Home;
