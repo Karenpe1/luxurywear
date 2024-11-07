@@ -1,10 +1,11 @@
 import Body from "../components/Body";
-import Register from "./Register";
+import Modal from "../components/Modal";
 
 const Home = () => {
   return (
     <>
       <Body />
+      <Modal/>
     </>
   );
 };

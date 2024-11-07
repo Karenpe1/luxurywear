@@ -3,6 +3,8 @@ import StyleRegistro from "../styles/registro.module.css";
 import logo from "../Images/Logo.png";
 import { useNavigate } from "react-router-dom";
 import Input from "../components/Input";
+import Button from "../components/Button";
+import Modal from "../components/Modal";
 
 const Register = () => {
   const [user, setUser] = useState({
@@ -18,6 +20,14 @@ const Register = () => {
     correo: "",
     contraseña: "",
     contraseñaRepetida: "",
+  });
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [modalInfo, setModalInfo] = useState({
+    show: false,
+    titulo: "",
+    subtitulo: "",
+    mensaje: "",
+    img: "",
   });
   const navigate = useNavigate();
   const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -104,33 +114,49 @@ const Register = () => {
   async function realizarRegister(settings) {
     try {
       const response = await fetch(url, settings);
-  
+
       // Handle non-201 status codes
-      if (response.status !== 201) {
+      if (response.status == 201) {
+        setModalInfo({
+          show: true,
+          titulo: "¡Felicidades!",
+          subtitulo: "Tu registro ha sido exitoso.",
+          mensaje:
+            "Te hemos registrado correctamente en nuestra web. Ahora puedes acceder a todas las funciones y beneficios que ofrecemos.",
+          img: "./Estrellas.svg",
+        }); //mostrar el mensaje de exito
+      } else {
         const errorMessages = {
           409: "Ya hay un usuario creado con ese correo electrónico.",
           400: "Solicitud inválida. Por favor, verifica los datos ingresados.",
           500: "Error del servidor. Por favor, intenta más tarde.",
         };
-  
-        const message = errorMessages[response.status] || `Ocurrió un error inesperado (Código: ${response.status}).`;
-  
-        alert(message);
-        console.error(`Error: ${message}`);
-        return; // Stop further processing
+
+        const message =
+          errorMessages[response.status] ||
+          `Ocurrió un error inesperado (Código: ${response.status}).`;
+        setModalInfo({
+          show: true,
+          img:"./error.png",
+          titulo: "Error",
+          subtitulo: "Ha ocurrido un problema.",
+          mensaje: message,
+        });
       }
-  
+
       // Parse the successful response
       const data = await response.json();
       console.log(data);
-      alert("Usuario creado con éxito");
-      navigate("/"); // todo to be changed to `/login`
     } catch (err) {
       // Handle network or other fetch errors
+      setModalInfo({
+        show: true,
+        titulo: "Error de conexión",
+        subtitulo: "Hubo un problema con la conexión.",
+        mensaje: "Por favor, verifica tu conexión a Internet e intenta nuevamente.",
+        img: "./error.png",
+      });
       console.error("Error al realizar el registro:", err);
-      alert(
-        "Hubo un problema al registrar el usuario. Por favor, verifica tu conexión e intenta nuevamente."
-      );
     }
   }
 
@@ -142,61 +168,71 @@ const Register = () => {
         </div>
       </div>
       <div className={StyleRegistro.contenedorForm}>
-        <div className={StyleRegistro.formulario}>
-          <h2>Registro de cuenta</h2>
-          <form onSubmit={handdleSubmit} className={StyleRegistro.registro}>
-            
-            <Input
-              label="Nombre"
-              placeholder="Ingresa tu nombre"
-              type="text"
-              value={user.nombre}
-              onChange={handleNombre}
-              error={error.nombre}
-            />
+        {modalInfo.show ? (
+          <Modal
+            img={modalInfo.img}
+            titulo={modalInfo.titulo}
+            subtitulo={modalInfo.subtitulo}
+            mensaje={modalInfo.mensaje}
+            onClose={() => {
+              setModalInfo({...modalInfo, show: false});
+              if(modalInfo.titulo === "¡Felicidades!"){
+                navigate("/login");
+              }
+            }}
+          />
+        ) : (
+          <div className={StyleRegistro.formulario}>
+            <h2>Registro de cuenta</h2>
+            <form onSubmit={handdleSubmit} className={StyleRegistro.registro}>
+              <Input
+                label="Nombre"
+                placeholder="Ingresa tu nombre"
+                type="text"
+                value={user.nombre}
+                onChange={handleNombre}
+                error={error.nombre}
+              />
 
+              <Input
+                label="Apellido"
+                placeholder="Ingresa tu Apellido"
+                type="text"
+                value={user.apellido}
+                onChange={handleApellido}
+                error={error.apellido}
+              />
 
-            <Input
-              label="Apellido"
-              placeholder="Ingresa tu Apellido"
-              type="text"
-              value={user.apellido}
-              onChange={handleApellido}
-              error={error.apellido}
-            />
+              <Input
+                label="Correo Eléctronico"
+                placeholder="Ingresa tu correo electronico"
+                type="email"
+                value={user.correo}
+                onChange={handleCorreo}
+                error={error.correo}
+              />
 
+              <Input
+                label="Contraseña"
+                placeholder="Ingresa tu contraseña"
+                type="password"
+                value={user.contraseña}
+                onChange={handleContraseña}
+                error={error.contraseña}
+              />
 
-            <Input
-              label="Correo Eléctronico"
-              placeholder="Ingresa tu correo electronico"
-              type="email"
-              value={user.correo}
-              onChange={handleCorreo}
-              error={error.correo}
-            />
-
-
-            <Input
-              label="Contraseña"
-              placeholder="Ingresa tu contraseña"
-              type="password"
-              value={user.contraseña}
-              onChange={handleContraseña}
-              error={error.contraseña}
-            />
-
-            <Input
-              label="Repetir Contraseña"
-              placeholder="Ingresa nuevamente tu contraseña"
-              type="password"
-              value={user.contraseñaRepetida}
-              onChange={handleRepetida}
-              error={error.contraseñaRepetida}
-            />
-
-            <button className={StyleRegistro.botonRegistro}>Registrar</button>
-          </form>
-        </div>
+              <Input
+                label="Repetir Contraseña"
+                placeholder="Ingresa nuevamente tu contraseña"
+                type="password"
+                value={user.contraseñaRepetida}
+                onChange={handleRepetida}
+                error={error.contraseñaRepetida}
+              />
+              <Button>Registrar</Button>
+            </form>
+          </div>
+        )}
       </div>
     </div>
   );
