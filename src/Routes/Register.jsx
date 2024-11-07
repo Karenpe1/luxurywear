@@ -88,8 +88,8 @@ const Register = () => {
 
     if (formIsValid) {
       const body = {
-        first_name: user.nombre.trim().toLowerCase(),
-        last_name: user.apellido.trim().toLocaleLowerCase(),
+        first_name: user.nombre.trim(),
+        last_name: user.apellido.trim(),
         email: user.correo,
         password: user.contraseña,
       };
