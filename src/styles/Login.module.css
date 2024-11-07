@@ -1,191 +1,186 @@
-/* Contenedor principal para dividir la pantalla en dos secciones */
-.loginWrapper {
-    display: flex;
-    width: 100%;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    /* Asegura que esté encima del header y footer */
-    background-color: #fff;
-    /* Fondo para cubrir cualquier contenido detrás */
-}
-
-/* Mitad izquierda con la imagen de fondo y el logo */
-.leftSide {
-    flex: 1;
-    background-image:
-        linear-gradient(90deg, rgba(97, 80, 175, 0.7) 46.28%, rgba(243, 239, 255, 0.3) 96%),
-        url('../Images/bg-log.png');
-    background-size: cover;
-    background-position: center;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-}
-
-/* Estilos para el logo */
-.logo {
-    width: 100px;
-    /* position: absolute;*/
-    top: 20px;
-    padding: 30px;
-
-    width: 426px;
-    height: 277px;
-
-    background: #FFFFFF;
-    border-radius: 8px;
-
-  
-}
-
-/* Mitad derecha para el formulario */
-.rightSide {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #E9E4F7;
-}
-
-/* Estilos del contenedor de login */
-.loginContainer {
-    background-color: #E9E4F7;
-    color: #333333;
-    width: 90%;
-    max-width: 400px;
-    padding: 30px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.loginContainer h2 {
-    font-size: 1.8em;
-    margin-bottom: 20px;
-}
-
-.loginContainer form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-/* Estilos para etiquetas y campos de entrada */
-label {
-    text-align: left;
-    display: block;
-    color: #333333;
-    font-weight: bold;
-    font-size: 0.9em;
-}
-
-input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #CCCCCC;
-    background-color: #F5F5F5;
-    color: #333333;
-    font-size: 1em;
-    outline: none;
-    transition: border-color 0.3s;
-}
-
-input:focus {
-    border-color: #382874;
-}
-
-.loginButton {
-    background-color: #C3B2FB;
-    color: black;
-    padding: 12px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 1em;
-    font-weight: bold;
-    transition: background-color 0.3s;
-}
-
-.loginButton:hover {
-    background-color: #261a56;
-    color: #FFFFFF;
-}
-
-/* Estilo para mensajes de error */
-.errorMessage {
-    color: #FF6666;
-    font-size: 0.9em;
-    margin-bottom: 10px;
-}
-.signupText {
-    margin-top: 20px;
-    font-size: 1em;
-    color: #333333;
-}
-
-.signupLink {
-    color: #382874;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-.signupLink:hover {
-    text-decoration: underline;
-}
-/* Media Queries para adaptabilidad en tablets y móviles */
-@media (max-width: 768px) {
+    /* Contenedor principal para dividir la pantalla en dos secciones */
     .loginWrapper {
-        flex-direction: column;
-    }
-
-    .leftSide {
+        display: flex;
         width: 100%;
-        height: 100%;
-        position: absolute;
-    }
-
-    .logo {
-        width: 161px;
-        height: 104px;
-
-        background: #FFFFFF;
-        border-radius: 4px;
-        padding: 20px;
-        position: absolute;
-        
-        right: 30%;
-        top: 10%;
-
-
-       
-       
-
-    }
-
-    .rightSide {
-        flex: none;
-        width: 100%;
-    }
-
-    .loginContainer {
-        
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 80%;
-        max-width: 400px;
-        padding: 20px;
-        background-color: rgba(233, 228, 247, 0.9); /* Fondo semitransparente */
-        z-index: 10; 
-        border-radius: 10px;
-        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        /* Asegura que esté encima del header y footer */
+        background-color: #fff;
+        /* Fondo para cubrir cualquier contenido detrás */
     }
     
-}
+
+    /* Mitad izquierda con la imagen de fondo y el logo */
+    .leftSide {
+        flex: 1;
+        background-image:
+            linear-gradient(90deg, rgba(97, 80, 175, 0.7) 46.28%, rgba(243, 239, 255, 0.3) 96%),
+            url('../Images/bg-log.png');
+        background-size: cover;
+        background-position: center;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    /* Estilos para el logo */
+    .logo {
+
+        padding: 30px;
+        width: 426px;
+        height: 277px;
+        background: #FFFFFF;
+        border-radius: 8px;
+    }
+
+    /* Mitad derecha para el formulario */
+    .rightSide {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #E9E4F7;
+    }
+
+    /* Estilos del contenedor de login */
+    .inputField {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #CCCCCC;
+        background-color: #F5F5F5;
+        color: #333333;
+        font-size: 1em;
+        outline: none;
+        transition: border-color 0.3s;
+    }
+
+    .loginButton {
+        background-color: #C3B2FB;
+        color: black;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 1em;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+
+    .errorMessage {
+        color: #FF6666;
+        font-size: 0.9em;
+    }
+
+
+    .loginContainer {
+        background-color: #E9E4F7;
+        color: #333333;
+        width: auto;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .loginContainer h2 {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+    }
+
+    .loginContainer form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    /* Estilos para etiquetas y campos de entrada */
+   
+
+    .loginButton {
+        background-color: #C3B2FB;
+        color: black;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 1em;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+
+    .loginButton:hover {
+        background-color: #261a56;
+        color: #FFFFFF;
+    }
+
+    
+    .signupText {
+        margin-top: 20px;
+        font-size: 1em;
+        color: #333333;
+    }
+
+    .signupLink {
+        color: #382874;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .signupLink:hover {
+        text-decoration: underline;
+    }
+
+    /* Media Queries para adaptabilidad en tablets y móviles */
+    @media (max-width: 768px) {
+        .loginWrapper {
+            flex-direction: column;
+        }
+
+        .leftSide {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+        }
+
+        .logo {
+            width: 161px;
+            height: 104px;
+
+            background: #FFFFFF;
+            border-radius: 4px;
+            padding: 20px;
+            position: absolute;
+
+            right: 30%;
+            top: 10%;
+
+        }
+
+        .rightSide {
+            flex: none;
+            width: 100%;
+        }
+
+        .loginContainer {
+
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: rgba(233, 228, 247, 0.9);
+            /* Fondo semitransparente */
+            z-index: 10;
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+    }

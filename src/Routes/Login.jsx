@@ -2,13 +2,23 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginStyles from "../styles/Login.module.css";
 import logo from '../Images/Logo.png';
+import Button from "../components/Button";
+import Input from "../components/Input";
+import Modal from "../components/Modal";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({ email: "", password: "", general: "" });
+  const [modalInfo, setModalInfo] = useState({
+    show: false,
+    titulo: "",
+    subtitulo: "",
+    mensaje: "",
+    img: ""
+  });
   const navigate = useNavigate();
-  
+
   const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
   const handleLogin = async (e) => {
@@ -46,7 +56,12 @@ function Login() {
           setError({ ...errors, general: "Credenciales incorrectas. Intente nuevamente." });
         }
       } catch (error) {
-        setError({ ...errors, general: "Hubo un problema al iniciar sesión." });
+        setModalInfo({
+          show: true,
+          mensaje: "Por favor, verifica tu conexión a Internet e intenta nuevamente.",
+          img: "./error.png"
+        });
+        console.error("Error al iniciar sesión:", error);
       }
     }
   };
@@ -62,32 +77,48 @@ function Login() {
           <form onSubmit={handleLogin}>
             <label>
               Correo electrónico
-              <input
+              <Input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className={loginStyles.inputField}
                 required
               />
             </label>
             {error.email && <p className={loginStyles.errorMessage}>{error.email}</p>}
-            
+
             <label>
               Contraseña
-              <input
+              <Input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                className={loginStyles.inputField}
                 required
               />
             </label>
             {error.password && <p className={loginStyles.errorMessage}>{error.password}</p>}
-            
-            {error.general && <p className={loginStyles.errorMessage}>{error.general}</p>}
-            <button type="submit" className={loginStyles.loginButton}>Iniciar sesión</button>
+
+            {error.general && (
+              <p className={loginStyles.errorMessage}>{error.general}</p>
+            )}
+
+            <Button type="submit" className={loginStyles.loginButton}>Iniciar sesión</Button>
           </form>
+
           <p className={loginStyles.signupText}>
             ¿No tienes cuenta? <a href="/register" className={loginStyles.signupLink}>Regístrate aquí</a>
           </p>
+
+          {modalInfo.show && (
+            <Modal
+              img={modalInfo.img}
+              titulo={modalInfo.titulo}
+              subtitulo={modalInfo.subtitulo}
+              mensaje={modalInfo.mensaje}
+              onClose={() => setModalInfo({ ...modalInfo, show: false })}
+            />
+          )}
         </div>
       </div>
     </div>
@@ -95,4 +126,3 @@ function Login() {
 }
 
 export default Login;
-
