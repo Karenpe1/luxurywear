@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "../styles/PaginatedProductList.module.css";
 import { formatCurrency } from "../Utils/currencyFormatter";
 import HeartButton from "./HeartButton";
+import Pagination from "./Pagination";
 
 const baseUrl = "http://localhost:8080"; // Define the base URL
 
@@ -43,17 +44,8 @@ const PaginatedProductList = () => {
     navigate(`/detail/${productId}`); // Navigate to the detail page with productId
   };
 
-  // Handle pagination
-  const handlePreviousPage = () => {
-    if (currentPage > 0) {
-      setCurrentPage((prevPage) => prevPage - 1);
-    }
-  };
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages - 1) {
-      setCurrentPage((prevPage) => prevPage + 1);
-    }
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
 
   return (
@@ -82,31 +74,16 @@ const PaginatedProductList = () => {
               <h2>{product.name}</h2>
               <p>Alquiler: {formatCurrency(product.price, "es-CO", "COP")}</p>
             </div>
-            
           </div>
         ))}
       </div>
 
-      {/* Pagination Controls */}
-      <div className={styles.pagination}>
-        <button
-          className={styles.boton}
-          onClick={handlePreviousPage}
-          disabled={currentPage === 0}
-        >
-          Anterior
-        </button>
-        <span>
-          Página {currentPage + 1} de {totalPages}
-        </span>
-        <button
-          className={styles.boton}
-          onClick={handleNextPage}
-          disabled={currentPage === totalPages - 1}
-        >
-          Siguiente
-        </button>
-      </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPage={totalPages}
+        onPageChange={handlePageChange}
+      />
+      
     </div>
   );
 };

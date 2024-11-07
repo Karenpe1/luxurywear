@@ -179,33 +179,3 @@ p {
        font-size: 16px;
     }
 }
-
-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.pagination {
-    margin-top: 20px; /* Add space between products and pagination */
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-}
-
-.boton{
-    background-color: rgba(195, 178, 251, 0.78);
-    font-size: 12px;
-    color: black;
-    border: none;
-    border-radius: 15px;
-    width: 80px;
-    height: 30px;
-    cursor: pointer;
-}
-@media(min-width:900px){
-    .boton{
-        font-size: 18px;
-        width: 120px;
-    }
-}
