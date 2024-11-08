@@ -54,9 +54,11 @@ const Header = () => {
                 <i className="fas fa-user-plus"></i> Crear cuenta
               </button>
             </Link>
+            <Link to={"Login"}>
             <button className={styles.navButton}>
               <i className="fas fa-sign-in-alt"></i> Iniciar sesión
             </button>
+            </Link>
           </>
         )}
       </div>
