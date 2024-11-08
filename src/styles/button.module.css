@@ -1,0 +1,17 @@
+.botonRegistro{
+    width: 100%;
+    height: 36px;
+    align-self: stretch;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background:#C3B2FB;
+    border: none;
+    cursor: pointer;
+    margin-top: 16px;
+    font-size: 16px;
+ }
+ @media(min-width:700px){
+    .botonRegistro{
+        height: 48px;
+    }
+}
