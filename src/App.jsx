@@ -21,8 +21,11 @@ function App() {
   return (
     <>
 
-    {!isLocation &&  <NewHeader />
-      <Search/> /*condicion para no mostrar el header en el registro */} 
+    {!isLocation &&  ( 
+      <>
+      <NewHeader />
+      <Search/>
+      </>  )/*condicion para no mostrar el header en el registro */} 
         <div className={appStyles.container}>
           <Routes>
             <Route path="/detail/:id" element={<Detail />} />
