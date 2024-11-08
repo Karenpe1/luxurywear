@@ -38,7 +38,7 @@ const Header = () => {
       >
         {isMobile ? (
           <>
-            <a href="/signup" className={styles.navButton}>
+            <a href="/register" className={styles.navButton}>
               <i className="fas fa-user-plus"></i> Crear cuenta{" "}
               <span className={styles.arrow}>&gt;</span>
             </a>
@@ -49,7 +49,7 @@ const Header = () => {
           </>
         ) : (
           <>
-            <Link to={"register"}>
+            <Link to={"/register"} style={{textDecoration:"none"}}>
               <button className={styles.navButton}>
                 <i className="fas fa-user-plus"></i> Crear cuenta
               </button>
