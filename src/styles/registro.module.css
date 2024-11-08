@@ -1,15 +1,9 @@
 .container{
     width: 100%;
-    margin-top: 4em;
     height: 852px;
     position: relative;
+}
 
-}
-@media(min-width:596px){
-    .container{
-        margin-top: 6em;
-    }
-}
 @media(min-width:700px){
     .container{
         max-height:1300px;
@@ -108,7 +102,7 @@
     .contenedorForm{
         background-color:  #E9E4F7;
         width: 50%;
-        height:900px; /* Deja que el contenido defina la altura */
+        height:1000px; /* Deja que el contenido defina la altura */
         padding: 7em 0em;
         border-radius: 0;
         position: static; /* Elimina position absolute */

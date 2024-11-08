@@ -1,7 +1,7 @@
 import { useState } from "react";
 import StyleRegistro from "../styles/registro.module.css";
 import logo from "../Images/Logo.png";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import Modal from "../components/Modal";
@@ -21,7 +21,7 @@ const Register = () => {
     contraseña: "",
     contraseñaRepetida: "",
   });
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
   const [modalInfo, setModalInfo] = useState({
     show: false,
     titulo: "",
@@ -137,7 +137,7 @@ const Register = () => {
           `Ocurrió un error inesperado (Código: ${response.status}).`;
         setModalInfo({
           show: true,
-          img:"./error.png",
+          img: "./error.png",
           titulo: "Error",
           subtitulo: "Ha ocurrido un problema.",
           mensaje: message,
@@ -153,7 +153,8 @@ const Register = () => {
         show: true,
         titulo: "Error de conexión",
         subtitulo: "Hubo un problema con la conexión.",
-        mensaje: "Por favor, verifica tu conexión a Internet e intenta nuevamente.",
+        mensaje:
+          "Por favor, verifica tu conexión a Internet e intenta nuevamente.",
         img: "./error.png",
       });
       console.error("Error al realizar el registro:", err);
@@ -164,7 +165,9 @@ const Register = () => {
     <div className={StyleRegistro.container}>
       <div className={StyleRegistro.containerFoto}>
         <div className={StyleRegistro.containerFiltro}>
-          <img src={logo} alt="app logo" className={StyleRegistro.img} />
+          <Link to="/">
+            <img src={logo} alt="app logo" className={StyleRegistro.img} />
+          </Link>
         </div>
       </div>
       <div className={StyleRegistro.contenedorForm}>
@@ -175,8 +178,8 @@ const Register = () => {
             subtitulo={modalInfo.subtitulo}
             mensaje={modalInfo.mensaje}
             onClose={() => {
-              setModalInfo({...modalInfo, show: false});
-              if(modalInfo.titulo === "¡Felicidades!"){
+              setModalInfo({ ...modalInfo, show: false });
+              if (modalInfo.titulo === "¡Felicidades!") {
                 navigate("/login");
               }
             }}

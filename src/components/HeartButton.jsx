@@ -22,12 +22,12 @@ const HeartButton = ({ className }) => {
         {liked ? (
           <i
             className="fas fa-heart"
-            style={{ color: "red", fontSize: "34px" }}
+            style={{ color: "red", fontSize: "22px" }}
           ></i>
         ) : (
           <i
             className="far fa-heart"
-            style={{ color: "black", fontSize: "34px" }}
+            style={{ color: "black", fontSize: "22px" }}
           ></i>
         )}
       </button>
