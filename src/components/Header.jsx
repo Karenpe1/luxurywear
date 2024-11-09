@@ -1,24 +1,15 @@
-import React, { useState, useEffect } from "react";
+import { useState, useContext } from "react";
 import styles from "../styles/Header.module.css";
 import logo from "../Images/Logo.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import AuthContext from "../context/AuthContext";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(true);
+  const { user, logoutUser } = useContext(AuthContext);
+  const location = useLocation();
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    handleResize();
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  const currentPath = location.pathname;
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -26,44 +17,41 @@ const Header = () => {
 
   return (
     <header className={styles.header}>
+      {/* Left Section */}
       <div className={styles.leftSection}>
-        <a href="/" className={styles.logoLink}>
+        <Link to="/" className={styles.logoLink}>
           <img src={logo} alt="App Logo" className={styles.logo} />
-        </a>
+        </Link>
       </div>
-      <div
-        className={`${styles.rightSection} ${
-          isMenuOpen ? styles.showMenu : ""
-        }`}
-      >
-        {isMobile ? (
+
+      {/* Right Section */}
+      <div className={`${styles.rightSection} ${isMenuOpen ? styles.showMenu : ""}`}>
+        {user ? (
           <>
-            <a href="/register" className={styles.navButton}>
-              <i className="fas fa-user-plus"></i> Crear cuenta{" "}
-              <span className={styles.arrow}>&gt;</span>
-            </a>
-            <a href="/login" className={styles.navButton}>
-              <i className="fas fa-sign-in-alt"></i> Iniciar sesión{" "}
-              <span className={styles.arrow}>&gt;</span>
-            </a>
+            {( user.role === "ADMIN" && currentPath !== "/admin" ) && (
+              <Link to="/admin" className={styles.navButton}>
+                <i className="fas fa-user-shield"></i> Panel Administrador
+              </Link>
+            )}
+            {/* Aqui deberia ir el avatar */}
+            <button onClick={logoutUser} className={styles.navButton}>
+              <i className="fas fa-sign-out-alt"></i> Cerrar sesión
+            </button>
           </>
         ) : (
           <>
-            <Link to={"/register"} style={{textDecoration:"none"}}>
-              <button className={styles.navButton}>
-                <i className="fas fa-user-plus"></i> Crear cuenta
-              </button>
+            <Link to="/register" className={styles.navButton}>
+              <i className="fas fa-user-plus"></i> Crear cuenta
             </Link>
-            <Link to={"Login"}>
-            <button className={styles.navButton}>
+            <Link to="/login" className={styles.navButton}>
               <i className="fas fa-sign-in-alt"></i> Iniciar sesión
-            </button>
             </Link>
           </>
         )}
       </div>
+
+      {/* Hamburger Menu */}
       <div className={styles.hamburgerMenu} onClick={toggleMenu}>
-        {}
         {isMenuOpen ? (
           <span className={styles.closeIcon}>✕</span>
         ) : (
