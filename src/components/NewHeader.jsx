@@ -19,12 +19,12 @@ const NewHeader = () => {
       {isOpen && (
         <div className={styles.menu}>
           <div className={styles.menuHeader}>
-            <img className={styles.logo} src="logo.png" alt="App Logo" />
+            <a href="/"><img className={styles.logo} src="logo.png" alt="App Logo" /></a>
             <img src="cerrar.png" alt="Close Menu" onClick={handleHamburger} />
           </div>
         </div>
       )}
-      <img className={styles.logo} src="logo.png" alt="App Logo" />
+      <a href="/"><img className={styles.logo} src="logo.png" alt="App Logo" /></a>
 
       <div className={styles.links}>
         <span>Nosotros</span>

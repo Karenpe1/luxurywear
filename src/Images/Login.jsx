@@ -1,14 +1,12 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginStyles from "../styles/Login.module.css";
 import logo from '../Images/Logo.png';
 import Button from "../components/Button";
 import Input from "../components/Input";
 import Modal from "../components/Modal";
-import AuthContext from "../context/AuthContext";
 
 function Login() {
-  const { loginUser } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({ email: "", password: "", general: "" });
@@ -20,7 +18,7 @@ function Login() {
     img: ""
   });
   const navigate = useNavigate();
-  
+
   // eslint-disable-next-line no-useless-escape
   const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
@@ -53,7 +51,7 @@ function Login() {
         const data = await response.json();
 
         if (response.ok) {
-          loginUser(data);
+          localStorage.setItem("user", JSON.stringify(data));
           navigate("/"); // Redirige al inicio después de iniciar sesión
         } else {
           setError({ ...errors, general: "Credenciales incorrectas. Intente nuevamente." });
