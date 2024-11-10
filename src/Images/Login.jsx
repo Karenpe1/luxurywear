@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginStyles from "../styles/Login.module.css";
 import logo from '../Images/Logo.png';
@@ -19,6 +19,7 @@ function Login() {
   });
   const navigate = useNavigate();
 
+  // eslint-disable-next-line no-useless-escape
   const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
   const handleLogin = async (e) => {

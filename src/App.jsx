@@ -1,6 +1,4 @@
 import NewHeader from "./components/NewHeader.jsx";
-import Header from "./components/Header.jsx";
-import Footer from "./components/Footer.jsx";
 import Detail from "./Routes/Detail.jsx";
 import {
   Routes,
@@ -15,6 +13,7 @@ import Register from "./Routes/Register.jsx";
 import Search from "./components/Search.jsx";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
+import NewFooter from "./components/NewFooter.jsx";
 
 function App() {
 
@@ -45,7 +44,7 @@ function App() {
             <Route path="/register" element={<Register />} />
           </Routes>
         </div>
-      {!isLocation && <Footer /> }
+      {!isLocation && <NewFooter /> }
     </AuthProvider>
   );
 }

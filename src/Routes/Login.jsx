@@ -20,7 +20,8 @@ function Login() {
     img: ""
   });
   const navigate = useNavigate();
-
+  
+  // eslint-disable-next-line no-useless-escape
   const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
   const handleLogin = async (e) => {
