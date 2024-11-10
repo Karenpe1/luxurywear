@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const HeartButton = ({ className }) => {
   const [liked, setLiked] = useState(false);

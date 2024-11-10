@@ -2,6 +2,7 @@ import styles from "../styles/NewHeader.module.css";
 import { useState, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
+import User from "./User";
 
 const NewHeader = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,9 +41,7 @@ const NewHeader = () => {
                 <button className={styles.button}>Panel Administrador</button>
               </Link>
             )}
-            <button className={styles.button} onClick={logoutUser}>
-              Cerrar sesión
-            </button>
+            <User/>
           </>
         ) : (
           <>
