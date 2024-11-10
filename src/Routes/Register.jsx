@@ -60,13 +60,13 @@ const Register = () => {
     let errors = {};
     let formIsValid = true;
 
-    if (!noNumbersRegex.test(user.nombre) || user.nombre.trim().length < 4) {
+    if (!noNumbersRegex.test(user.nombre) || user.nombre.trim().length < 3) {
       errors.nombre = "El nombre debe ser válido y tener al menos 3 caracteres";
       formIsValid = false;
     }
     if (
       !noNumbersRegex.test(user.apellido) ||
-      user.apellido.trim().length < 4
+      user.apellido.trim().length < 3
     ) {
       errors.apellido =
         "El apellido debe ser válido y tener al menos 3 caracteres";
@@ -76,7 +76,7 @@ const Register = () => {
       errors.correo = "El correo debe ser válido";
       formIsValid = false;
     }
-    if (user.contraseña.length < 7) {
+    if (user.contraseña.length < 6) {
       errors.contraseña = "La contraseña debe tener más de 6 caracteres";
       formIsValid = false;
     }
@@ -233,6 +233,7 @@ const Register = () => {
                 error={error.contraseñaRepetida}
               />
               <Button>Registrar</Button>
+              <p className={StyleRegistro.cuenta}>¿Ya tienes una cuenta? <Link className={StyleRegistro.link} to="/login" ><strong>Inicia sesión aquí</strong></Link></p>
             </form>
           </div>
         )}

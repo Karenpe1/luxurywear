@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import RentaStyle from "../styles/topRentas.module.css";
 import { Link } from "react-router-dom";
+import Card from "./Card";
 
 const TopRentas = () => {
   const [topRentas, setTopRentas] = useState([]);
@@ -15,23 +16,26 @@ const TopRentas = () => {
     };
     fetchData();
   }, []);
+  const puntuacion = [4.8, 4.9, 4.5, 4.7, 4.5, 4.8];
 
   return (
     <div className={RentaStyle.contenedor}>
-      <h2 className={RentaStyle.titulo}>Top en Rentas</h2>
+      <h2 className={RentaStyle.titulo}>Lo más recomendado</h2>
       <div className={RentaStyle.listaProductos}>
         {/*recorre lista aleatorizada */}
-        {topRentas.map((data) => (
+        {topRentas.map((data, index) => (
           <div key={data.productId} className={RentaStyle.producto}>
-            <img
-              className={RentaStyle.card}
-              src={data.images[0].url}
-              alt={data.name}
-            />
-            {/* Añadiendo el botón debajo de la Card */}
-            <Link to={"/detail/" + data.productId}>
-              <button className={RentaStyle.detalle}>Ver detalle</button>
-            </Link>
+            <Card image={data.images[0].url} name={data.name} />
+            <div className={RentaStyle.contenedorEstrellas}>
+              <div>
+                <i className={`fas fa-star ${RentaStyle.relleno}`}></i>
+                <i className={`fas fa-star ${RentaStyle.relleno}`}></i>
+                <i className={`fas fa-star ${RentaStyle.relleno}`}></i>
+                <i className={`fas fa-star ${RentaStyle.relleno}`}></i>
+                <i className={`far fa-star ${RentaStyle.sinRelleno}`}></i>
+              </div>
+              <div className={RentaStyle.puntuacion}>{puntuacion[index]}</div>
+            </div>
           </div>
         ))}
       </div>

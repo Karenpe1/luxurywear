@@ -79,6 +79,7 @@ h1 {
 .productCard:hover {
     transform: scale(1.02); /* Slightly increase size on hover */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Soft shadow on hover */
+    transition: transform 0.3s ease;
 }
 
 /* Uniform image size */
