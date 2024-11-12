@@ -1,5 +1,5 @@
 .container {
-    height: 64px;
+    height: 80px;
     width: 100%;
     position: fixed;
     top: 0;
@@ -28,6 +28,7 @@
 .hamburger {
     height: 24px;
     width: 24px;
+    cursor: pointer;
 }
 
 .menu {
@@ -74,62 +75,56 @@
     text-decoration: underline;
 }
 
-@media(min-width: 550px) and (max-width: 1079px) {
-    .container {
-        height: 80px;
-    }
-
-    .logo {
-        width: 100px;
-        height: 56px;
-        margin-right: calc(100vw - 100px - 70px);
-    }
-
-    .links {
-        display: none;
-    }
-
-    .buttons {
-        display: none;
-    }
-
-    .hamburger {
-        height: 36px;
-        width: 36px;
-    }
-
-    .menu {
-        height: 100vh;
-        width: 100vw;
-        background-color: white;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 11;
-    }
-
-    .showMenu {
+@media(min-width: 481px) and (max-width: 1079px) {
+   
+    
+    .navButton {
         display: flex;
-        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+        color: #231942;
+        background-color: transparent;
+        font-family: 'Encode Sans';
+        font-size: 18px;
+        text-decoration: none;
+        border: none;
         width: 100%;
-        height: 100vh;
-        background-color: #FFFFFF;
-        position: fixed;
-        top: 90;
-        left: 90;
-        z-index: 1000;
-      }
+        text-align: left;
+        cursor: pointer;
+        gap: 10px;
+        transition: background-color 0.3s ease;
+    }
+    
+    .navButton:hover {
+        background-color: #F0F0F0;
+    }
+    
+    .navButton i {
+        font-size: 20px;
+        color:#C3B2FB;
+    }
+    
+   
+}
+/* Versión muy pequeña */
+@media (max-width: 480px) {
+    .rightSection {
+        width: 100%;
+    }
 
     .navButton {
         width: 100%;
-        padding: 10px;
-        color: #000;
-        background-color: #FFFF;
-        border-radius: 0px;
-        font-family: 'Encode Sans';
+        padding: 10px 0;
+        text-decoration: none; 
+    }
+
+    .navButton i {
         font-size: 20px;
+        color: #C3B2FB;
     }
 }
+
+
 
 @media(min-width: 1080px) {
     .container {
