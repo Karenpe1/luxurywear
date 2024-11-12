@@ -111,6 +111,11 @@
 
 /* Mobile Styles - below 600px */
 @media (max-width: 599px) {
+
+  .detailContainer {
+    margin-top: 64px;
+  }
+
   .header {
     height: 107px;
   }
@@ -135,6 +140,11 @@
 
 /* Tablet Styles - below 1024px */
 @media (min-width: 600px) and (max-width: 1024px) {
+
+  .detailContainer {
+    margin-top: 80px;
+  }
+
   .header {
     left: 0;
     right: 0;
