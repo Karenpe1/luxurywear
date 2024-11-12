@@ -6,7 +6,7 @@ import User from "./User";
 
 const NewHeader = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { user } = useContext(AuthContext);
+  const { user, logoutUser } = useContext(AuthContext);
   const location = useLocation();
 
   const currentPath = location.pathname;
@@ -22,6 +22,30 @@ const NewHeader = () => {
           <div className={styles.menuHeader}>
             <a href="/"><img className={styles.logo} src="logo.png" alt="App Logo" /></a>
             <img src="cerrar.png" alt="Close Menu" onClick={handleHamburger} />
+          </div>
+          <div className={`${styles.rightSection} ${isOpen ? styles.showMenu : ""}`}>
+            {user ? (
+              <>
+                {( user.role === "ADMIN" && currentPath !== "/admin" ) && (
+                  <Link to="/admin" className={styles.navButton}>
+                    <i className="fas fa-user-shield"></i> Panel Administrador
+                  </Link>
+                )}
+                {/* Aqui deberia ir el avatar */}
+                <div onClick={logoutUser} className={styles.navButton}>
+                  <i className="fas fa-sign-out-alt"></i> Cerrar sesión
+                </div>
+              </>
+            ) : (
+              <>
+                <Link to="/register" className={styles.navButton}>
+                  <i className="fas fa-user-plus"></i> Crear cuenta
+                </Link>
+                <Link to="/login" className={styles.navButton}>
+                  <i className="fas fa-sign-in-alt"></i> Iniciar sesión
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}
