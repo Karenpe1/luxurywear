@@ -14,7 +14,7 @@ const Carrusel = () => {
     const fetchData = async () => {
       const respuesta = await fetch(url);
       const data = await respuesta.json();
-      setCategorias([...data, ...data]); // Duplicamos los elementos para el loop infinito
+      setCategorias([...data, ...data]); // Duplicar los elementos para el loop infinito
     };
     fetchData();
   }, []);
