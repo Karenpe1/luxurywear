@@ -7,18 +7,19 @@ import {
 } from "react-router-dom";
 import Home from "./Routes/Home.jsx";
 import appStyles from "./styles/App.module.css";
-import Login from "./Routes/Login"
-import Admin from "./Routes/Admin.jsx";
+import Login from "./Routes/Login";
 import Register from "./Routes/Register.jsx";
 import Search from "./components/Search.jsx";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
 import NewFooter from "./components/NewFooter.jsx";
+import NewAdmin from "./Routes/NewAdmin.jsx";
 
 function App() {
 
   const location = useLocation();
   const isLocation = location.pathname === "/register";
+  const currentPath = location.pathname;
 
   return (
     <AuthProvider>
@@ -26,7 +27,7 @@ function App() {
       <>
       <NewHeader />
       {/* <Header /> */}
-      <Search/>
+      {currentPath == "/" && <Search/>}
       </>  )/*condicion para no mostrar el header en el registro */} 
         <div className={appStyles.container}>
           <Routes>
@@ -37,7 +38,7 @@ function App() {
               path="/admin"
               element={
                 <PrivateRoute requiredRole="ADMIN">
-                  <Admin />
+                  <NewAdmin />
                 </PrivateRoute>
               }
             />

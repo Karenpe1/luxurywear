@@ -6,7 +6,7 @@ import User from "./User";
 
 const NewHeader = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { user, logoutUser } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const location = useLocation();
 
   const currentPath = location.pathname;

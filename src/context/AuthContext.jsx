@@ -92,6 +92,7 @@ export const AuthProvider = ({ children }) => {
         clearTimeout(refreshTimeout.current);
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authTokens]);
 
   const contextData = {

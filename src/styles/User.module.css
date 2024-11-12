@@ -1,5 +1,13 @@
 .container {
     display: flex;
+    gap: 15px;
+    position: relative;
+}
+
+.arrowMenu {
+    position: absolute;
+    top: -18px;
+    right: 45px;
 }
 
 .greeting {
@@ -8,4 +16,54 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.avatar {
+    height: 48px;
+    width: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #231942;
+    background-color: #F3EFFF;
+    border: 1px solid #715EAE;
+    border-radius: 50%;
+    position: relative;
+}
+
+.dropdownContainer {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    top: -50px;
+    right: -200px;
+}
+
+.dropdown {
+    position: absolute;
+    background-color: white;
+    border: 2px solid #715EAE;
+    border-radius: 8px;
+    padding: 20px;
+    width: 235px;
+    height: 173px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    top: 120px;
+    right: 203px;
+}
+
+.option {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.option:hover {
+    text-decoration: underline;
 }
