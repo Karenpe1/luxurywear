@@ -59,7 +59,7 @@ const PaginatedProductList = ({ pageSize = 6 }) => {
 
   return (
     <div className={styles.productListContainer}>
-      <h2 className={styles.titulo}>{categoryName || "Nuestros Productos"}</h2>
+      <h2 className={styles.titulo} style={categoryName ? { paddingTop: 'calc(100px + 20px)' } : {}}>{categoryName || "Nuestros Productos"}</h2>
       {categoryDescription && <h3>{categoryDescription}</h3>} {/* Show subtitle only if provided */}
 
       {/* Loading and Error states */}
