@@ -35,13 +35,13 @@ const User = () => {
                 {userInfo?.first_name[0].toUpperCase()}
                 {userInfo?.last_name[0].toUpperCase()}
             </div>
-            <img src="downArrow.svg" onClick={handleShowMenu}/>
+            <img src="/downArrow.svg" onClick={handleShowMenu}/>
                 {showMenu && 
                     <div className={styles.dropdownContainer} onClick={handleShowMenu}>
                         <div className={styles.dropdown}>
-                            <img src="arrowMenu.svg" className={styles.arrowMenu}/>
-                            <span className={styles.option}><img src="misPedidos.png"/>Mis pedidos</span>
-                            <span className={styles.option}><img src="usuario.png"/>Mi cuenta</span>
+                            <img src="/arrowMenu.svg" className={styles.arrowMenu}/>
+                            <span className={styles.option}><img src="/misPedidos.png"/>Mis pedidos</span>
+                            <span className={styles.option}><img src="/usuario.png"/>Mi cuenta</span>
                             <span className={styles.option} onClick={logoutUser}>Cerrar sesión</span>
                         </div>
                     </div>

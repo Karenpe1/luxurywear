@@ -20,8 +20,8 @@ const NewHeader = () => {
       {isOpen && (
         <div className={styles.menu}>
           <div className={styles.menuHeader}>
-            <a href="/"><img className={styles.logo} src="logo.png" alt="App Logo" /></a>
-            <img src="cerrar.png" alt="Close Menu" onClick={handleHamburger} />
+            <a href="/"><img className={styles.logo} src="/logo.png" alt="App Logo" /></a>
+            <img src="/cerrar.png" alt="Close Menu" onClick={handleHamburger} />
           </div>
           <div className={`${styles.rightSection} ${isOpen ? styles.showMenu : ""}`}>
             {user ? (
@@ -49,7 +49,7 @@ const NewHeader = () => {
           </div>
         </div>
       )}
-      <a href="/"><img className={styles.logo} src="logo.png" alt="App Logo" /></a>
+      <a href="/"><img className={styles.logo} src="/logo.png" alt="App Logo" /></a>
 
       <div className={styles.links}>
         <span>Nosotros</span>
@@ -81,7 +81,7 @@ const NewHeader = () => {
 
       <img
         className={styles.hamburger}
-        src="menu.png"
+        src="/menu.png"
         alt="Menu"
         onClick={handleHamburger}
       />
