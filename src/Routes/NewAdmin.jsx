@@ -73,8 +73,8 @@ const NewAdmin = () => {
 
     const confirmDeleteUser = async () => {
         try {
-            await axios.delete(`http://localhost:8080/api/v1/users/delete/${selectedUserId}`);
-            setProducts(users.filter((user) => user.userId !== selectedUserId)); // Remove product from list
+            await axios.delete(`http://localhost:8080/api/v1/users/delete-user/${selectedUserId}`);
+            setUsers(users.filter((user) => user.userId !== selectedUserId)); // Remove product from list
             setShowModalUser(false);
         } catch (error) {
             console.error("Error deleting:", error);
