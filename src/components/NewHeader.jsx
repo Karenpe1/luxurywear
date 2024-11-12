@@ -2,6 +2,7 @@ import styles from "../styles/NewHeader.module.css";
 import { useState, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
+import User from "./User";
 
 const NewHeader = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,6 +23,30 @@ const NewHeader = () => {
             <a href="/"><img className={styles.logo} src="logo.png" alt="App Logo" /></a>
             <img src="cerrar.png" alt="Close Menu" onClick={handleHamburger} />
           </div>
+          <div className={`${styles.rightSection} ${isOpen ? styles.showMenu : ""}`}>
+            {user ? (
+              <>
+                {( user.role === "ADMIN" && currentPath !== "/admin" ) && (
+                  <Link to="/admin" className={styles.navButton}>
+                    <i className="fas fa-user-shield"></i> Panel Administrador
+                  </Link>
+                )}
+                {/* Aqui deberia ir el avatar */}
+                <div onClick={logoutUser} className={styles.navButton}>
+                  <i className="fas fa-sign-out-alt"></i> Cerrar sesión
+                </div>
+              </>
+            ) : (
+              <>
+                <Link to="/register" className={styles.navButton}>
+                  <i className="fas fa-user-plus"></i> Crear cuenta
+                </Link>
+                <Link to="/login" className={styles.navButton}>
+                  <i className="fas fa-sign-in-alt"></i> Iniciar sesión
+                </Link>
+              </>
+            )}
+          </div>
         </div>
       )}
       <a href="/"><img className={styles.logo} src="logo.png" alt="App Logo" /></a>
@@ -40,9 +65,7 @@ const NewHeader = () => {
                 <button className={styles.button}>Panel Administrador</button>
               </Link>
             )}
-            <button className={styles.button} onClick={logoutUser}>
-              Cerrar sesión
-            </button>
+            <User/>
           </>
         ) : (
           <>
