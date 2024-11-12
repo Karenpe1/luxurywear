@@ -1,14 +1,12 @@
 import bodyStyles from '../styles/Body.module.css';
-import CategoryList from './CategoryList';
 import PaginatedProductList from '../components/PaginatedProductList';
 import TopRentas from '../components/TopRentas';
+import Carrusel from './Carrusel';
 
 const Body = () => {
   return (
     <div className={bodyStyles.container}>
-        <div className={bodyStyles.subcontainer2}>
-          <CategoryList />
-        </div>
+        <Carrusel/>
         <TopRentas/>
         <PaginatedProductList />
     </div>
