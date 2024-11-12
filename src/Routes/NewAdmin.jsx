@@ -10,10 +10,13 @@ const NewAdmin = () => {
     const [users, setUsers] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [showModalUser, setShowModalUser] = useState(false);
+    const [showModalAdmin, setShowModalAdmin] = useState(false);
     const [showActions, setShowActions] = useState([]);
     const [showActionsUsers, setShowActionsUsers] = useState([]);
     const [selectedProductId, setSelectedProductId] = useState(null);
     const [selectedUserId, setSelectedUserId] = useState(null);
+    const [selectedUserEmail, setSelectedUserEmail] = useState(null);
+    const [selectedUserRole, setSelectedUserRole] = useState(null);
     const axios = axiosInstance();
 
     useEffect(() => {
@@ -72,9 +75,22 @@ const NewAdmin = () => {
         try {
             await axios.delete(`http://localhost:8080/api/v1/users/delete/${selectedUserId}`);
             setProducts(users.filter((user) => user.userId !== selectedUserId)); // Remove product from list
-            setShowModal(false);
+            setShowModalUser(false);
         } catch (error) {
             console.error("Error deleting:", error);
+        }
+    };
+
+    const confirmChangePermissions = async () => {
+        try {
+            if(selectedUserRole == "ADMIN")
+            await axios.put(`http://localhost:8080/api/v1/users/remove-admin`, {email: selectedUserEmail});
+            else
+            await axios.put(`http://localhost:8080/api/v1/users/set-admin`, {email: selectedUserEmail});
+            setShowModalAdmin(false);
+            location.reload();
+        } catch (error) {
+            console.error("Error setting permissions:", error);
         }
     };
 
@@ -88,6 +104,12 @@ const NewAdmin = () => {
 
     const handleShowActionsUsers = (i) => {
         setShowActionsUsers(showActionsUsers.map((_, index, arr) => {if(index === i) {if(arr[index] === true) return false; else return true;} else return false}));
+    }
+
+    const handleClickAdmin = (email, role) => {
+        setSelectedUserEmail(email);
+        setSelectedUserRole(role);
+        setShowModalAdmin(true);
     }
 
     return (
@@ -107,6 +129,15 @@ const NewAdmin = () => {
                         <h3>¿Estás seguro de que deseas eliminar este usuario?</h3>
                         <button onClick={confirmDeleteUser} className={styles.confirmButton}>Confirmar</button>
                         <button onClick={() => setShowModalUser(false)} className={styles.cancelButton}>Cancelar</button>
+                    </div>
+                </div>
+            )}
+            {showModalAdmin && (
+                <div className={styles.modalOverlay}>
+                    <div className={styles.modalContent}>
+                        <h3>¿Estás seguro de que deseas cambiar los permisos de este usuario?</h3>
+                        <button onClick={confirmChangePermissions} className={styles.confirmButton}>Confirmar</button>
+                        <button onClick={() => setShowModalAdmin(false)} className={styles.cancelButton}>Cancelar</button>
                     </div>
                 </div>
             )}
@@ -192,7 +223,7 @@ const NewAdmin = () => {
                                     </div>
                                     {showActionsUsers[idx] && <div className={styles.actionsMenuContainer} onClick={() => handleShowActionsUsers(idx)}>
                                         <div className={styles.actionsMenuUser}>
-                                            <span className={styles.action}>Permisos</span>
+                                            <span className={styles.action} onClick={() => handleClickAdmin(user.email, user.userRole)}>Permisos</span>
                                             <span className={styles.action} onClick={() => handleDeleteClickUser(user.userId)}>Eliminar</span>
                                         </div>
                                     </div>}
