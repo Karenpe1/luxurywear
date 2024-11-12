@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import StyleCarrusel from "../styles/carrusel.module.css";
 
 const Carrusel = () => {
@@ -78,12 +79,18 @@ const Carrusel = () => {
       >
         {categorias.map((categoria, idx) => (
           <div key={idx} className={StyleCarrusel.carruselItem}>
-            <img
-              className={StyleCarrusel.imagen}
-              src={categoria.cover.url}
-              alt={categoria.name}
-            />
-            <h3 className={StyleCarrusel.nombreCategoria}>{categoria.name}</h3>
+            <Link
+              to={`/${encodeURIComponent(categoria.name)}`}
+              state={{ categoryDescription: categoria.description }}
+              style={{ textDecoration: 'none' }}
+            >
+              <img
+                className={StyleCarrusel.imagen}
+                src={categoria.cover.url}
+                alt={categoria.name}
+              />
+              <h3 className={StyleCarrusel.nombreCategoria}>{categoria.name}</h3>
+            </Link>
           </div>
         ))}
       </div>

@@ -5,11 +5,14 @@
     text-align: center;
 }
 
-
-
 h1 {
     font-size: 2em;
     margin-bottom: 20px; /* Add space between heading and product cards */
+}
+
+h3 {
+  font-size: 1.5em;
+  margin-bottom: 25px; /* Add space between heading and product cards */
 }
 
 .products {
