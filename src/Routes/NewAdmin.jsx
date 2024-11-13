@@ -167,7 +167,7 @@ const NewAdmin = () => {
                         >
                             Cancelar
                         </button>
-                        <CategoryForm />
+                        <CategoryForm onClose={handleCloseCategoryModal} />
                     </div>
                 </div>
             )}
