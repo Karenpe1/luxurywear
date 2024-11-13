@@ -13,9 +13,17 @@ const Carrusel = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const respuesta = await fetch(url);
-      const data = await respuesta.json();
-      setCategorias([...data, ...data]); // Duplicar los elementos para el loop infinito
+      const response = await fetch(url);
+      const data = await response.json();
+      // Ensure the correct path for the image
+      const formattedData = data.map((category) => ({
+        ...category,
+        cover: {
+          ...category.cover,
+          url: `http://localhost:8080${category.cover.url}`, // Adjust base URL if needed
+        },
+      }));
+      setCategorias([...formattedData, ...formattedData]);
     };
     fetchData();
   }, []);
@@ -86,8 +94,12 @@ const Carrusel = () => {
             >
               <img
                 className={StyleCarrusel.imagen}
-                src={categoria.cover.url}
+                src={categoria?.cover?.url || "placeholder.svg"}
                 alt={categoria.name}
+                onError={(e) => {
+                  e.target.src = "placeholder.svg"; // Fallback image
+                  e.target.onerror = null; // Prevent infinite fallback loop
+                }}
               />
               <h3 className={StyleCarrusel.nombreCategoria}>{categoria.name}</h3>
             </Link>

@@ -1,7 +1,7 @@
 .productListContainer {
     max-width: 3000px; /* Max width for the container */
     margin: 0 auto;
-    padding: 20px;
+
     text-align: center;
 }
 
@@ -10,9 +10,36 @@ h1 {
     margin-bottom: 20px; /* Add space between heading and product cards */
 }
 
+.paginationInfo {
+    font-size: 14px;
+    color: var(--medium-purple);
+    margin: 0.6rem 0;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
 h3 {
-  font-size: 1.5em;
-  margin-bottom: 25px; /* Add space between heading and product cards */
+  font-size: 15px;
+  margin-top: 25px;
+  padding-left: 20px;
+  padding-right: 20px;
+    margin-bottom: 25px; /* Add space between heading and product cards */
+}
+@media (min-width: 600px) and (max-width: 1024px) {
+    h3 {
+        font-size: 20px;
+    }
+    .paginationInfo {
+        font-size: 18px;
+    }
+}
+@media (min-width: 1025px) {
+    h3 {
+        font-size: 24px;
+    }
+    .paginationInfo {
+        font-size: 20px;
+    }
 }
 
 .products {
@@ -20,6 +47,7 @@ h3 {
     gap: 20px;
     /* Grid layout for responsive rows */
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    padding: 0 20px 20px;
 }
 @media(min-width:1024px){
     .products{
@@ -113,7 +141,6 @@ h3 {
     font-weight: 800;
     line-height: 59px;
     letter-spacing: -0.264px;
-    padding-bottom: 1em;
     color: #000;
     text-align: center;
 }

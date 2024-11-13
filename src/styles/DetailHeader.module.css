@@ -1,0 +1,85 @@
+:root {
+    --dark-purple: #231942;
+    --medium-purple: #5E548E;
+    --light-purple: #9F86C0;
+    --pale-purple: #BE95C4;
+    --soft-pink: #E0B1CB;
+    --background-pink: #F3EFFF;
+}
+
+.header {
+    margin-top: 100px;
+    width: 100%;
+    background-color: var(--dark-purple);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    z-index: 2;
+}
+
+.title {
+    font-size: 15px;
+    color: white;
+    text-align: left;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.backButton {
+    font-size: 1rem;
+    color: white;
+    text-decoration: none;
+}
+
+.backButton img {
+    width: 18px;
+    height: auto;
+    transition: width 0.3s ease;
+}
+
+.backButton:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    opacity: 0.9;
+}
+
+/* Mobile Styles - below 600px */
+@media (max-width: 599px) {
+
+    .header {
+        height: 80px;
+        margin-top: 80px;
+    }
+}
+
+@media (min-width: 600px) and (max-width: 1024px) {
+
+    .header {
+        height: 80px;
+        margin-top: 80px;
+    }
+
+    .title {
+        font-size: 24px;
+    }
+
+    .backButton img {
+        width: 20px; /* Medium size for tablets */
+    }
+}
+
+/* Desktop Styles - 1025px and above */
+@media (min-width: 1025px) {
+    .header {
+        height: 100px;
+    }
+
+    .title {
+        font-size: 26px;
+    }
+
+    .backButton img {
+        width: 28px; /* Larger size for desktops */
+    }
+}

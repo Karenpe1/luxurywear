@@ -1,13 +1,14 @@
-import React from "react";
 import StyleInputs from "../styles/inputs.module.css";
 
-const Input = ({label, placeholder, type,value,onChange,error}) => {
+const Input = ({id, label, placeholder, type, name, value, onChange, error }) => {
   return (
     <>
-      <label className={StyleInputs.label}>{label}</label>
+      <label for={id} className={StyleInputs.label}>{label}</label>
       <input
+        id={id}
         className={StyleInputs.input}
         placeholder={placeholder}
+        name={name}
         type={type}
         value={value}
         onChange={onChange}

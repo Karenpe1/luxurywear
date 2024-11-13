@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "../styles/NewAdmin.module.css";
 import { formatCurrency } from "../Utils/currencyFormatter";
 import axiosInstance from "../Utils/axiosInstance";
+import CategoryForm from "../components/CategoryForm";
 
 const NewAdmin = () => {
 
@@ -17,10 +18,11 @@ const NewAdmin = () => {
     const [selectedUserId, setSelectedUserId] = useState(null);
     const [selectedUserEmail, setSelectedUserEmail] = useState(null);
     const [selectedUserRole, setSelectedUserRole] = useState(null);
+    const [showCategoryModal, setShowCategoryModal] = useState(false);
     const axios = axiosInstance();
 
     useEffect(() => {
-        // Llamada a la API para obtener el detalle del producto
+        // Llamada a la API para obtener listado de productos
         const fetchProducts = async () => {
           try {
             const response = await axios.get(`http://localhost:8080/api/v1/products`);
@@ -36,7 +38,7 @@ const NewAdmin = () => {
     }, []);
 
     useEffect(() => {
-        // Llamada a la API para obtener el detalle del producto
+        // Llamada a la API para obtener listado de usuarios
         const fetchUsers = async () => {
           try {
             const response = await axios.get(`http://localhost:8080/api/v1/users`);
@@ -108,6 +110,14 @@ const NewAdmin = () => {
         setTab(tab);
     }
 
+    const handleOpenCategoryModal = () => {
+        setShowCategoryModal(true);
+    };
+
+    const handleCloseCategoryModal = () => {
+        setShowCategoryModal(false);
+    };
+
     const handleShowActions = (i) => {
         setShowActions(showActions.map((_, index, arr) => {if(index === i) {if(arr[index] === true) return false; else return true;} else return false}));
     }
@@ -155,10 +165,33 @@ const NewAdmin = () => {
                 <img className={styles.ohNo} src="ohNo.png"/>
                 <h1>No está disponible para móviles ni tablet</h1>
             </div>
+            {showCategoryModal && (
+                <div className={styles.categoryModalOverlay} onClick={handleCloseCategoryModal}>
+                    <div
+                        className={styles.categoryModalContent}
+                        onClick={(e) => e.stopPropagation()} // Prevent click from closing modal
+                    >
+                        <button
+                            className={styles.categoryModalCancelButton}
+                            onClick={handleCloseCategoryModal}
+                        >
+                            Cancelar
+                        </button>
+                        <CategoryForm onClose={handleCloseCategoryModal} />
+                    </div>
+                </div>
+            )}
             <div className={styles.panel}>
                 <div className={styles.tabs}>
                     <span className={styles.tab} onClick={() => handleSelectTab("Productos")}>Productos</span>
                     <span className={styles.tab} onClick={() => handleSelectTab("Usuarios")}>Usuarios</span>
+                    {/* "Agregar categoría" button */}
+                    <button
+                        className={styles.addCategoryButton}
+                        onClick={handleOpenCategoryModal}
+                    >
+                        Agregar categoría
+                    </button>
                 </div>
                 <div className={styles.titles}>
                     <span className={styles.title}>{tab}</span>

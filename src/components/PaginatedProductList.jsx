@@ -5,11 +5,12 @@ import { formatCurrency } from "../Utils/currencyFormatter";
 import HeartButton from "./HeartButton";
 import Pagination from "./Pagination";
 import useAxios from "../Utils/axiosInstance";
+import DetailHeader from "../Components/DetailHeader";
 
 const PaginatedProductList = ({ pageSize = 6 }) => {
   const { categoryName } = useParams(); // Get categoryName from URL
   const { state } = useLocation(); // Get state from navigation
-  
+
   const navigate = useNavigate();
 
   const categoryDescription = state?.categoryDescription || ""; // Get categoryDescription from state
@@ -19,6 +20,8 @@ const PaginatedProductList = ({ pageSize = 6 }) => {
   const [totalPages, setTotalPages] = useState(0); // Tracks total pages
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
+  const [totalElements, setTotalElements] = useState(0);
+  const [numElements, setNumElements] = useState(0);
   const axios = useAxios();
 
   // Fetch products for the current page
@@ -39,6 +42,8 @@ const PaginatedProductList = ({ pageSize = 6 }) => {
         const data = response.data;
         setProducts(data.content); // Set product data
         setTotalPages(data.totalPages); // Set total pages from response
+        setTotalElements(data.totalElements);
+        setNumElements(data.numberOfElements);
       } catch (err) {
         setError("Error fetching products"); // Set error if request fails
       } finally {
@@ -57,10 +62,24 @@ const PaginatedProductList = ({ pageSize = 6 }) => {
     setCurrentPage(page);
   };
 
+  // Calculate the range of products displayed
+  const startRange = currentPage * pageSize + 1;
+  const endRange = Math.min(startRange + numElements - 1, totalElements);
+
   return (
     <div className={styles.productListContainer}>
-      <h2 className={styles.titulo} style={categoryName ? { paddingTop: 'calc(100px + 20px)' } : {}}>{categoryName || "Nuestros Productos"}</h2>
+      {categoryName ? (
+        <DetailHeader title={categoryName}/>
+      ) : (
+        <h2 className={styles.titulo}>{"Nuestros Productos"}</h2>
+      )}
+
       {categoryDescription && <h3>{categoryDescription}</h3>} {/* Show subtitle only if provided */}
+
+      {/* Display total and current product count */}
+      <p className={styles.paginationInfo}>
+        Mostrando {startRange}-{endRange} de {totalElements} productos {categoryName && "con categoría " + categoryName} (Página {currentPage + 1} de {totalPages})
+      </p>
 
       {/* Loading and Error states */}
       {loading && <p>Loading...</p>}
@@ -74,7 +93,7 @@ const PaginatedProductList = ({ pageSize = 6 }) => {
             className={styles.productCard}
             onClick={() => handleCardClick(product.productId)}
           >
-            <HeartButton className={styles.heart} />
+            <HeartButton className={styles.heart}/>
             <img
               src={`/${product.images[0].url}`}
               alt={product.name}
