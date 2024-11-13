@@ -5,7 +5,7 @@ import { formatCurrency } from "../Utils/currencyFormatter";
 import HeartButton from "./HeartButton";
 import Pagination from "./Pagination";
 import useAxios from "../Utils/axiosInstance";
-import DetailHeader from "../Components/DetailHeader";
+import DetailHeader from "./DetailHeader";
 
 const PaginatedProductList = ({ pageSize = 6 }) => {
   const { categoryName } = useParams(); // Get categoryName from URL
