@@ -1,16 +1,17 @@
 import React from "react";
 import StyleText from "../styles/textArea.module.css";
 
-const TextArea = ({ id, label, placeholder, value, onchange }) => {
+const TextArea = ({ name, id, label, placeholder, value, onchange }) => {
   return (
     <>
       <label className={StyleText.label} For={id}>{label}</label>
       <textarea
       className={StyleText.area}
         id={id}
+        name={name}
         placeholder={placeholder}
         value={value}
-        onChange={onchange}
+        onChange={(e)=> onchange(e)}
       ></textarea>
     </>
   );

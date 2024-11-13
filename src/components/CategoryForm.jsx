@@ -44,6 +44,10 @@ const CategoryForm = () => {
     setCategory({ ...category, [name]: value });
     setError({ ...error, [name]: "" });
   };
+  const handleDescription =(e) => {
+    setCategory({ ...category, description: e.target.value });
+    setError({ ...error, [description]: "" }); // Limpiar el error al cambiar el valor
+  };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -161,7 +165,7 @@ const CategoryForm = () => {
                 navigate("/admin");
               }
             }}
-          />
+          />  
         ) : (
           <div className={styles.formulario}>
             <h2>Crear Categoría</h2>
@@ -178,9 +182,10 @@ const CategoryForm = () => {
               <TextArea
                 label="Descripción *"
                 id="descripcion"
+                name="description"
                 placeholder="Descripción de la categoría"
                 value={category.description}
-                onChange={handleChange}
+                onchange={handleDescription}
               />
 
               {error.description && (
