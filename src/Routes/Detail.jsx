@@ -11,6 +11,7 @@ const Detail = () => {
   const [caracteristicas, setCaracteristicas] = useState(false);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     // Llamada a la API para obtener el detalle del producto
     const fetchProductDetail = async () => {
       try {

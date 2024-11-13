@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import RentaStyle from "../styles/topRentas.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Card from "./Card";
 
 const TopRentas = () => {
   const [topRentas, setTopRentas] = useState([]);
+  const navigate=useNavigate();
   const url = "http://localhost:8080/api/v1/products/top-rents";
 
   useEffect(() => {
@@ -17,27 +18,30 @@ const TopRentas = () => {
     fetchData();
   }, []);
   const puntuacion = [4.8, 4.9, 4.5, 4.7, 4.5, 4.8];
+  const handleCardClick = (productId) => {
+    navigate(`/detail/${productId}`); // Navigate to the detail page with productId
+  };
 
   return (
     <div className={RentaStyle.contenedor}>
       <h2 className={RentaStyle.titulo}>Lo más recomendado</h2>
       <div className={RentaStyle.listaProductos}>
         {/*recorre lista aleatorizada */}
-        {topRentas.map((data, index) => (
-          <div key={data.productId} className={RentaStyle.producto}>
-            <Card image={data.images[0].url} name={data.name} />
-            <div className={RentaStyle.contenedorEstrellas}>
-              <div>
-                <i className={`fas fa-star ${RentaStyle.relleno}`}></i>
-                <i className={`fas fa-star ${RentaStyle.relleno}`}></i>
-                <i className={`fas fa-star ${RentaStyle.relleno}`}></i>
-                <i className={`fas fa-star ${RentaStyle.relleno}`}></i>
-                <i className={`far fa-star ${RentaStyle.sinRelleno}`}></i>
+          {topRentas.map((data, index) => (
+            <div onClick={()=>handleCardClick(data.productId)} key={data.productId} className={RentaStyle.producto}>
+              <Card image={data.images[0].url} name={data.name} />
+              <div className={RentaStyle.contenedorEstrellas}>
+                <div>
+                  <i className={`fas fa-star ${RentaStyle.relleno}`}></i>
+                  <i className={`fas fa-star ${RentaStyle.relleno}`}></i>
+                  <i className={`fas fa-star ${RentaStyle.relleno}`}></i>
+                  <i className={`fas fa-star ${RentaStyle.relleno}`}></i>
+                  <i className={`far fa-star ${RentaStyle.sinRelleno}`}></i>
+                </div>
+                <div className={RentaStyle.puntuacion}>{puntuacion[index]}</div>
               </div>
-              <div className={RentaStyle.puntuacion}>{puntuacion[index]}</div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
     </div>
   );
