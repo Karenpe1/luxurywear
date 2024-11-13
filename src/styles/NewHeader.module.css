@@ -1,6 +1,6 @@
 .container {
     height: 80px;
-    width: 100%;
+    width: 100vw;
     position: fixed;
     top: 0;
     left: 0;
@@ -8,13 +8,13 @@
     background-color: white;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 10px;
 }
 
 .logo {
     width: 76px;
     height: 44px;
-    margin-right: calc(100vw - 100px - 40px);
 }
 
 .links {
@@ -45,6 +45,8 @@
 .menuHeader {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    width: calc(100vw - 30px);
 }
 
 .rightSection {

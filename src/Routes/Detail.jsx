@@ -77,7 +77,7 @@ const Detail = () => {
               <p className={styles.titleHeader}>Caracteristicas</p>
               <span
                 className={`${styles.arrow} ${
-                  caracteristicas ? styles.open : ""
+                  caracteristicas ? "" : styles.open 
                 }`}
               >
                 <img src="/Right.svg" alt="" />

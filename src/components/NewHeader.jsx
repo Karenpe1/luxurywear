@@ -12,7 +12,7 @@ const NewHeader = () => {
   const currentPath = location.pathname;
 
   const handleHamburger = () => {
-    setIsOpen(!isOpen);
+    setIsOpen(false);
   };
 
   return (
@@ -27,21 +27,21 @@ const NewHeader = () => {
             {user ? (
               <>
                 {( user.role === "ADMIN" && currentPath !== "/admin" ) && (
-                  <Link to="/admin" className={styles.navButton}>
+                  <Link to="/admin" className={styles.navButton} onClick={handleHamburger}>
                     <i className="fas fa-user-shield"></i> Panel Administrador
                   </Link>
                 )}
                 {/* Aqui deberia ir el avatar */}
-                <div onClick={logoutUser} className={styles.navButton}>
+                <div onClick={() => {logoutUser(); handleHamburger();}} className={styles.navButton}>
                   <i className="fas fa-sign-out-alt"></i> Cerrar sesión
                 </div>
               </>
             ) : (
               <>
-                <Link to="/register" className={styles.navButton}>
+                <Link to="/register" className={styles.navButton} onClick={handleHamburger}>
                   <i className="fas fa-user-plus"></i> Crear cuenta
                 </Link>
-                <Link to="/login" className={styles.navButton}>
+                <Link to="/login" className={styles.navButton} onClick={handleHamburger}>
                   <i className="fas fa-sign-in-alt"></i> Iniciar sesión
                 </Link>
               </>
@@ -49,7 +49,7 @@ const NewHeader = () => {
           </div>
         </div>
       )}
-      <a href="/"><img className={styles.logo} src="/logo.png" alt="App Logo" /></a>
+      <a href="/" onClick={handleHamburger}><img className={styles.logo} src="/logo.png" alt="App Logo" /></a>
 
       <div className={styles.links}>
         <span>Nosotros</span>
@@ -83,7 +83,7 @@ const NewHeader = () => {
         className={styles.hamburger}
         src="/menu.png"
         alt="Menu"
-        onClick={handleHamburger}
+        onClick={() => setIsOpen(true)}
       />
     </div>
   );
