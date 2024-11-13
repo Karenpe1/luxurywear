@@ -13,9 +13,17 @@ const Carrusel = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const respuesta = await fetch(url);
-      const data = await respuesta.json();
-      setCategorias([...data, ...data]); // Duplicar los elementos para el loop infinito
+      const response = await fetch(url);
+      const data = await response.json();
+      // Ensure the correct path for the image
+      const formattedData = data.map((category) => ({
+        ...category,
+        cover: {
+          ...category.cover,
+          url: `http://localhost:8080${category.cover.url}`, // Adjust base URL if needed
+        },
+      }));
+      setCategorias([...formattedData, ...formattedData]);
     };
     fetchData();
   }, []);
