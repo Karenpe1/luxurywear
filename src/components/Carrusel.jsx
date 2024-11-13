@@ -86,8 +86,12 @@ const Carrusel = () => {
             >
               <img
                 className={StyleCarrusel.imagen}
-                src={categoria.cover.url}
+                src={categoria?.cover?.url || "placeholder.svg"}
                 alt={categoria.name}
+                onError={(e) => {
+                  e.target.src = "placeholder.svg"; // Fallback image
+                  e.target.onerror = null; // Prevent infinite fallback loop
+                }}
               />
               <h3 className={StyleCarrusel.nombreCategoria}>{categoria.name}</h3>
             </Link>
