@@ -190,6 +190,7 @@ const Register = () => {
             <h2>Registro de cuenta</h2>
             <form onSubmit={handdleSubmit} className={StyleRegistro.registro}>
               <Input
+                id="nombre"
                 label="Nombre"
                 placeholder="Ingresa tu nombre"
                 type="text"
@@ -199,6 +200,7 @@ const Register = () => {
               />
 
               <Input
+                id="apellidos"
                 label="Apellido"
                 placeholder="Ingresa tu Apellido"
                 type="text"
@@ -208,7 +210,9 @@ const Register = () => {
               />
 
               <Input
+              
                 label="Correo Eléctronico"
+                id="correo"
                 placeholder="Ingresa tu correo electronico"
                 type="email"
                 value={user.correo}
@@ -218,6 +222,7 @@ const Register = () => {
 
               <Input
                 label="Contraseña"
+                id="contraseña"
                 placeholder="Ingresa tu contraseña"
                 type="password"
                 value={user.contraseña}
@@ -227,6 +232,7 @@ const Register = () => {
 
               <Input
                 label="Repetir Contraseña"
+                id="repetir"
                 placeholder="Ingresa nuevamente tu contraseña"
                 type="password"
                 value={user.contraseñaRepetida}

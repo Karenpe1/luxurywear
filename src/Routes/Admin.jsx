@@ -71,21 +71,21 @@ const Admin = () => {
             <div className={styles.container}>
                 <div className={styles.sidebar} id="sidebar">
                     <div className={styles.sidebarHeader}>
-                        <img className={styles.sidebarIcon} src="backArrowPurple.png" onClick={hideSidebar} id="backArrow" />
-                        <img className={styles.sidebarIcon} src="lens.svg" id="lens" />
+                        <img className={styles.sidebarIcon} src="/backArrowPurple.png" onClick={hideSidebar} id="backArrow" />
+                        <img className={styles.sidebarIcon} src="/lens.svg" id="lens" />
                     </div>
                     <div className={styles.sidebarBody} id="sidebarBody">
-                        <SidebarButton icon="apps.png" title="Agregar" />
+                        <SidebarButton icon="/apps.png" title="Agregar" />
                         <ul className={styles.list}>
                             <li>Producto</li>
                             <li>Categoría</li>
                         </ul>
-                        <SidebarButton icon="appsList.svg" title="Listar" />
+                        <SidebarButton icon="/appsList.svg" title="Listar" />
                         <ul className={styles.list}>
                             <li>Productos</li>
                             <li>Categorías</li>
                         </ul>
-                        <SidebarButton icon="client.svg" title="Cliente" />
+                        <SidebarButton icon="/client.svg" title="Cliente" />
                         <ul className={styles.list}>
                             <li>Satisfacción</li>
                             <li>Reclamos</li>
@@ -119,8 +119,8 @@ const Admin = () => {
                                 <td><img className={styles.prodImage} src={product.images[0].url} /></td>
                                 <td>
                                     <div className={styles.actions}>
-                                        <img className={styles.action} src="pencil.png" />
-                                        <img className={styles.action} src="trash-can.png" onClick={() => handleDeleteClick(product.productId)} />
+                                        <img className={styles.action} src="/pencil.png" />
+                                        <img className={styles.action} src="/trash-can.png" onClick={() => handleDeleteClick(product.productId)} />
                                     </div>
                                 </td>
                             </tr>

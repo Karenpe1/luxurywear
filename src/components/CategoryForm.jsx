@@ -6,6 +6,7 @@ import Button from "../components/Button";
 import Modal from "../components/Modal";
 import useAxios from "../Utils/axiosInstance";
 import { v4 as uuidv4 } from "uuid";
+import TextArea from "./TextArea";
 
 const CategoryForm = () => {
   const [category, setCategory] = useState({
@@ -33,7 +34,10 @@ const CategoryForm = () => {
   const noNumbersRegex = /^[^\d]*$/;
 
   const toUrlFriendlyString = (str) =>
-    str.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+    str
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,7 +54,8 @@ const CategoryForm = () => {
       if (!validExtensions.includes(fileExtension)) {
         setError({
           ...error,
-          imageFile: "El archivo debe ser una imagen en formato .jpg, .jpeg o .png.",
+          imageFile:
+            "El archivo debe ser una imagen en formato .jpg, .jpeg o .png.",
         });
         return;
       }
@@ -65,7 +70,10 @@ const CategoryForm = () => {
     let errors = {};
     let formIsValid = true;
 
-    if (!noNumbersRegex.test(category.name) || category.name.trim().length < 3) {
+    if (
+      !noNumbersRegex.test(category.name) ||
+      category.name.trim().length < 3
+    ) {
       errors.name = "El nombre debe ser válido y tener al menos 3 caracteres.";
       formIsValid = false;
     }
@@ -85,7 +93,9 @@ const CategoryForm = () => {
     if (formIsValid) {
       const uniqueIdentifier = uuidv4();
       const fileExtension = category.imageFile.name.split(".").pop();
-      const fileName = `${toUrlFriendlyString(category.name)}__${uniqueIdentifier}.${fileExtension}`;
+      const fileName = `${toUrlFriendlyString(
+        category.name
+      )}__${uniqueIdentifier}.${fileExtension}`;
       const fileUrl = `/public/img/categories/${fileName}`;
 
       const body = {
@@ -96,12 +106,12 @@ const CategoryForm = () => {
         },
       };
 
-/*      const formData = new FormData();
+      /*      const formData = new FormData();
       formData.append("file", category.imageFile, fileName);*/
 
       try {
         // Upload the image
-/*        await axios.post("/api/v1/upload", formData, {
+        /*        await axios.post("/api/v1/upload", formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
@@ -157,7 +167,7 @@ const CategoryForm = () => {
             <h2>Crear Categoría</h2>
             <form onSubmit={handleSubmit} className={styles.registro}>
               <Input
-                label="Nombre"
+                label="Nombre *"
                 placeholder="Nombre de la categoría"
                 type="text"
                 name="name"
@@ -165,27 +175,29 @@ const CategoryForm = () => {
                 onChange={handleChange}
                 error={error.name}
               />
+              <TextArea
+                label="Descripción *"
+                id="descripcion"
+                placeholder="Descripción de la categoría"
+                value={category.description}
+                onChange={handleChange}
+              />
 
-              <label>
-                Descripción
-                <textarea
-                  className={styles.textarea}
-                  name="description"
-                  placeholder="Descripción de la categoría"
-                  value={category.description}
-                  onChange={handleChange}
-                />
-                {error.description && <span className={styles.error}>{error.description}</span>}
-              </label>
+              {error.description && (
+                <span className={styles.error}>{error.description}</span>
+              )}
 
-              <label>
-                Imagen
+              <label className={styles.label}>
+                Imagen *
                 <input
+                  className={styles.archivo}
                   type="file"
                   accept=".jpg,.jpeg,.png"
                   onChange={handleFileChange}
                 />
-                {error.imageFile && <span className={styles.error}>{error.imageFile}</span>}
+                {error.imageFile && (
+                  <span className={styles.error}>{error.imageFile}</span>
+                )}
               </label>
 
               <Button>Crear</Button>
