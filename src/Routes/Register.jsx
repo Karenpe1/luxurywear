@@ -210,7 +210,7 @@ const Register = () => {
               <Input
                 label="Correo Eléctronico"
                 placeholder="Ingresa tu correo electronico"
-                type="email"
+                type="text"
                 value={user.correo}
                 onChange={handleCorreo}
                 error={error.correo}
