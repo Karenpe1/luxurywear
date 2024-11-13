@@ -18,6 +18,7 @@ const NewAdmin = () => {
     const [selectedUserId, setSelectedUserId] = useState(null);
     const [selectedUserEmail, setSelectedUserEmail] = useState(null);
     const [selectedUserRole, setSelectedUserRole] = useState(null);
+    const [showCategoryModal, setShowCategoryModal] = useState(false);
     const axios = axiosInstance();
 
     useEffect(() => {
@@ -99,6 +100,14 @@ const NewAdmin = () => {
         setTab(tab);
     }
 
+    const handleOpenCategoryModal = () => {
+        setShowCategoryModal(true);
+    };
+
+    const handleCloseCategoryModal = () => {
+        setShowCategoryModal(false);
+    };
+
     const handleShowActions = (i) => {
         setShowActions(showActions.map((_, index, arr) => {if(index === i) {if(arr[index] === true) return false; else return true;} else return false}));
     }
@@ -146,11 +155,33 @@ const NewAdmin = () => {
                 <img className={styles.ohNo} src="ohNo.png"/>
                 <h1>No está disponible para móviles ni tablet</h1>
             </div>
-            <CategoryForm />
+            {showCategoryModal && (
+                <div className={styles.categoryModalOverlay} onClick={handleCloseCategoryModal}>
+                    <div
+                        className={styles.categoryModalContent}
+                        onClick={(e) => e.stopPropagation()} // Prevent click from closing modal
+                    >
+                        <button
+                            className={styles.categoryModalCancelButton}
+                            onClick={handleCloseCategoryModal}
+                        >
+                            Cancelar
+                        </button>
+                        <CategoryForm />
+                    </div>
+                </div>
+            )}
             <div className={styles.panel}>
                 <div className={styles.tabs}>
                     <span className={styles.tab} onClick={() => handleSelectTab("Productos")}>Productos</span>
                     <span className={styles.tab} onClick={() => handleSelectTab("Usuarios")}>Usuarios</span>
+                    {/* "Agregar categoría" button */}
+                    <button
+                        className={styles.addCategoryButton}
+                        onClick={handleOpenCategoryModal}
+                    >
+                        Agregar categoría
+                    </button>
                 </div>
                 <div className={styles.titles}>
                     <span className={styles.title}>{tab}</span>
