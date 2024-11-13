@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "../styles/NewAdmin.module.css";
 import { formatCurrency } from "../Utils/currencyFormatter";
 import axiosInstance from "../Utils/axiosInstance";
+import CategoryForm from "../components/CategoryForm";
 
 const NewAdmin = () => {
 
@@ -20,7 +21,7 @@ const NewAdmin = () => {
     const axios = axiosInstance();
 
     useEffect(() => {
-        // Llamada a la API para obtener el detalle del producto
+        // Llamada a la API para obtener listado de productos
         const fetchProducts = async () => {
           try {
             const response = await axios.get(`http://localhost:8080/api/v1/products`);
@@ -36,7 +37,7 @@ const NewAdmin = () => {
     }, []);
 
     useEffect(() => {
-        // Llamada a la API para obtener el detalle del producto
+        // Llamada a la API para obtener listado de usuarios
         const fetchUsers = async () => {
           try {
             const response = await axios.get(`http://localhost:8080/api/v1/users`);
@@ -145,6 +146,7 @@ const NewAdmin = () => {
                 <img className={styles.ohNo} src="ohNo.png"/>
                 <h1>No está disponible para móviles ni tablet</h1>
             </div>
+            <CategoryForm />
             <div className={styles.panel}>
                 <div className={styles.tabs}>
                     <span className={styles.tab} onClick={() => handleSelectTab("Productos")}>Productos</span>
