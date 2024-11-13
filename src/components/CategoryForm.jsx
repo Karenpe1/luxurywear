@@ -96,16 +96,16 @@ const CategoryForm = () => {
         },
       };
 
-      const formData = new FormData();
-      formData.append("file", category.imageFile, fileName);
+/*      const formData = new FormData();
+      formData.append("file", category.imageFile, fileName);*/
 
       try {
         // Upload the image
-        await axios.post("/api/v1/upload", formData, {
+/*        await axios.post("/api/v1/upload", formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
-        });
+        });*/
 
         // Submit the category
         const response = await axios.post("/api/v1/categories", body, {
