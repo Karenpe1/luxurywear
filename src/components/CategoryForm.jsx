@@ -1,6 +1,5 @@
 import { useState } from "react";
 import styles from "../styles/CategoryForm.module.css";
-import { Link, useNavigate } from "react-router-dom";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import Modal from "../components/Modal";
@@ -8,7 +7,7 @@ import useAxios from "../Utils/axiosInstance";
 import { v4 as uuidv4 } from "uuid";
 import TextArea from "./TextArea";
 
-const CategoryForm = () => {
+const CategoryForm = ({ onClose }) => {
   const [category, setCategory] = useState({
     name: "",
     description: "",
@@ -29,7 +28,6 @@ const CategoryForm = () => {
     img: "",
   });
 
-  const navigate = useNavigate();
   const axios = useAxios();
   const noNumbersRegex = /^[^\d]*$/;
 
@@ -44,6 +42,7 @@ const CategoryForm = () => {
     setCategory({ ...category, [name]: value });
     setError({ ...error, [name]: "" });
   };
+
   const handleDescription =(e) => {
     setCategory({ ...category, description: e.target.value });
     setError({ ...error, [description]: "" }); // Limpiar el error al cambiar el valor
@@ -52,14 +51,14 @@ const CategoryForm = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const validExtensions = ["jpg", "jpeg", "png"];
+      const validExtensions = ["jpg", "jpeg", "png", "webp", "gif", "svg"];
       const fileExtension = file.name.split(".").pop().toLowerCase();
 
       if (!validExtensions.includes(fileExtension)) {
         setError({
           ...error,
           imageFile:
-            "El archivo debe ser una imagen en formato .jpg, .jpeg o .png.",
+            "El archivo debe ser una imagen en formato .jpg, .jpeg, .png, .webp, .svg o .gif.",
         });
         return;
       }
@@ -110,16 +109,18 @@ const CategoryForm = () => {
         },
       };
 
-      /*      const formData = new FormData();
-      formData.append("file", category.imageFile, fileName);*/
+      const formData = new FormData();
+      formData.append("file", category.imageFile);
+      // formData.append("name", category.name.trim());
+      formData.append("name", fileName);
 
       try {
         // Upload the image
-        /*        await axios.post("/api/v1/upload", formData, {
+        await axios.post("/api/v1/categories/upload", formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
-        });*/
+        });
 
         // Submit the category
         const response = await axios.post("/api/v1/categories", body, {
@@ -144,10 +145,28 @@ const CategoryForm = () => {
           titulo: "Error",
           subtitulo: "Ocurrió un problema.",
           mensaje: "No se pudo agregar la categoría. Intenta nuevamente.",
-          img: "./error.png",
+          img: "./ohNo.png",
         });
       }
     }
+  };
+
+  const handleSuccessClose = () => {
+    // Reset form fields
+    setCategory({
+      name: "",
+      description: "",
+      imageFile: null,
+    });
+    setError({
+      name: "",
+      description: "",
+      imageFile: "",
+    });
+
+    // Close the modal
+    setModalInfo({ ...modalInfo, show: false });
+    if (onClose) onClose(); // Notify parent to close the modal
   };
 
   return (
@@ -159,12 +178,7 @@ const CategoryForm = () => {
             titulo={modalInfo.titulo}
             subtitulo={modalInfo.subtitulo}
             mensaje={modalInfo.mensaje}
-            onClose={() => {
-              setModalInfo({ ...modalInfo, show: false });
-              if (modalInfo.titulo === "¡Felicidades!") {
-                navigate("/admin");
-              }
-            }}
+            onClose={handleSuccessClose}
           />  
         ) : (
           <div className={styles.formulario}>
@@ -205,7 +219,7 @@ const CategoryForm = () => {
                 )}
               </label>
 
-              <Button>Crear</Button>
+              <Button>Crear Categoría</Button>
             </form>
           </div>
         )}
