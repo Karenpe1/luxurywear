@@ -171,13 +171,7 @@ const NewAdmin = () => {
                         className={styles.categoryModalContent}
                         onClick={(e) => e.stopPropagation()} // Prevent click from closing modal
                     >
-                        <button
-                            className={styles.categoryModalCancelButton}
-                            onClick={handleCloseCategoryModal}
-                        >
-                            Cancelar
-                        </button>
-                        <CategoryForm onClose={handleCloseCategoryModal} />
+                        <CategoryForm  onClose={handleCloseCategoryModal} clase={styles.categoryModalCancelButton} />
                     </div>
                 </div>
             )}

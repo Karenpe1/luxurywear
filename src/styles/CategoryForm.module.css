@@ -95,21 +95,3 @@
       font-size: 16px;
   }
 }
-.label{
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  align-self: stretch;
-}
-@media(min-width:700px){
-  .label{
-      font-size: 15px;
-  }
-}
-.archivo{
-  padding: 1em 0em;
-}
-.error{
-    color: red;
-    font-size: 1em;
-}

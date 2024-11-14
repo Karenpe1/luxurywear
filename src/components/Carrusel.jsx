@@ -4,6 +4,7 @@ import StyleCarrusel from "../styles/carrusel.module.css";
 
 const Carrusel = () => {
   const [categorias, setCategorias] = useState([]);
+  const [numBotones, setNumBotones] = useState([])
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(true);
   const carruselRef = useRef();
@@ -24,6 +25,7 @@ const Carrusel = () => {
         },
       }));
       setCategorias([...formattedData, ...formattedData]);
+      setNumBotones(data)
     };
     fetchData();
   }, []);
@@ -75,6 +77,7 @@ const Carrusel = () => {
     updateCarrusel(index);
   };
 
+
   return (
     <div className={StyleCarrusel.containerCarrusel}>
       <div
@@ -108,7 +111,7 @@ const Carrusel = () => {
       </div>
       <div className={StyleCarrusel.indicadores}>
         {window.innerWidth <= 700 ? 
-        (categorias.slice(0,5).map((_, index) => (
+        (numBotones.map((_, index) => (
             <button
               key={index}
               className={`${StyleCarrusel.boton} ${
@@ -119,7 +122,7 @@ const Carrusel = () => {
               onClick={() => handleIndicatorClick(index)}
             ></button>
             ))
-        ):(categorias.slice(0, 4).map((_, index) => (
+        ):(numBotones.slice(0,-1).map((_, index) => (
           <button
             key={index}
             className={`${StyleCarrusel.boton} ${

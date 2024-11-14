@@ -6,8 +6,9 @@ import Modal from "../components/Modal";
 import useAxios from "../Utils/axiosInstance";
 import { v4 as uuidv4 } from "uuid";
 import TextArea from "./TextArea";
+import FilePicker from "./FilePicker";
 
-const CategoryForm = ({ onClose }) => {
+const CategoryForm = ({ onClose, clase }) => {
   const [category, setCategory] = useState({
     name: "",
     description: "",
@@ -43,7 +44,7 @@ const CategoryForm = ({ onClose }) => {
     setError({ ...error, [name]: "" });
   };
 
-  const handleDescription =(e) => {
+  const handleDescription = (e) => {
     setCategory({ ...category, description: e.target.value });
     setError({ ...error, [description]: "" }); // Limpiar el error al cambiar el valor
   };
@@ -117,9 +118,9 @@ const CategoryForm = ({ onClose }) => {
       try {
         // Upload the image
         await axios.post("/api/v1/categories/upload", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         });
 
         // Submit the category
@@ -179,7 +180,7 @@ const CategoryForm = ({ onClose }) => {
             subtitulo={modalInfo.subtitulo}
             mensaje={modalInfo.mensaje}
             onClose={handleSuccessClose}
-          />  
+          />
         ) : (
           <div className={styles.formulario}>
             <h2>Crear Categoría</h2>
@@ -200,26 +201,22 @@ const CategoryForm = ({ onClose }) => {
                 placeholder="Descripción de la categoría"
                 value={category.description}
                 onchange={handleDescription}
+                error={error.description}
               />
 
-              {error.description && (
-                <span className={styles.error}>{error.description}</span>
-              )}
-
-              <label className={styles.label}>
-                Imagen *
-                <input
-                  className={styles.archivo}
-                  type="file"
-                  accept=".jpg,.jpeg,.png"
-                  onChange={handleFileChange}
-                />
-                {error.imageFile && (
-                  <span className={styles.error}>{error.imageFile}</span>
-                )}
-              </label>
+              <FilePicker
+                label="imagen *"
+                type="file"
+                accept=".jpg,.jpeg,.png"
+                cambio={handleFileChange}
+                error={error.imageFile}
+                archivos={1}
+              />
 
               <Button>Crear Categoría</Button>
+              <button onClick={onClose} className={clase}>
+                Cancelar
+              </button>
             </form>
           </div>
         )}

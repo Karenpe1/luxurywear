@@ -1,7 +1,7 @@
 import React from "react";
 import StyleText from "../styles/textArea.module.css";
 
-const TextArea = ({ name, id, label, placeholder, value, onchange }) => {
+const TextArea = ({ error, name, id, label, placeholder, value, onchange }) => {
   return (
     <>
       <label className={StyleText.label} For={id}>{label}</label>
@@ -13,6 +13,9 @@ const TextArea = ({ name, id, label, placeholder, value, onchange }) => {
         value={value}
         onChange={(e)=> onchange(e)}
       ></textarea>
+      {error && (
+                <span className={StyleText.error}>{error}</span>
+              )}
     </>
   );
 };

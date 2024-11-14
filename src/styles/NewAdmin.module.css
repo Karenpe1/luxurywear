@@ -239,13 +239,9 @@
 
 /* Cancel Button */
 .categoryModalCancelButton {
-    position: absolute;
-    top: 571px;
-    right: 80px;
     border: none;
     padding: 10px 20px;
-    margin: 10px;
-    width: 420px;
+    width: 100%;
     height: 48px;
     text-align: center;
     cursor: pointer;
