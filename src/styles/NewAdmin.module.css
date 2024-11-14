@@ -198,13 +198,19 @@
   .cancelButton {
     background-color: #F3EFFF;
     color: rgb(0, 0, 0);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
   }
 
   /* Hover effect for confirm and cancel buttons */
-  .confirmButton:hover, .cancelButton:hover, .action:hover, .backButton:hover, .categoryModalCancelButton:hover {
+ .action:hover, .backButton:hover {
     transform: scale(1.05); /* Slightly enlarge button */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow for a lifted effect */
     opacity: 0.9; /* Slight transparency for a soft effect */
+  }
+.confirmButton:hover{
+    background-color: #b5a0f9;
+  }
+.cancelButton:hover,   .categoryModalCancelButton:hover{
+    background-color:#e3e1e9 ;
   }
 
 /* Modal Overlay */
