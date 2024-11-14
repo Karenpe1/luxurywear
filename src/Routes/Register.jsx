@@ -138,7 +138,7 @@ const Register = () => {
           `Ocurrió un error inesperado (Código: ${response.status}).`;
         setModalInfo({
           show: true,
-          img: "./error.png",
+          img: "./ohNo.png",
           titulo: "Error",
           subtitulo: "Ha ocurrido un problema.",
           mensaje: message,
@@ -156,7 +156,7 @@ const Register = () => {
         subtitulo: "Hubo un problema con la conexión.",
         mensaje:
           "Por favor, verifica tu conexión a Internet e intenta nuevamente.",
-        img: "./error.png",
+        img: "./ohNo.png",
       });
       console.error("Error al realizar el registro:", err);
     }

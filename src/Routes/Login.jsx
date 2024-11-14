@@ -62,7 +62,7 @@ function Login() {
         setModalInfo({
           show: true,
           mensaje: "Por favor, verifica tu conexión a Internet e intenta nuevamente.",
-          img: "./error.png"
+          img: "./ohNo.png"
         });
         console.error("Error al iniciar sesión:", error);
       }
