@@ -4,7 +4,7 @@ import { formatCurrency } from "../Utils/currencyFormatter";
 import axiosInstance from "../Utils/axiosInstance";
 import CategoryForm from "../components/CategoryForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUsers, faList,faLayerGroup,faUserTie } from "@fortawesome/free-solid-svg-icons";
+import { faUsers, faList,faLayerGroup,faUserTie,faInbox } from "@fortawesome/free-solid-svg-icons";
 
 
 const NewAdmin = () => {
@@ -138,9 +138,8 @@ const NewAdmin = () => {
     return (
         <div className={styles.container}>
             <div className={styles.menu}>
-                <h2>Panel Admin</h2>
-                <hr />
-                <span className={styles.tab} onClick={() => handleSelectTab("Admin")}> <FontAwesomeIcon icon={faUserTie} /> Admin</span>
+                <h2 className={styles.titlePanel}><FontAwesomeIcon icon={faInbox} />Panel Admin</h2>
+                <span className={styles.tab} onClick={() => handleSelectTab("Admin")}> <FontAwesomeIcon icon={faUserTie}  /> Admin</span>
                 <span className={styles.tab} onClick={() => handleSelectTab("Productos")}> <FontAwesomeIcon icon={faList} />Productos</span>
                 <span className={styles.tab} onClick={() => handleSelectTab("Usuarios")}> <FontAwesomeIcon icon={faUsers} /> Usuarios</span>
                 <span className={styles.tab} onClick={() => handleSelectTab("Categoria")}><FontAwesomeIcon icon={faLayerGroup} /> Categorias</span>
