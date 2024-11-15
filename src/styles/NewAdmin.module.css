@@ -1,5 +1,13 @@
 .container {
-    margin-top: 66px;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+}
+.menu{
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid black;
 }
 
 .notAvailable {
@@ -30,7 +38,7 @@
 @media (min-width: 1025px) {
 
     .container {
-      margin-top: calc(120px);
+      margin-top: calc(100px);
     }
 
     .notAvailable {
@@ -41,18 +49,8 @@
         display: flex;
         flex-direction: column;
         background-color: white;
-        padding: 20px;
-    }
-
-    .tabs {
-        background-color: #f4f4f4;
-        width: 212px;
-        display: flex;
-        gap: 10px;
-        height: 50px;
-        padding: 5px 10px;
-        border-radius: 5px;
-        margin-bottom: 20px;
+        width: 80%;
+        padding: 2em;
     }
 
     .tab {
@@ -257,7 +255,7 @@
     background: #231942;
     color: white;
     border: none;
-    width: 100%;
+    width: 10%;
     padding: 8px 20px;
     text-align: center;
     font-size: 14px;
