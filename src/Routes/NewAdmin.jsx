@@ -8,19 +8,22 @@ import { faUsers, faList,faLayerGroup,faUserTie,faInbox } from "@fortawesome/fre
 
 
 const NewAdmin = () => {
-
     const [tab, setTab] = useState("Productos");
     const [products, setProducts] = useState([]);
     const [users, setUsers] = useState([]);
+    const [categories, setCategories] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [showModalUser, setShowModalUser] = useState(false);
     const [showModalAdmin, setShowModalAdmin] = useState(false);
+    const [showModalCategory, setShowModalCategory] = useState(false);
     const [showActions, setShowActions] = useState([]);
     const [showActionsUsers, setShowActionsUsers] = useState([]);
+    const [showActionsCategories, setShowActionsCategories] = useState([]);
     const [selectedProductId, setSelectedProductId] = useState(null);
     const [selectedUserId, setSelectedUserId] = useState(null);
     const [selectedUserEmail, setSelectedUserEmail] = useState(null);
     const [selectedUserRole, setSelectedUserRole] = useState(null);
+    const [selectedCategoryId, setSelectedCategoryId] = useState(null);
     const [showCategoryModal, setShowCategoryModal] = useState(false);
     const axios = axiosInstance();
 
@@ -56,6 +59,29 @@ const NewAdmin = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    useEffect(() => {
+      // Llamada a la API para obtener listado de categorias
+      const fetchCategories = async () => {
+        try {
+          const response = await axios.get(`http://localhost:8080/api/v1/categories`);
+          const data = await response.data;
+          const formattedData = data.map(category => ({
+            ...category,
+              cover: {
+              ...category.cover,
+                url: `http://localhost:8080${category.cover.url}`,
+            },
+          }));
+          setCategories(formattedData);
+          setShowActionsCategories(data.map(() => false));
+        } catch (error) {
+          console.error("Error fetching products:", error);
+        }
+      };
+      fetchCategories();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const handleDeleteClick = (id) => {
         setSelectedProductId(id);
         setShowModal(true);
@@ -64,6 +90,11 @@ const NewAdmin = () => {
     const handleDeleteClickUser = (id) => {
         setSelectedUserId(id);
         setShowModalUser(true);
+    };
+
+    const handleDeleteClickCategory = (id) => {
+      setSelectedCategoryId(id);
+      setShowModalCategory(true);
     };
 
     const confirmDelete = async () => {
@@ -109,6 +140,16 @@ const NewAdmin = () => {
         }
     };
 
+    const confirmDeleteCategory = async () => {
+      try {
+        await axios.delete(`http://localhost:8080/api/v1/categories/delete-category/${selectedCategoryId}`);
+        setCategories(categories.filter((category) => category.id !== selectedCategoryId)); // Remove product from list
+        setShowModalCategory(false);
+      } catch (error) {
+        console.error("Error deleting category:", error);
+      }
+    };
+
     const handleSelectTab = (tab) => {
         setTab(tab);
     }
@@ -122,12 +163,16 @@ const NewAdmin = () => {
     };
 
     const handleShowActions = (i) => {
-        setShowActions(showActions.map((_, index, arr) => {if(index === i) {if(arr[index] === true) return false; else return true;} else return false}));
+        setShowActions(showActions.map((_, index, arr) => {if(index === i) {return arr[index] !== true;} else return false}));
     }
 
     const handleShowActionsUsers = (i) => {
-        setShowActionsUsers(showActionsUsers.map((_, index, arr) => {if(index === i) {if(arr[index] === true) return false; else return true;} else return false}));
+        setShowActionsUsers(showActionsUsers.map((_, index, arr) => {if(index === i) {return arr[index] !== true;} else return false}));
     }
+
+  const handleShowActionsCategories = (i) => {
+    setShowActionsCategories(showActionsCategories.map((_, index, arr) => {if(index === i) {return arr[index] !== true;} else return false}));
+  }
 
     const handleClickAdmin = (email, role) => {
         setSelectedUserEmail(email);
@@ -139,10 +184,10 @@ const NewAdmin = () => {
         <div className={styles.container}>
             <div className={styles.menu}>
                 <h2 className={styles.titlePanel}><FontAwesomeIcon icon={faInbox} />Panel Admin</h2>
-                <span className={styles.tab} onClick={() => handleSelectTab("Admin")}> <FontAwesomeIcon icon={faUserTie}  /> Admin</span>
-                <span className={styles.tab} onClick={() => handleSelectTab("Productos")}> <FontAwesomeIcon icon={faList} />Productos</span>
-                <span className={styles.tab} onClick={() => handleSelectTab("Usuarios")}> <FontAwesomeIcon icon={faUsers} /> Usuarios</span>
-                <span className={styles.tab} onClick={() => handleSelectTab("Categoria")}><FontAwesomeIcon icon={faLayerGroup} /> Categorias</span>
+                <span className={styles.tab} onClick={() => handleSelectTab("Admin")}><FontAwesomeIcon icon={faUserTie}  /> Admin</span>
+                <span className={styles.tab} onClick={() => handleSelectTab("Productos")}><FontAwesomeIcon icon={faList} />Productos</span>
+                <span className={styles.tab} onClick={() => handleSelectTab("Usuarios")}><FontAwesomeIcon icon={faUsers} /> Usuarios</span>
+                <span className={styles.tab} onClick={() => handleSelectTab("Categorias")}><FontAwesomeIcon icon={faLayerGroup} /> Categorias</span>
             </div>
             {showModal && (
                 <div className={styles.modalOverlay}>
@@ -170,6 +215,15 @@ const NewAdmin = () => {
                         <button onClick={() => setShowModalAdmin(false)} className={styles.cancelButton}>Cancelar</button>
                     </div>
                 </div>
+            )}
+            {showModalCategory && (
+              <div className={styles.modalOverlay}>
+                <div className={styles.modalContent}>
+                  <h3>¿Estás seguro de que deseas eliminar esta categoría?</h3>
+                  <button onClick={confirmDeleteCategory} className={styles.confirmButton}>Confirmar</button>
+                  <button onClick={() => setShowModal(false)} className={styles.cancelButton}>Cancelar</button>
+                </div>
+              </div>
             )}
             <div className={styles.notAvailable}>
                 <img className={styles.ohNo} src="ohNo.png"/>
@@ -199,84 +253,146 @@ const NewAdmin = () => {
                     <span className={styles.title}>{tab}</span>
                     <span className={styles.subtitle}>Administra tus {tab} y su información.</span>
                 </div>
-                {tab == "Productos" ? <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Referencia</th>
-                            <th>Color</th>
-                            <th>Diseñador</th>
-                            <th>Valor</th>
-                            <th>Categoría</th>
-                            <th>Imagen</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {products.map((product, idx) => (
-                            <tr key={product.productId}>
-                                <td>{product.productId}</td>
-                                <td>{product.name}</td>
-                                <td>{product.reference}</td>
-                                <td>{product.color}</td>
-                                <td>{product.designer}</td>
-                                <td>{formatCurrency(product.price, 'es-CO', 'COP')}</td>
-                                <td>{product.categories[0].name}</td>
-                                <td>
-                                    <div className={styles.containerImage}>
-                                        <img className={styles.prodImage} src={product.images[0].url} />
-                                    </div>
-                                </td>
-                                <td className={styles.cell}>
-                                    <div className={styles.actions}>
-                                        <img className={styles.dots} src="dots.png" onClick={() => handleShowActions(idx)}/>
-                                    </div>
-                                    {showActions[idx] && <div className={styles.actionsMenuContainer} onClick={() => handleShowActions(idx)}>
-                                        <div className={styles.actionsMenu}>
-                                            <span className={styles.action}>Editar</span>
-                                            <span className={styles.action} onClick={() => handleDeleteClick(product.productId)}>Eliminar</span>
-                                        </div>
-                                    </div>}
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
+                {tab == "Productos" ?
+                <table>
+                  <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Referencia</th>
+                    <th>Color</th>
+                    <th>Diseñador</th>
+                    <th>Valor</th>
+                    <th>Categoría</th>
+                    <th>Imagen</th>
+                    <th>Acciones</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {products.map((product, idx) => (
+                    <tr key={product.productId}>
+                      <td>{product.productId}</td>
+                      <td>{product.name}</td>
+                      <td>{product.reference}</td>
+                      <td>{product.color}</td>
+                      <td>{product.designer}</td>
+                      <td>{formatCurrency(product.price, 'es-CO', 'COP')}</td>
+                      <td>{product.categories[0]?.name || "Por definir"}</td>
+                      <td>
+                        <div className={styles.containerImage}>
+                          <img className={styles.prodImage} src={product.images[0].url}/>
+                        </div>
+                      </td>
+                      <td className={styles.cell}>
+                        <div className={styles.actions}>
+                          <img className={styles.dots} src="dots.png" onClick={() => handleShowActions(idx)}/>
+                        </div>
+                        {showActions[idx] &&
+                          <div className={styles.actionsMenuContainer} onClick={() => handleShowActions(idx)}>
+                            <div className={styles.actionsMenu}>
+                              <span className={styles.action}>Editar</span>
+                              <span className={styles.action}
+                                    onClick={() => handleDeleteClick(product.productId)}>Eliminar</span>
+                            </div>
+                          </div>}
+                      </td>
+                    </tr>
+                  ))}
+                  </tbody>
                 </table>
-                : <table>
+                : tab == "Usuarios" ?
+                  <table>
                     <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Apellido</th>
-                            <th>Email</th>
-                            <th>Rol</th>
-                            <th>Acciones</th>
-                        </tr>
+                    <tr>
+                      <th>ID</th>
+                      <th>Nombre</th>
+                      <th>Apellido</th>
+                      <th>Email</th>
+                      <th>Rol</th>
+                      <th>Acciones</th>
+                    </tr>
                     </thead>
                     <tbody>
                     {users.map((user, idx) => (
-                            <tr key={user.userId}>
-                                <td>{user.userId}</td>
-                                <td>{user.first_name}</td>
-                                <td>{user.last_name}</td>
-                                <td>{user.email}</td>
-                                <td>{user.userRole}</td>
-                                <td className={styles.cell}>
-                                    <div className={styles.actions}>
-                                        <img className={styles.dots} src="dots.png" onClick={() => handleShowActionsUsers(idx)}/>
-                                    </div>
-                                    {showActionsUsers[idx] && <div className={styles.actionsMenuContainer} onClick={() => handleShowActionsUsers(idx)}>
-                                        <div className={styles.actionsMenuUser}>
-                                            <span className={styles.action} onClick={() => handleClickAdmin(user.email, user.userRole)}>Permisos</span>
-                                            <span className={styles.action} onClick={() => handleDeleteClickUser(user.userId)}>Eliminar</span>
-                                        </div>
-                                    </div>}
-                                </td>
-                            </tr>
-                        ))}
+                      <tr key={user.userId}>
+                        <td>{user.userId}</td>
+                        <td>{user.first_name}</td>
+                        <td>{user.last_name}</td>
+                        <td>{user.email}</td>
+                        <td>{user.userRole}</td>
+                        <td className={styles.cell}>
+                          <div className={styles.actions}>
+                            <img className={styles.dots} src="dots.png" onClick={() => handleShowActionsUsers(idx)}/>
+                          </div>
+                          {showActionsUsers[idx] &&
+                            <div className={styles.actionsMenuContainer} onClick={() => handleShowActionsUsers(idx)}>
+                              <div className={styles.actionsMenuUser}>
+                                <span className={styles.action}
+                                      onClick={() => handleClickAdmin(user.email, user.userRole)}>Permisos</span>
+                                <span className={styles.action}
+                                      onClick={() => handleDeleteClickUser(user.userId)}>Eliminar</span>
+                              </div>
+                            </div>}
+                        </td>
+                      </tr>
+                    ))}
                     </tbody>
-                </table>}
+                  </table>
+                :
+                  <table>
+                    <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Nombre</th>
+                      <th>Descripción</th>
+                      <th>Imagen</th>
+                      <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {categories.map((category, idx) => (
+                      <tr key={category.id}>
+                        <td>{category.id}</td>
+                        <td>{category.name}</td>
+                        <td>{category.description}</td>
+                        <td>
+                          <div className={styles.containerImage}>
+                            <img
+                              className={styles.prodImage}
+                              src={category?.cover?.url || "placeholder.svg"}
+                              alt={category.name}
+                              onError={(e) => {
+                                e.target.src = "placeholder.svg"; // Fallback image
+                                e.target.onerror = null; // Prevent infinite fallback loop
+                              }}
+                            />
+                          </div>
+                        </td>
+                        <td className={styles.cell}>
+                          <div className={styles.actions}>
+                            <img
+                              className={styles.dots}
+                              src="dots.png"
+                              onClick={() => handleShowActionsCategories(idx)}
+                             alt={"Acciones de categoría"}/>
+                          </div>
+                          {showActionsCategories[idx] &&
+                            <div className={styles.actionsMenuContainer} onClick={() => handleShowActionsCategories(idx)}>
+                              <div className={styles.actionsMenuUser}>
+                                <span className={styles.action}>Editar</span>
+                                <span className={styles.action}
+                                      onClick={() => handleDeleteClickCategory(category.id)}
+                                >
+                                  Eliminar
+                                </span>
+                              </div>
+                            </div>}
+                        </td>
+                      </tr>
+                    ))}
+                    </tbody>
+                  </table>
+                }
             </div>
         </div>
     )
