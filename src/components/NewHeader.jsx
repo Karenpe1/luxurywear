@@ -59,14 +59,14 @@ const NewHeader = () => {
 
       <div className={styles.buttons}>
         {user ? (
-          <>
+          <div className={styles.user}>
             {user.role === "ADMIN" && currentPath !== "/admin" && (
               <Link to="/admin">
                 <button className={styles.button}>Panel Administrador</button>
               </Link>
             )}
             <User/>
-          </>
+          </div>
         ) : (
           <>
             <Link to="/register">
