@@ -1,6 +1,6 @@
 import StyleInputs from "../styles/inputs.module.css";
 
-const Input = ({id, label, placeholder, type, name, value, onChange, error }) => {
+const Input = ({id, label, placeholder, type, name, value, onChange, error, minlength }) => {
   return (
     <>
       <label for={id} className={StyleInputs.label}>{label}</label>

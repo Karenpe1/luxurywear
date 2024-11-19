@@ -208,7 +208,7 @@ const CategoryForm = ({ onClose, clase }) => {
                 label="imagen *"
                 type="file"
                 accept=".jpg,.jpeg,.png"
-                cambio={handleFileChange}
+                onChange={handleFileChange}
                 error={error.imageFile}
                 archivos={1}
               />

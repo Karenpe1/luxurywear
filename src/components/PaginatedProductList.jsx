@@ -40,6 +40,7 @@ const PaginatedProductList = ({ pageSize = 6 }) => {
         });
 
         const data = response.data;
+        console.log("contenido de paginado",data)
         setProducts(data.content); // Set product data
         setTotalPages(data.totalPages); // Set total pages from response
         setTotalElements(data.totalElements);

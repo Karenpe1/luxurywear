@@ -7,6 +7,7 @@ const TextArea = ({ error, name, id, label, placeholder, value, onchange }) => {
       <label className={StyleText.label} For={id}>{label}</label>
       <textarea
       className={StyleText.area}
+        cols="30" rows="6"
         id={id}
         name={name}
         placeholder={placeholder}

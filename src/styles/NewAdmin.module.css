@@ -21,6 +21,7 @@
 }
 
 .notAvailable {
+    margin: 100px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -32,7 +33,7 @@
 }
 
 .ohNo {
-    width: 360px;
+    width: 70%;
 }
 
 .panel {
@@ -41,6 +42,11 @@
 
 @media (min-width: 720px) {
     .panel {
+      display: none;
+    }
+}
+@media (max-width: 1024px) {
+    .menu {
       display: none;
     }
 }
@@ -59,7 +65,7 @@
         display: flex;
         flex-direction: column;
         background-color: white;
-        width: 80%;
+        width: 100%;
         padding: 2em;
     }
 
@@ -92,12 +98,17 @@
     }
 
     .prodImage {
-        height: 70px;
+        width: 70px;
+        object-fit: cover;
     }
-
-    .titles {
+    .containerTitles{
         display: flex;
         flex-direction: column;
+        justify-content: center;
+    }
+    .titles {
+        display: flex;
+        justify-content: space-between;
         margin-bottom: 40px;
     }
 
@@ -105,9 +116,13 @@
         font-weight: bold;
         font-size: 32px;
     }
-
-    .subtitle {
-        font-size: 20px;
+ 
+    .inputBuscar{
+        width: 100%;
+        margin-bottom: 2em;
+        padding: 1em;
+        border-radius: 10px;
+        border: .5px solid gainsboro;
     }
 
     .actions {
@@ -120,13 +135,16 @@
         cursor: pointer;
     }
 
-    .cell {
+    .cells {
         position: relative;
     }
 
     .actionsMenuContainer {
-        height: 100vh;
-        width: 100vw;
+        position: absolute;
+        top: -300px;
+        right: -20px;
+    }
+    .actionsMenuUser {
         position: absolute;
         top: -300px;
         right: -20px;
@@ -152,8 +170,21 @@
         background-color: white;
         width: 100px;
         position: absolute;
-        top: 330px;
+        top: 320px;
         right: 100px;
+        padding: 10px;
+        z-index: 100;
+        border: 1px solid #715EAE;
+        border-radius: 8px;
+    }
+    .actionsMenuCategorie {
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+        width: 100px;
+        position: absolute;
+        top: 340px;
+        right: 70px;
         padding: 10px;
         z-index: 100;
         border: 1px solid #715EAE;
@@ -163,15 +194,6 @@
     .action {
         cursor: pointer;
         padding: 5px;
-    }
-
-    table th {
-        text-align: left;
-    }
-
-    table {
-        border-collapse: separate;
-        border-spacing: 10px;
     }
 }
 
@@ -273,13 +295,14 @@
     background: #231942;
     color: white;
     border: none;
-    width: 10%;
+    width: 15%;
     padding: 8px 20px;
     text-align: center;
     font-size: 14px;
     border-radius: 10px;
     cursor: pointer;
     align-self: center;
+    margin-right: 2em;
 }
 
 .addCategoryButton:hover {

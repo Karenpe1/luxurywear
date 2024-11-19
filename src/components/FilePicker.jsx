@@ -12,7 +12,7 @@ const FilePicker = ({ label, type, accept, onChange, error, archivos}) => {
                 setFileError("No puedes seleccionar más de un archivo.");
               } else {
                 setFileError("");
-                onChange(files); // Pasa los archivos si están en el rango permitido
+                onChange(e); // Pasa los archivos si están en el rango permitido
               }
         }else{
             if (files.length < 1) {
@@ -21,7 +21,7 @@ const FilePicker = ({ label, type, accept, onChange, error, archivos}) => {
                 setFileError("No puedes seleccionar más de cinco archivos.");
               } else {
                 setFileError("");
-                onChange(files); // Pasa los archivos si están en el rango permitido
+                onChange(e); // Pasa los archivos si están en el rango permitido
               }
         }
     }
