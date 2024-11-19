@@ -4,11 +4,16 @@ import { formatCurrency } from "../Utils/currencyFormatter";
 import axiosInstance from "../Utils/axiosInstance";
 import CategoryForm from "../components/CategoryForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faUsers,faList,faLayerGroup,faUserTie,faInbox,} from "@fortawesome/free-solid-svg-icons";
+import {
+  faUsers,
+  faList,
+  faLayerGroup,
+  faUserTie,
+  faInbox,
+} from "@fortawesome/free-solid-svg-icons";
 import Table from "../components/Table";
 import { useParams } from "react-router-dom";
-
-
+import Search from "../components/Search";
 
 const NewAdmin = ({pageSize=6}) => {
   const [tab, setTab] = useState("Productos");
@@ -137,16 +142,15 @@ const NewAdmin = ({pageSize=6}) => {
     setCurrentPageCategories(page);
   };
 
-
   // Calculate the range of products displayed
   const startRange = currentPage * pageSize + 1;
   const endRange = Math.min(startRange + numElements - 1, totalElements);
     // Calculate the range of products displayed
-  const startRangeUser = currentPageUser * pageSize + 1;
-  const endRangeUser = Math.min(startRangeUser + numElementsUser - 1, totalElementsUser);
+    const startRangeUser = currentPageUser * pageSize + 1;
+    const endRangeUser = Math.min(startRangeUser + numElementsUser - 1, totalElementsUser);
 
-  const startRangeCategories = currentPageCategories * pageSize + 1;
-  const endRangeCategories = Math.min(startRangeCategories + numElementsCategories - 1, totalElementsCategories);
+    const startRangeCategories = currentPageCategories * pageSize + 1;
+    const endRangeCategories = Math.min(startRangeCategories + numElementsCategories - 1, totalElementsCategories);
   
   useEffect(() => {
     // Llamada a la API para obtener listado de productos
@@ -477,7 +481,16 @@ const NewAdmin = ({pageSize=6}) => {
 
         {tab == "Productos" && (
           <Table
-            headers={["ID","Nombre","Referencia","Color","Diseñador","Valor","Categoría","Imagen" ]}
+            headers={[
+              "ID",
+              "Nombre",
+              "Referencia",
+              "Color",
+              "Diseñador",
+              "Valor",
+              "Categoría",
+              "Imagen",
+            ]}
             rows={productsPaginados.map((product) => ({
               ID: product.productId,
               Nombre: product.name,
@@ -558,12 +571,16 @@ const NewAdmin = ({pageSize=6}) => {
                     onClick={() => handleShowActions(idx)}
                   >
                     <div className={styles.actionsMenuUser}>
-                      <span className={styles.action}
-                        onClick={() => handleClickAdmin(row.Email, row.Rol)}>
+                      <span
+                        className={styles.action}
+                        onClick={() => handleClickAdmin(row.Email, row.Rol)}
+                      >
                         Permisos
                       </span>
-                      <span className={styles.action}
-                        onClick={() => handleDeleteClickUser(row.ID)}>
+                      <span
+                        className={styles.action}
+                        onClick={() => handleDeleteClickUser(row.ID)}
+                      >
                         Eliminar
                       </span>
                     </div>
@@ -613,7 +630,8 @@ const NewAdmin = ({pageSize=6}) => {
                     onClick={() => handleShowActions(idx)}
                   >
                     <div className={styles.actionsMenuCategorie}>
-                      <span className={styles.action}
+                      <span
+                        className={styles.action}
                         onClick={() => handleDeleteClickCategorie(row.ID)}
                       >
                         Eliminar
