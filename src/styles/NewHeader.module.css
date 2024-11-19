@@ -1,6 +1,6 @@
 .container {
     height: 80px;
-    width: 100vw;
+    width: calc(100vw);
     position: fixed;
     top: 0;
     left: 0;
@@ -9,7 +9,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px;
+    padding: 40px;
 }
 
 .logo {
@@ -136,7 +136,7 @@
     .logo {
         width: 129px;
         height: 72px;
-        margin-right: calc(50vw - 129px - 161px - 10px);
+        margin-right: calc(50vw - 129px - 161px - 40px);
     }
 
     .links {
@@ -166,5 +166,11 @@
 
     .menu {
         display: none;
+    }
+
+    .user {
+        display: flex;
+        gap: 10px;
+        left: -20px;
     }
 }
