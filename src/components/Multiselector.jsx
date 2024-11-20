@@ -22,7 +22,7 @@ const MultiSelector = ({ options, placeholder, onChange , multiselector,error,la
   const handleOptionClick = (option) => {
     setSelected(option.label);
     setIsOpen(false);
-    if (onChange) onChange(option.value);
+    if (onChange) onChange({value: option.value});
   };
 
   return (

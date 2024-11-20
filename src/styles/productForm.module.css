@@ -1,8 +1,8 @@
-.container{
+.containerProduct{
    overflow: auto;
    height: 700px;
 }
-.contenedorForm{
+.contenedorFormProduct{
     width: 70%; 
     background-color:  #E9E4F7;
     display: flex;
@@ -12,7 +12,7 @@
     align-self: stretch;
     margin: auto;
 }
-.formulario{
+.formularioProduct{
     padding: 2em 0em;
 }
 .title{
@@ -25,10 +25,10 @@
   line-height: normal;
   margin-bottom: .8em;
 }
-.registro .nombre{
+.registroProduct .nombre{
     max-width: 100%;
 }
-.registro .inputMedio{
+.registroProduct .inputMedio{
     max-width: 205px;
 }
 .grid{

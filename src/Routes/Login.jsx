@@ -81,14 +81,15 @@ function Login() {
             <label>
               Correo electrónico
               <Input
+  
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className={loginStyles.inputField}
+                error={error.email}
                 required
               />
             </label>
-            {error.email && <p className={loginStyles.errorMessage}>{error.email}</p>}
+
 
             <label>
               Contraseña
@@ -96,17 +97,16 @@ function Login() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className={loginStyles.inputField}
+                error={error.password}
                 required
               />
             </label>
-            {error.password && <p className={loginStyles.errorMessage}>{error.password}</p>}
 
             {error.general && (
               <p className={loginStyles.errorMessage}>{error.general}</p>
             )}
 
-            <Button type="submit" className={loginStyles.loginButton}>Iniciar sesión</Button>
+            <Button type="submit">Iniciar sesión</Button>
           </form>
 
           <p className={loginStyles.signupText}>

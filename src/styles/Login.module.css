@@ -47,31 +47,6 @@
         background-color: #E9E4F7;
     }
 
-    /* Estilos del contenedor de login */
-    .inputField {
-        width: 100%;
-        padding: 10px;
-        border-radius: 5px;
-        border: 1px solid #CCCCCC;
-        background-color: #F5F5F5;
-        color: #333333;
-        font-size: 1em;
-        outline: none;
-        transition: border-color 0.3s;
-    }
-
-    .loginButton {
-        background-color: #C3B2FB;
-        color: black;
-        padding: 12px;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        font-size: 1em;
-        font-weight: bold;
-        transition: background-color 0.3s;
-    }
-
     .errorMessage {
         color: #FF6666;
         font-size: 0.9em;
@@ -81,7 +56,8 @@
     .loginContainer {
         background-color: #E9E4F7;
         color: #333333;
-        width: auto;
+        margin: auto;
+        width: 65%;
         padding: 20px;
         border-radius: 10px;
         text-align: center;
@@ -100,19 +76,7 @@
     }
 
     /* Estilos para etiquetas y campos de entrada */
-   
 
-    .loginButton {
-        background-color: #C3B2FB;
-        color: black;
-        padding: 12px;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        font-size: 1em;
-        font-weight: bold;
-        transition: background-color 0.3s;
-    }
 
     .loginButton:hover {
         background-color: #261a56;

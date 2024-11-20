@@ -27,7 +27,7 @@ const FilePicker = ({ label, type, accept, onChange, error, archivos}) => {
     }
   return (
     <>
-      <label className={StyleFile.label}>{label}</label>
+      <label className={StyleFile.labelFile}>{label}</label>
       <input className={StyleFile.archivo} type={type} multiple accept={accept} onChange={handleFileChange} />
       {(fileError || error) && (
         <span className={StyleFile.error}>{fileError || error }</span>

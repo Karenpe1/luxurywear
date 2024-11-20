@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import stylesProduct from "../styles/productForm.module.css";
 import TextArea from "./TextArea";
 import Input from "./Input";
@@ -40,12 +40,22 @@ const ProductsForm = ({onClose,clase}) => {
     mensaje: "",
     img: "",
   });
-  
   // eslint-disable-next-line no-useless-escape
   const noNumbersRegex = /^[^\d]*$/;
   const onlyNumbers=/^-?\d+(\.\d+)?$/;
 
   const url = "http://localhost:8080/api/v1/products";
+  const url1 = "http://localhost:8080/api/v1/categories";
+  const [categoriesTitle, setCategoriesTitle]=useState([])
+  useEffect(()=>{
+    const fetchcategorias=async()=>{
+      const response= await fetch(url1);
+      const data=await response.json();
+      setCategoriesTitle(data)
+    }
+    fetchcategorias();
+  },[])
+
 
   const handleNombre = (e) => {
     setProduct({ ...product, name: e.target.value });
@@ -95,7 +105,7 @@ const ProductsForm = ({onClose,clase}) => {
     }
   };
   const handleCategories = (e) => {
-    setProduct({ ...product, categories: e.target.value });
+    setProduct({ ...product, categories: e.value });
     setError({ ...error, categories: "" });
   };
 
@@ -108,11 +118,12 @@ const ProductsForm = ({onClose,clase}) => {
     console.log("Categorías seleccionadas:", selected);
   };
 
-  const categorias = [
-    { value: 'apple', label: 'Apple' },
-    { value: 'banana', label: 'Banana' },
-    { value: 'orange', label: 'Orange' }
-  ];
+
+  const categorias1 = categoriesTitle.map((categoria) => ({
+    value: categoria.name,
+    label: categoria.name, // Aquí estás manteniendo el valor original del label
+  }));
+  
   const tallas = [
     { value: 'XS', label: 'XS' },
     { value: 'S', label: 'S' },
@@ -254,8 +265,8 @@ const ProductsForm = ({onClose,clase}) => {
   
 
   return (
-    <div className={stylesProduct.container}>
-      <div className={stylesProduct.contenedorForm}>
+    <div className={stylesProduct.containerProduct}>
+      <div className={stylesProduct.contenedorFormProduct}>
         {modalInfo.show ? (
           <Modal
             img={modalInfo.img}
@@ -267,9 +278,9 @@ const ProductsForm = ({onClose,clase}) => {
             }}
           />
         ) : (
-          <div className={stylesProduct.formulario}>
+          <div className={stylesProduct.formularioProduct}>
             <h2 className={stylesProduct.title}>Crear producto</h2>
-            <form onSubmit={handdleSubmit} className={stylesProduct.registro}>
+            <form onSubmit={handdleSubmit} className={stylesProduct.registroProduct}>
               <Input
                 id="nombre"
                 label="Nombre"
@@ -282,7 +293,7 @@ const ProductsForm = ({onClose,clase}) => {
               />
               <MultiSelector
                   label="Categorias"
-                  options={categorias}
+                  options={categorias1}
                   placeholder="Seleccione una categoria"
                   onChange={handleCategories}
                   multiselector={false}
