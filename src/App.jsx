@@ -11,6 +11,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import NewFooter from "./components/NewFooter.jsx";
 import PaginatedProductList from "./components/PaginatedProductList";
 import NewAdmin from "./Routes/NewAdmin.jsx";
+import FavList from "./Routes/FavList.jsx";
 
 function App() {
   const location = useLocation();
@@ -30,6 +31,14 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route
+              path="/favList"
+              element={
+                <PrivateRoute>
+                  <FavList />
+                </PrivateRoute>
+              }
+            />
             <Route
               path="/admin"
               element={
