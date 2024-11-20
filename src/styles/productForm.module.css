@@ -1,0 +1,38 @@
+.container{
+   overflow: auto;
+   height: 700px;
+}
+.contenedorForm{
+    width: 70%; 
+    background-color:  #E9E4F7;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-self: stretch;
+    margin: auto;
+}
+.formulario{
+    padding: 2em 0em;
+}
+.title{
+  color: #231942;
+  text-align: center;
+  font-family: "Encode Sans";
+  font-size: 27px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: .8em;
+}
+.registro .nombre{
+    max-width: 100%;
+}
+.registro .inputMedio{
+    max-width: 205px;
+}
+.grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+}

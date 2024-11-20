@@ -14,6 +14,7 @@ import {
 import Table from "../components/Table";
 import { useParams } from "react-router-dom";
 import Search from "../components/Search";
+import ProductsForm from "../components/ProductsForm";
 
 const NewAdmin = ({pageSize=6}) => {
   const [tab, setTab] = useState("Productos");
@@ -33,6 +34,8 @@ const NewAdmin = ({pageSize=6}) => {
   const [selectedUserEmail, setSelectedUserEmail] = useState(null);
   const [selectedUserRole, setSelectedUserRole] = useState(null);
   const [showCategoryModal, setShowCategoryModal] = useState(false);
+  const [showProducModal, setShowProductModal] = useState(false);
+
   const axios = axiosInstance();
 
   //prueba
@@ -298,6 +301,12 @@ const NewAdmin = ({pageSize=6}) => {
   const handleCloseCategoryModal = () => {
     setShowCategoryModal(false);
   };
+  const handleOpenProductModal= ()=>{
+    setShowProductModal(true);
+  };
+  const handleCloseProductModal=()=>{
+    setShowProductModal(false);
+  };
 
   const handleShowActionsCategorie = (i) => {
     setShowActionsCategories((prev) => {
@@ -456,6 +465,7 @@ const NewAdmin = ({pageSize=6}) => {
             className={styles.categoryModalContent}
             onClick={(e) => e.stopPropagation()} // Prevent click from closing modal
           >
+            
             <CategoryForm
               onClose={handleCloseCategoryModal}
               clase={styles.categoryModalCancelButton}
@@ -463,16 +473,35 @@ const NewAdmin = ({pageSize=6}) => {
           </div>
         </div>
       )}
+      {showProducModal && (
+        <div className={styles.categoryModalOverlayProducts}
+        onClick={handleCloseProductModal}>
+          <div className={styles.categoryModalContentProduct}
+          onClick={(e)=>e.stopPropagation()}>
+            <ProductsForm 
+            onClose={handleCloseProductModal} 
+            clase={styles.categoryModalCancelButton}/>
+          </div>
+          
+        </div>
+      )}
       <div className={styles.panel}>
         <div className={styles.containerTitles}>
           <div className={styles.titles}>
             <div className={styles.title}>{tab}</div>
-            <button
-                className={styles.addCategoryButton}
-                onClick={handleOpenCategoryModal}
-            >
-                Agregar categoría
-            </button>
+              {tab == "Categoria" && 
+              (<button
+                  className={styles.addCategoryButton}
+                  onClick={handleOpenCategoryModal}
+              >
+                  Agregar categoría
+              </button>)}
+              {tab == "Productos" && 
+              (<button 
+                  className={styles.addCategoryButton} 
+                  onClick={handleOpenProductModal}>
+                    agregar Producto
+                </button>)}
           </div>
           <div className={styles.buscar}>
                     <input className={styles.inputBuscar} type="text" placeholder="Buscar Productos."/>
@@ -609,7 +638,7 @@ const NewAdmin = ({pageSize=6}) => {
                 <div className={styles.containerImage}>
                   <img
                     className={styles.prodImage}
-                    src={categorie.url}
+                    src={`http://localhost:8080${categorie.cover.url}`}
                     alt={categorie.name}
                   />
                 </div>

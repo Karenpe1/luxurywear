@@ -4,7 +4,7 @@ import StyleText from "../styles/textArea.module.css";
 const TextArea = ({ error, name, id, label, placeholder, value, onchange }) => {
   return (
     <>
-      <label className={StyleText.label} For={id}>{label}</label>
+      <label className={StyleText.label} htmlFor={id}>{label}</label>
       <textarea
       className={StyleText.area}
         cols="30" rows="6"

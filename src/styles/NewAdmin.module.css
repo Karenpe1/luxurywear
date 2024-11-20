@@ -248,7 +248,7 @@
     background-color: #b5a0f9;
   }
 .cancelButton:hover,   .categoryModalCancelButton:hover{
-    background-color:#e3e1e9 ;
+    background-color:#c6c5ca ;
   }
 
 /* Modal Overlay */
@@ -264,6 +264,18 @@
     align-items: center;
     z-index: 1000;
 }
+.categoryModalOverlayProducts {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow: auto;
+    z-index: 1000;
+}
 
 /* Modal Content */
 .categoryModalContent {
@@ -274,6 +286,14 @@
     max-width: 600px;
     position: relative;
 }
+.categoryModalContentProduct {
+    background: #E9E4F7;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 630px;
+    position: relative;
+}
 
 /* Cancel Button */
 .categoryModalCancelButton {
@@ -282,6 +302,7 @@
     width: 100%;
     height: 48px;
     text-align: center;
+    margin-top: 1em;
     cursor: pointer;
     border-radius: 8px;
     transition: all 0.3s ease;
