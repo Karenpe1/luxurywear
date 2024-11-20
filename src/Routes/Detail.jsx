@@ -145,7 +145,7 @@ const Detail = () => {
                       Tipo
                     </td>
                     <td style={{ background: "#F9F9F9" }}>
-                      {product.category.name}
+                      {product.categories[0].name}
                     </td>
                   </tr>
                   <tr>
