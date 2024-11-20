@@ -6,7 +6,7 @@ import Button from "./Button";
 import FilePicker from "./FilePicker";
 import MultiSelector from "./Multiselector";
 
-const ProductsForm = ({onClose,clase}) => {
+const ProductsForm = ({onClose,clase, isEdit=false,data={}}) => {
 
   const [product, setProduct] = useState({
     name: "",

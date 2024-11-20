@@ -116,7 +116,6 @@
 
 .formulario{
     display: flex;
-    width: 280px;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
@@ -135,15 +134,16 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
+    margin: auto;
 }
 .formulario h2{
     color: #231942;
-    text-align: center;
     font-family: "Encode Sans";
     font-size: 20px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+    margin: auto;
 }
 @media(min-width:700px){
     .formulario h2{

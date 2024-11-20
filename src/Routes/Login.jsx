@@ -87,6 +87,7 @@ function Login() {
                 onChange={(e) => setEmail(e.target.value)}
                 error={error.email}
                 required
+                className={loginStyles.inputsLogin}
               />
             </label>
 
@@ -99,6 +100,7 @@ function Login() {
                 onChange={(e) => setPassword(e.target.value)}
                 error={error.password}
                 required
+                className={loginStyles.inputsLogin}
               />
             </label>
 

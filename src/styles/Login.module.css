@@ -73,10 +73,13 @@
         display: flex;
         flex-direction: column;
         gap: 15px;
+        width: 100%;
     }
 
     /* Estilos para etiquetas y campos de entrada */
-
+    .loginContainer .inputsLogin{
+        width: 100%;
+    }
 
     .loginButton:hover {
         background-color: #261a56;

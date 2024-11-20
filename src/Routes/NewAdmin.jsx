@@ -482,7 +482,6 @@ const NewAdmin = ({pageSize=6}) => {
             onClose={handleCloseProductModal} 
             clase={styles.categoryModalCancelButton}/>
           </div>
-          
         </div>
       )}
       <div className={styles.panel}>
@@ -527,7 +526,7 @@ const NewAdmin = ({pageSize=6}) => {
               Color: product.color,
               Diseñador: product.designer,
               Valor: formatCurrency(product.price, "es-CO", "COP"),
-              Categoría: product.categories[0].name,
+              Categoría: product.category.name,
               Imagen: (
                 <div className={styles.containerImage}>
                   <img
