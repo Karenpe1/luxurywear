@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import stylesProduct from "../styles/productForm.module.css";
 import TextArea from "./TextArea";
 import Input from "./Input";
@@ -6,9 +6,12 @@ import Button from "./Button";
 import FilePicker from "./FilePicker";
 import MultiSelector from "./Multiselector";
 import useAxios from "../Utils/axiosInstance";
-import Modal from "./Modal";
+import Modal from "./Modal.jsx";
+import {v4 as uuidv4} from "uuid";
 
-const ProductsForm = ({onClose,clase, isEdit=false,initialData={}}) => {
+const MAX_FILES = 5;
+
+const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
 
   const [product, setProduct] = useState({
     name: "",
@@ -46,6 +49,13 @@ const ProductsForm = ({onClose,clase, isEdit=false,initialData={}}) => {
   const noNumbersRegex = /^[^\d]*$/;
   const onlyNumbers=/^-?\d+(\.\d+)?$/;
   const axios= useAxios();
+
+  const toUrlFriendlyString = (str) =>
+    str
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+
   const url = "http://localhost:8080/api/v1/products";
   const url1 = "http://localhost:8080/api/v1/categories";
   const [categoriesTitle, setCategoriesTitle]=useState([])
@@ -94,24 +104,49 @@ const ProductsForm = ({onClose,clase, isEdit=false,initialData={}}) => {
     setProduct({ ...product, price: e.target.value });
     setError({ ...error, price: "" });
   };
+
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const validExtensions = ["jpg", "jpeg", "png", "webp", "gif", "svg"];
-      const fileExtension = file.name.split(".").pop().toLowerCase();
+    const files = Array.from(e.target.files);
+    const validExtensions = ["jpg", "jpeg", "png", "webp", "gif", "svg"];
 
-      if (!validExtensions.includes(fileExtension)) {
-        setError({
-          ...error,
-          images:
-            "El archivo debe ser una imagen en formato .jpg, .jpeg, .png, .webp, .svg o .gif.",
-        });
-        return;
-      }
+    // Validate file types
+    const invalidFiles = files.filter(
+      (file) => !validExtensions.includes(file.name.split(".").pop().toLowerCase())
+    );
 
-      setProduct((prevProduct) => ({...prevProduct,images: [...prevProduct.images, file]}));
-      setError({ ...error, images: "" });
+    if (invalidFiles.length > 0) {
+      setError({
+        ...error,
+        images: "El archivo debe ser una imagen en formato .jpg, .jpeg, .png, .webp, .svg o .gif",
+      });
+      return;
     }
+
+    // Access the current state of product directly
+    const currentImages = product?.images || [];
+
+    // Validate file count
+    if (currentImages.length + files.length > MAX_FILES) {
+      setError({
+        ...error,
+        images: `Puedes cargar hasta ${MAX_FILES} imágenes.`,
+      });
+      return;
+    }
+
+    // Update the product based on the isEdit flag
+    if (isEdit) {
+      // For editing an existing product
+      setProduct((prevProduct) => ({
+        ...prevProduct,
+        images: [...(prevProduct.images || []), ...files], // Append new files to existing images
+      }));
+    } else {
+      // For creating a new product
+      setProduct({...product, images: files});
+    }
+
+    setError({ ...error, images: "" });
   };
   const handleCategories = (e) => {
     setProduct({ ...product, categories: e.value });
@@ -132,7 +167,7 @@ const ProductsForm = ({onClose,clase, isEdit=false,initialData={}}) => {
     value: categoria.name,
     label: categoria.name, // Aquí estás manteniendo el valor original del label
   }));
-  
+
   const tallas = [
     { value: 'XS', label: 'XS' },
     { value: 'S', label: 'S' },
@@ -194,18 +229,39 @@ const ProductsForm = ({onClose,clase, isEdit=false,initialData={}}) => {
       const method= isEdit? "PUT" : "POST"
       const endpoint = isEdit ? `${url}/${product.id}` : url;
 
+      const uploadedImages = isEdit ? (
+        product.images
+      ) : (
+        await Promise.all(
+          product.images.map(async (file) => {
+            const formData = new FormData();
+            const uniqueIdentifier = uuidv4();
+            const fileExtension = file.name.split(".").pop();
+            // const fileName = `${product.name.toLowerCase()}__${uniqueIdentifier}.${fileExtension}`;
+            const fileName = `${toUrlFriendlyString(product.name)}__${uniqueIdentifier}.${fileExtension}`;
+            formData.append("file", file);
+            formData.append("name", fileName);
+            formData.append("category", product.categories.toLowerCase());
+
+            const response = await axios.post("/api/v1/products/upload", formData, {
+              headers: {"Content-Type": "multipart/form-data"},
+            });
+            return {url: response.data.response};
+          })
+        )
+      );
+
       const body = {
         name: product.name.trim(),
-        reference:product.reference,
+        reference: product.reference,
         description: product.description.trim(),
         material: product.material,
-        color:product.color,
+        color: product.color,
         designer: product.designer,
         price: product.price,
-        images:product.images,
-        category:product.categories,
-        sizes:product.sizes,
-
+        images: uploadedImages,
+        category: product.categories,
+        sizes: product.sizes,
       };
 
       const settings = {
@@ -215,13 +271,14 @@ const ProductsForm = ({onClose,clase, isEdit=false,initialData={}}) => {
           "Content-Type": "application/json",
         },
       };
+      let response= {};
       try {
         if(isEdit){
-          const response = await axios.put(endpoint, settings);
+          response = await axios.put(endpoint, settings);
         }else{
-          const response = await axios.post(endpoint, settings);
+          response = await axios.post(endpoint, settings);
         }
-  
+
         // Handle non-201 status codes
         if (response.status == 201) {
           setModalInfo({
@@ -238,7 +295,7 @@ const ProductsForm = ({onClose,clase, isEdit=false,initialData={}}) => {
             400: "Solicitud inválida. Por favor, verifica los datos ingresados.",
             500: "Error del servidor. Por favor, intenta más tarde.",
           };
-  
+
           const message =
             errorMessages[response.status] ||
             `Ocurrió un error inesperado (Código: ${response.status}).`;
@@ -250,7 +307,7 @@ const ProductsForm = ({onClose,clase, isEdit=false,initialData={}}) => {
             mensaje: message,
           });
         }
-  
+
         // Parse the successful response
         const data = await response.json();
         console.log(data);
