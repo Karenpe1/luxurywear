@@ -1,46 +1,59 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import useAxios from "../Utils/axiosInstance"; // Custom Axios instance
 import HeartButton from "../components/HeartButton";
 import Pagination from "../components/Pagination";
 import styles from "../styles/FavList.module.css";
 
 const FavList = ({ pageSize = 6 }) => {
-  const [favorites, setFavorites] = useState([]); // Favoritos
-  const [currentPage, setCurrentPage] = useState(0); // Paginación
-  const [totalPages, setTotalPages] = useState(0); 
-  const [loading, setLoading] = useState(true); 
-  const [error, setError] = useState(null); 
-  const navigate = useNavigate();
   const axios = useAxios();
+  const [favorites, setFavorites] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [totalElements, setTotalElements] = useState(0);
+  const [numElements, setNumElements] = useState(0);
 
-  // Fetch user's favorite products
+  // Fetch favorite products
   useEffect(() => {
     const fetchFavorites = async () => {
       setLoading(true);
       setError(null);
+
       try {
-        const response = await axios.get("/api/v1/favorites", {
-          params: { page: currentPage, size: pageSize },
-        });
+        const response = await axios.get(
+          `http://localhost:8080/api/v1/users/favorites`,
+          { params: { page: currentPage, size: pageSize } }
+        );
         const data = response.data;
         setFavorites(data.content);
         setTotalPages(data.totalPages);
+        setTotalElements(data.totalElements);
+        setNumElements(data.numberOfElements);
       } catch (err) {
-        setError("Error fetching favorites.");
+        setError("Error al obtener los favoritos.");
       } finally {
         setLoading(false);
       }
     };
+
     fetchFavorites();
   }, [currentPage]);
 
-  const handleRemoveFavorite = async (productId) => {
+  // Toggle favorite status
+  const handleToggleFavorite = async (productId) => {
     try {
-      await axios.delete(`/api/v1/favorites/${productId}`);
-      setFavorites(favorites.filter((product) => product.id !== productId)); // Remove product from UI
-    } catch (err) {
-      console.error("Error removing favorite:", err);
+      await axios.post(`http://localhost:8080/api/v1/users/toggle-favorites`, {
+        productId,
+      });
+      // Refetch favorites after toggling
+      const updatedFavorites = await axios.get(
+        `http://localhost:8080/api/v1/users/favorites`,
+        { params: { page: currentPage, size: pageSize } }
+      );
+      setFavorites(updatedFavorites.data.content);
+    } catch {
+      setError("No se pudo actualizar el estado del favorito.");
     }
   };
 
@@ -48,43 +61,34 @@ const FavList = ({ pageSize = 6 }) => {
     setCurrentPage(page);
   };
 
-  const handleCardClick = (productId) => {
-    navigate(`/detail/${productId}`);
-  };
-
   return (
     <div className={styles.favListContainer}>
-      <h2 className={styles.title}>Mis Favoritos</h2>
+      <h2 className={styles.title}>Tus Productos Favoritos</h2>
 
+      {/* Loading and Error states */}
       {loading && <p>Cargando favoritos...</p>}
-      {error && <p>{error}</p>}
+      {error && <p className={styles.error}>{error}</p>}
 
-      {!loading && !favorites.length && (
+      {!loading && favorites.length === 0 && (
         <p className={styles.noFavorites}>No tienes productos favoritos.</p>
       )}
 
       <div className={styles.products}>
         {favorites.map((product) => (
-          <div
-            key={product.id}
-            className={styles.productCard}
-            onClick={() => handleCardClick(product.id)}
-          >
+          <div key={product.productId} className={styles.productCard}>
             <HeartButton
               className={styles.heart}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleRemoveFavorite(product.id);
-              }}
+              productId={product.productId}
+              onToggle={() => fetchFavorites()} // Refresca los favoritos al alternar
             />
             <img
-              src={product.image}
+              src={product.images[0]?.url || "placeholder.jpg"}
               alt={product.name}
               className={styles.productImage}
             />
-            <div className={styles.details}>
+            <div className={styles.productInfo}>
               <h3>{product.name}</h3>
-              <p>{`Precio: ${product.price} COP`}</p>
+              <p>Precio: {product.price}</p>
             </div>
           </div>
         ))}
