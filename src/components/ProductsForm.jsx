@@ -5,8 +5,9 @@ import Input from "./Input";
 import Button from "./Button";
 import FilePicker from "./FilePicker";
 import MultiSelector from "./Multiselector";
+import useAxios from "../Utils/axiosInstance";
 
-const ProductsForm = ({onClose,clase, isEdit=false,data={}}) => {
+const ProductsForm = ({onClose,clase, isEdit=false,initialData={}}) => {
 
   const [product, setProduct] = useState({
     name: "",
@@ -43,10 +44,11 @@ const ProductsForm = ({onClose,clase, isEdit=false,data={}}) => {
   // eslint-disable-next-line no-useless-escape
   const noNumbersRegex = /^[^\d]*$/;
   const onlyNumbers=/^-?\d+(\.\d+)?$/;
-
+  const axios= useAxios;
   const url = "http://localhost:8080/api/v1/products";
   const url1 = "http://localhost:8080/api/v1/categories";
   const [categoriesTitle, setCategoriesTitle]=useState([])
+  // Cargar categorías desde el backend
   useEffect(()=>{
     const fetchcategorias=async()=>{
       const response= await fetch(url1);
@@ -55,6 +57,12 @@ const ProductsForm = ({onClose,clase, isEdit=false,data={}}) => {
     }
     fetchcategorias();
   },[])
+  // Prellenar los campos si se está editando
+  useEffect(()=>{
+    if(isEdit && initialData){
+      setProduct(initialData)
+    }
+  },[isEdit,initialData])
 
 
   const handleNombre = (e) => {
@@ -163,7 +171,7 @@ const ProductsForm = ({onClose,clase, isEdit=false,data={}}) => {
         errors.designer = "el Diseñador debe ser valido y tener más de 3 caracteres";
         formIsValid = false;
     }
-    if (!onlyNumbers.test(product.price)) {
+    if (!onlyNumbers.test(product.price)|| !product.price || isNaN(product.price)) {
         errors.price = "el precio del producto solo debe contener numeros";
         formIsValid = false;
     }
@@ -182,6 +190,9 @@ const ProductsForm = ({onClose,clase, isEdit=false,data={}}) => {
     setError(errors);
 
     if (formIsValid) {
+      const method= isEdit? "PUT" : "POST"
+      const endpoint = isEdit ? `${url}/${product.id}` : url;
+
       const body = {
         name: product.name.trim(),
         reference:product.reference,
@@ -197,71 +208,65 @@ const ProductsForm = ({onClose,clase, isEdit=false,data={}}) => {
       };
 
       const settings = {
-        method: "POST",
+        method,
         body: JSON.stringify(body),
         headers: {
           "Content-Type": "application/json",
         },
       };
-
       try {
-        await realizarCreacionProducto(settings);
-        e.target.reset();
-      } catch (err) {
-        console.error("Error during form submission:", err);
+        if(isEdit){
+          const response = await axios.put(endpoint, settings);
+        }else{
+          const response = await axios.post(endpoint, settings);
+        }
+  
+        // Handle non-201 status codes
+        if (response.status == 201) {
+          setModalInfo({
+            show: true,
+            titulo: "¡Felicidades!",
+            subtitulo: "Tu registro ha sido exitoso.",
+            mensaje:
+              "Te hemos registrado correctamente en nuestra web. Ahora puedes acceder a todas las funciones y beneficios que ofrecemos.",
+            img: "./Estrellas.svg",
+          }); //mostrar el mensaje de exito
+        } else {
+          const errorMessages = {
+            409: "Ya hay un usuario creado con ese correo electrónico.",
+            400: "Solicitud inválida. Por favor, verifica los datos ingresados.",
+            500: "Error del servidor. Por favor, intenta más tarde.",
+          };
+  
+          const message =
+            errorMessages[response.status] ||
+            `Ocurrió un error inesperado (Código: ${response.status}).`;
+          setModalInfo({
+            show: true,
+            img: "./ohNo.png",
+            titulo: "Error",
+            subtitulo: "Ha ocurrido un problema.",
+            mensaje: message,
+          });
+        }
+  
+        // Parse the successful response
+        const data = await response.json();
+        console.log(data);
+      }catch (err) {
+        // Handle network or other fetch errors
+        setModalInfo({
+          show: true,
+          titulo: "Error de conexión",
+          subtitulo: "Hubo un problema con la conexión.",
+          mensaje:
+            "Por favor, verifica tu conexión a Internet e intenta nuevamente.",
+          img: "./ohNo.png",
+        });
+        console.error("Error al realizar el registro:", err);
       }
     }
   };
-
-  async function realizarCreacionProducto(settings) {
-    try {
-      const response = await fetch(url, settings);
-
-      // Handle non-201 status codes
-      if (response.status == 201) {
-        setModalInfo({
-          show: true,
-          titulo: "¡Felicidades!",
-          subtitulo: "Tu registro ha sido exitoso.",
-          mensaje:
-            "Te hemos registrado correctamente en nuestra web. Ahora puedes acceder a todas las funciones y beneficios que ofrecemos.",
-          img: "./Estrellas.svg",
-        }); //mostrar el mensaje de exito
-      } else {
-        const errorMessages = {
-          409: "Ya hay un usuario creado con ese correo electrónico.",
-          400: "Solicitud inválida. Por favor, verifica los datos ingresados.",
-          500: "Error del servidor. Por favor, intenta más tarde.",
-        };
-
-        const message =
-          errorMessages[response.status] ||
-          `Ocurrió un error inesperado (Código: ${response.status}).`;
-        setModalInfo({
-          show: true,
-          img: "./ohNo.png",
-          titulo: "Error",
-          subtitulo: "Ha ocurrido un problema.",
-          mensaje: message,
-        });
-      }
-
-      // Parse the successful response
-      const data = await response.json();
-      console.log(data);
-    } catch (err) {
-      // Handle network or other fetch errors
-      setModalInfo({
-        show: true,
-        titulo: "Error de conexión",
-        subtitulo: "Hubo un problema con la conexión.",
-        mensaje:
-          "Por favor, verifica tu conexión a Internet e intenta nuevamente.",
-        img: "./ohNo.png",
-      });
-      console.error("Error al realizar el registro:", err);
-    }
-  }
   
 
   return (
@@ -279,7 +284,9 @@ const ProductsForm = ({onClose,clase, isEdit=false,data={}}) => {
           />
         ) : (
           <div className={stylesProduct.formularioProduct}>
-            <h2 className={stylesProduct.title}>Crear producto</h2>
+            <h2 className={stylesProduct.title}>
+              {isEdit? "Editar Producto": "Crear Producto"}
+            </h2>
             <form onSubmit={handdleSubmit} className={stylesProduct.registroProduct}>
               <Input
                 id="nombre"
@@ -381,7 +388,7 @@ const ProductsForm = ({onClose,clase, isEdit=false,data={}}) => {
                 error={error.images}
                 archivos={2}
               />
-              <Button>Registrar</Button>
+              <Button>{isEdit? "Actualizar":"Registrar"}</Button>
               <button onClick={onClose} className={clase}>Cancelar</button>
             </form>
           </div>

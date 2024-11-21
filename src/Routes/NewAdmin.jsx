@@ -19,6 +19,7 @@ import ProductsForm from "../components/ProductsForm";
 const NewAdmin = ({pageSize=6}) => {
   const [tab, setTab] = useState("Productos");
   const [products, setProducts] = useState([]);
+  const [productToEdit, setProductToEdit] = useState(null);
   const [users, setUsers] = useState([]);
   const [categories, setCategories] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -35,6 +36,7 @@ const NewAdmin = ({pageSize=6}) => {
   const [selectedUserRole, setSelectedUserRole] = useState(null);
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [showProducModal, setShowProductModal] = useState(false);
+  const [showEditModal, setShowEditModal]= useState(false)
 
   const axios = axiosInstance();
 
@@ -221,6 +223,30 @@ const NewAdmin = ({pageSize=6}) => {
     setSelectedCategorieId(id);
     setShowModalCategorie(true);
   };
+ 
+  const handleEditClick = async (id) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/v1/products/${id}`);
+      const productData = response.data;
+  
+      setSelectedProductId(id); // Almacena el ID seleccionado
+      setProductToEdit({
+        name: productData.name,
+        reference: productData.reference,
+        description: productData.description,
+        material: productData.material,
+        color: productData.color,
+        designer: productData.designer,
+        price: productData.price,
+        images: productData.images || [],
+        categories: productData.category?.name || "",
+        sizes: productData.sizes || [],
+      });
+      setShowEditModal(true);   // Abre el modal para edición
+    } catch (error) {
+      console.error("Error fetching product data for edit:", error);
+    }
+  };
 
   const confirmDelete = async () => {
     try {
@@ -307,6 +333,14 @@ const NewAdmin = ({pageSize=6}) => {
   const handleCloseProductModal=()=>{
     setShowProductModal(false);
   };
+
+
+  const handleCloseEditProduct=()=>{
+    console.log("Cerrando modal de edición...")
+    setShowEditModal(false);
+    setProductToEdit(null);
+  }
+  
 
   const handleShowActionsCategorie = (i) => {
     setShowActionsCategories((prev) => {
@@ -484,6 +518,19 @@ const NewAdmin = ({pageSize=6}) => {
           </div>
         </div>
       )}
+      {showEditModal && productToEdit &&  (
+         <div className={styles.categoryModalOverlayProducts}
+         onClick={handleCloseEditProduct}>
+           <div className={styles.categoryModalContentProduct}
+           onClick={(e)=>e.stopPropagation()}>
+             <ProductsForm 
+             onClose={handleCloseEditProduct} 
+             clase={styles.categoryModalCancelButton}
+             isEdit={true}
+             initialData={productToEdit}/>
+           </div>
+         </div>
+      )}
       <div className={styles.panel}>
         <div className={styles.containerTitles}>
           <div className={styles.titles}>
@@ -543,16 +590,21 @@ const NewAdmin = ({pageSize=6}) => {
                   <img
                     className={styles.dots}
                     src="dots.png"
-                    onClick={() => handleShowActions(idx)} // Correctamente llama a la función
+                    onClick={(e) => {
+                      e.stopPropagation(); // Detiene la propagación del evento click
+                      handleShowActions(idx); // Llama a tu función de manejo
+                    }}
                   />
                 </div>
                 {showActions[idx] && (
                   <div
                     className={styles.actionsMenuContainer}
-                    onClick={() => handleShowActions(idx)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleShowActions(idx);}}
                   >
                     <div className={styles.actionsMenu}>
-                      <span className={styles.action}>Editar</span>
+                      <span className={styles.action} onClick={()=>handleEditClick(row.ID)}>Editar</span>
                       <span
                         className={styles.action}
                         onClick={() => handleDeleteClick(row.ID)}
