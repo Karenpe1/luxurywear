@@ -51,9 +51,11 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
 
   const toUrlFriendlyString = (str) =>
     str
+      .normalize("NFD") // Normalize to decompose combined letters with diacritics
+      .replace(/[\u0300-\u036f]/g, "") // Remove diacritics
       .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "");
+      .replace(/[^a-z0-9]+/g, "-") // Replace non-alphanumeric characters with dashes
+      .replace(/^-+|-+$/g, ""); // Trim leading and trailing dashes
 
   const url = "http://localhost:8080/api/v1/products";
   const [categoriesTitle, setCategoriesTitle] = useState([]);
@@ -245,7 +247,7 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
             const fileName = `${toUrlFriendlyString(product.name)}__${uniqueIdentifier}.${fileExtension}`;
             formData.append("file", file);
             formData.append("name", fileName);
-            formData.append("category", product.category.name.toLowerCase());
+            formData.append("category", toUrlFriendlyString(product.category.name));
 
             const response = await axios.post("/api/v1/products/upload", formData, {
               headers: {"Content-Type": "multipart/form-data"},
