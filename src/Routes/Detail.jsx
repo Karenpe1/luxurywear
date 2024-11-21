@@ -9,6 +9,8 @@ const Detail = () => {
   const [product, setProduct] = useState(null);
   const [mainImage, setMainImage] = useState(""); // Estado para la imagen principal
   const [caracteristicas, setCaracteristicas] = useState(false);
+  const [politicas, setPoliticas] = useState(false); // Nuevo estado para políticas
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -34,6 +36,9 @@ const Detail = () => {
     setCaracteristicas(!caracteristicas);
   };
 
+  const togglePoliticas = () => {
+    setPoliticas(!politicas);
+  };
   if (!product) return <p>Cargando...</p>;
 
   return (
@@ -170,6 +175,47 @@ const Detail = () => {
               </div>
             </div>
           </div>
+          {/* Políticas del producto */}
+          <div className={styles.caract}>
+            <div className={styles.encabezado} onClick={togglePoliticas}>
+              <p className={styles.titleHeader}>Políticas del producto</p>
+              <span
+                className={`${styles.arrow} ${
+                  politicas ? "" : styles.open
+                }`}
+              >
+                <img src="/Right.svg" alt="" />
+              </span>
+            </div>
+
+            <div
+              className={`${styles.tabla} ${
+                politicas ? styles.visible : ""
+              }`}
+            >
+              <div className={styles.politicasContent}>
+                <ul>
+                <li><strong>Depósito:</strong></li>
+                  <li>El cliente debe pagar un depósito para apartar el vestido y garantizar su devolución en buen estado.</li>
+                  <li><strong>Entrega:</strong></li>
+                  <li>El cliente debe entregar el vestido en la fecha y lugar acordados. Si se retrasa, se le puede descontar del depósito.</li>
+                  <li><strong>Condiciones del vestido: </strong></li>
+                  <li>El cliente debe entregar el vestido en las mismas condiciones en que lo recibió, sin modificaciones, desperfectos o lavados.</li>
+                  <li><strong>Notificación de daños: </strong></li>
+                  <li>El cliente debe notificar cualquier daño o pérdida del vestido de manera oportuna. </li>
+                  <li><strong>Arreglos:</strong></li>
+                  <li>El cliente no puede realizar arreglos, ajustes o modificaciones en el vestido. Si lo hace, la empresa puede cobrarle el costo de reposición. </li>
+                  <li><strong>Limpieza: </strong></li>
+                  <li>La empresa se encarga de la limpieza del vestido, por lo que el cliente no debe lavarlo. </li>
+                  <li><strong>Recomendaciones de tiempo: </strong></li>
+                  <li>Se recomienda realizar el alquiler con al menos una semana de anticipación.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+
+
         </div>
       </div>
     </div>

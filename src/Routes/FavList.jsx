@@ -11,32 +11,28 @@ const FavList = ({ pageSize = 6 }) => {
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [totalElements, setTotalElements] = useState(0);
-  const [numElements, setNumElements] = useState(0);
 
   // Fetch favorite products
+  const fetchFavorites = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/v1/users/favorites`,
+        { params: { page: currentPage, size: pageSize } }
+      );
+      const data = response.data;
+      setFavorites(data.content);
+      setTotalPages(data.totalPages);
+    } catch (err) {
+      setError("Error al obtener los favoritos.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchFavorites = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const response = await axios.get(
-          `http://localhost:8080/api/v1/users/favorites`,
-          { params: { page: currentPage, size: pageSize } }
-        );
-        const data = response.data;
-        setFavorites(data.content);
-        setTotalPages(data.totalPages);
-        setTotalElements(data.totalElements);
-        setNumElements(data.numberOfElements);
-      } catch (err) {
-        setError("Error al obtener los favoritos.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchFavorites();
   }, [currentPage]);
 
@@ -46,12 +42,7 @@ const FavList = ({ pageSize = 6 }) => {
       await axios.post(`http://localhost:8080/api/v1/users/toggle-favorites`, {
         productId,
       });
-      // Refetch favorites after toggling
-      const updatedFavorites = await axios.get(
-        `http://localhost:8080/api/v1/users/favorites`,
-        { params: { page: currentPage, size: pageSize } }
-      );
-      setFavorites(updatedFavorites.data.content);
+      await fetchFavorites(); // Refetch favorites after toggling
     } catch {
       setError("No se pudo actualizar el estado del favorito.");
     }
@@ -79,7 +70,7 @@ const FavList = ({ pageSize = 6 }) => {
             <HeartButton
               className={styles.heart}
               productId={product.productId}
-              onToggle={() => fetchFavorites()} // Refresca los favoritos al alternar
+              onToggle={() => handleToggleFavorite(product.productId)}
             />
             <img
               src={product.images[0]?.url || "placeholder.jpg"}
