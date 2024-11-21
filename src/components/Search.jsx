@@ -39,7 +39,11 @@ const Search = ({isSearch, setIsSearch}) => {
                     <span onClick={() => setEndDate({day: null, month: null, year: null})}>{endDate.day != null ? 'x' : ''}</span>
                   </div>
                   <span className={styles.separator}>|</span>
-                  <div className={styles.searchButton} onClick={() => { setSearchToggle(!searchToggle); setIsSearch(true);}}>
+                  <div className={styles.searchButton} onClick={() => {
+                    if(startDate.day != null && searchTerm != '' && endDate.day != null) 
+                    {setSearchToggle(!searchToggle); setIsSearch(true);}
+                    else alert("Por favor, rellene todos los campos.");
+                  }}>
                     <span>Buscar</span>
                     <img className={styles.lens} src="lens.svg"/>
                   </div>
