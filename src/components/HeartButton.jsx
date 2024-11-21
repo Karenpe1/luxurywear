@@ -21,8 +21,7 @@ const HeartButton = ({id }) => {
       console.log(id)
       // Realiza el POST a la API con el ID de la tarjeta
       const response = await axios.post(
-        "http://localhost:8080/api/v1/users/toggle-favorites",
-        { id }, // El id como parámetro en el cuerpo
+        `http://localhost:8080/api/v1/users/toggle-favorites?page=0&size=6&productId=${id}`,null,
         {
           headers: {
             "Content-Type": "application/json",
