@@ -22,8 +22,8 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
     designer: "",
     price: "",
     images: [],
-    categories: "",
-    sizes: [],
+    category: null, // Change to null to represent an object
+    sizes: [], // Updated to handle objects
   });
   const [error, setError] = useState({
     name: "",
@@ -34,7 +34,7 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
     designer: "",
     price: "",
     images: "",
-    categories: "",
+    category: "",
     sizes: "",
   });
 
@@ -48,7 +48,6 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
   // eslint-disable-next-line no-useless-escape
   const noNumbersRegex = /^[^\d]*$/;
   const onlyNumbers=/^-?\d+(\.\d+)?$/;
-  const axios= useAxios();
 
   const toUrlFriendlyString = (str) =>
     str
@@ -57,24 +56,43 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
       .replace(/^-+|-+$/g, "");
 
   const url = "http://localhost:8080/api/v1/products";
-  const url1 = "http://localhost:8080/api/v1/categories";
-  const [categoriesTitle, setCategoriesTitle]=useState([])
-  // Cargar categorías desde el backend
-  useEffect(()=>{
-    const fetchcategorias=async()=>{
-      const response= await fetch(url1);
-      const data=await response.json();
-      setCategoriesTitle(data)
-    }
-    fetchcategorias();
-  },[])
+  const [categoriesTitle, setCategoriesTitle] = useState([]);
+  const [sizesOptions, setSizesOptions] = useState([]);
+  const axios= useAxios();
+
+  // Load categories and sizes from the backend
+  useEffect(() => {
+    const fetchCategoriesAndSizes = async () => {
+      const [categoriesResponse, sizesResponse] = await Promise.all([
+        fetch("http://localhost:8080/api/v1/categories"),
+        fetch("http://localhost:8080/api/v1/sizes"), // Assuming endpoint exists
+      ]);
+      const categoriesData = await categoriesResponse.json();
+      const sizesData = await sizesResponse.json();
+
+      setCategoriesTitle(categoriesData.map(category => ({
+        value: category.id,
+        label: category.name,
+        id: category.id,
+        name: category.name,
+      })));
+
+      setSizesOptions(sizesData.map(size => ({
+        value: size.id,
+        label: size.size,
+        id: size.id,
+        size: size.size,
+      })));
+    };
+    fetchCategoriesAndSizes();
+  }, []);
+
   // Prellenar los campos si se está editando
   useEffect(()=>{
     if(isEdit && initialData){
-      setProduct(initialData)
+      setProduct(initialData);
     }
-  },[isEdit,initialData])
-
+  },[isEdit,initialData]);
 
   const handleNombre = (e) => {
     setProduct({ ...product, name: e.target.value });
@@ -148,39 +166,28 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
 
     setError({ ...error, images: "" });
   };
-  const handleCategories = (e) => {
-    setProduct({ ...product, categories: e.value });
-    setError({ ...error, categories: "" });
+
+  const handleCategories = (selected) => {
+    const category = categoriesTitle.find((cat) => cat.value === selected.value);
+    setProduct({ ...product, category }); // Assign the full object
+    setError({ ...error, category: "" });
   };
 
   const handleSizeChange = (selected) => {
-    setProduct((prevProduct) => ({
-        ...prevProduct,
-        sizes: [...new Set([...prevProduct.sizes, ...selected])], // Concatenamos y eliminamos duplicados
-      }));
+    console.log(selected);
+    const selectedSizes = selected.map((sizeId) =>
+      sizesOptions.find((size) => size.value === sizeId)
+    );
+    setProduct({ ...product, sizes: selectedSizes }); // Assign objects
     setError({ ...error, sizes: "" });
-    console.log("Categorías seleccionadas:", selected);
+    console.log("Tallas seleccionadas:", selected);
   };
-
-
-  const categorias1 = categoriesTitle.map((categoria) => ({
-    value: categoria.name,
-    label: categoria.name, // Aquí estás manteniendo el valor original del label
-  }));
-
-  const tallas = [
-    { value: 'XS', label: 'XS' },
-    { value: 'S', label: 'S' },
-    { value: 'M', label: 'M' },
-    { value: 'L', label: 'L' },
-    { value: 'XL', label: 'XL' },
-    { value: 'XXL', label: 'XXL' }
-  ];
 
   const handdleSubmit = async (e) => {
     e.preventDefault();
-    let errors = {};
+
     let formIsValid = true;
+    let errors = {};
 
     if (!noNumbersRegex.test(product.name) || product.name.trim().length < 3) {
       errors.name= "El nombre debe ser válido y tener al menos 3 caracteres";
@@ -215,24 +222,21 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
         errors.images = "Debes subir al menos una imagen y maximo 5 al producto";
         formIsValid = false;
       }
-    if (product.sizes.length==0 ) {
-        errors.sizes = "Debes seleccionar al menos una talla";
-        formIsValid = false;
-      }
-    if (!product.categories) {
-        errors.categories = "Debes seleccionar una categoría.";
-        formIsValid = false;
-      }
+
+    if (product.category === null) {
+      errors.category = "Debes seleccionar una categoría.";
+      formIsValid = false;
+    }
+    if (product.sizes.length === 0) {
+      errors.sizes = "Debes seleccionar al menos una talla.";
+      formIsValid = false;
+    }
     setError(errors);
 
     if (formIsValid) {
-      const method= isEdit? "PUT" : "POST"
-      const endpoint = isEdit ? `${url}/${product.id}` : url;
-
-      const uploadedImages = isEdit ? (
-        product.images
-      ) : (
-        await Promise.all(
+      const uploadedImages = isEdit
+        ? product.images
+        : await Promise.all(
           product.images.map(async (file) => {
             const formData = new FormData();
             const uniqueIdentifier = uuidv4();
@@ -241,14 +245,13 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
             const fileName = `${toUrlFriendlyString(product.name)}__${uniqueIdentifier}.${fileExtension}`;
             formData.append("file", file);
             formData.append("name", fileName);
-            formData.append("category", product.categories.toLowerCase());
+            formData.append("category", product.category.name.toLowerCase());
 
             const response = await axios.post("/api/v1/products/upload", formData, {
               headers: {"Content-Type": "multipart/form-data"},
             });
             return {url: response.data.response};
           })
-        )
       );
 
       const body = {
@@ -260,33 +263,27 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
         designer: product.designer,
         price: product.price,
         images: uploadedImages,
-        category: product.categories,
-        sizes: product.sizes,
+        category: product.category, // Now an object
+        sizes: product.sizes, // Now an array of objects
       };
 
-      const settings = {
-        method,
-        body: JSON.stringify(body),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      let response= {};
+      const method = isEdit ? "PUT" : "POST";
+      const endpoint = isEdit ? `${url}/${product.id}` : url;
+
       try {
-        if(isEdit){
-          response = await axios.put(endpoint, settings);
-        }else{
-          response = await axios.post(endpoint, settings);
-        }
+        const response = await axios({
+        method,
+          url: endpoint,
+          data: body,
+        });
 
         // Handle non-201 status codes
-        if (response.status == 201) {
+        if (response.status === 201) {
           setModalInfo({
             show: true,
             titulo: "¡Felicidades!",
             subtitulo: "Tu registro ha sido exitoso.",
-            mensaje:
-              "Te hemos registrado correctamente en nuestra web. Ahora puedes acceder a todas las funciones y beneficios que ofrecemos.",
+            mensaje: "El producto se ha guardado correctamente.",
             img: "./Estrellas.svg",
           }); //mostrar el mensaje de exito
         } else {
@@ -325,7 +322,6 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
       }
     }
   };
-  
 
   return (
     <div className={stylesProduct.containerProduct}>
@@ -357,12 +353,12 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
                 className={stylesProduct.nombre}
               />
               <MultiSelector
-                  label="Categorias"
-                  options={categorias1}
-                  placeholder="Seleccione una categoria"
+                  label="Categorías"
+                  options={categoriesTitle}
+                  placeholder="Seleccione una categoría"
                   onChange={handleCategories}
                   multiselector={false}
-                  error={error.categories}
+                  error={error.category}
                 />
 
               <div className={stylesProduct.grid}>
@@ -422,8 +418,9 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
 
                 <MultiSelector
                   label="Tallas"
-                  options={tallas}
-                  placeholder="Seleccione la talla"
+                  options={sizesOptions}
+                  placeholder="Seleccione las tallas"
+                  // onChange={(selected) => handleSizeChange(selected.map((opt) => opt.value))}
                   onChange={handleSizeChange}
                   multiselector={true}
                   error={error.sizes}
