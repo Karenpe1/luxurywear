@@ -12,23 +12,25 @@ import NewFooter from "./components/NewFooter.jsx";
 import PaginatedProductList from "./components/PaginatedProductList";
 import NewAdmin from "./Routes/NewAdmin.jsx";
 import FavList from "./Routes/FavList.jsx";
+import { useState } from "react";
 
 function App() {
   const location = useLocation();
   const isLocation = location.pathname === "/register";
   const currentPath = location.pathname;
+  const [isSearch, setIsSearch] = useState(false);
 
   return (
     <AuthProvider>
     {!isLocation && (
       <>
       <NewHeader />
-      {currentPath == "/" && <Search/>}
+      {currentPath == "/" && <Search isSearch={isSearch} setIsSearch={setIsSearch}/>}
       </>  )/*condicion para no mostrar el header en el registro */} 
         <div className={appStyles.container}>
           <Routes>
             <Route path="/detail/:id" element={<Detail />} />
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home isSearch={isSearch}/>} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route

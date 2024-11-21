@@ -7,7 +7,7 @@ import Pagination from "./Pagination";
 import useAxios from "../Utils/axiosInstance";
 import DetailHeader from "./DetailHeader";
 
-const PaginatedProductList = ({ pageSize = 6 }) => {
+const PaginatedSearchList = ({ pageSize = 6, searchTerm, startDate, endDate, searchToggle }) => {
   const { categoryName } = useParams(); // Get categoryName from URL
   const { state } = useLocation(); // Get state from navigation
 
@@ -36,6 +36,9 @@ const PaginatedProductList = ({ pageSize = 6 }) => {
             page: currentPage,
             size: pageSize,
             category: categoryName || "",
+            search: searchTerm,
+            startDate: startDate.year + '-' + ('0' + (startDate.month + 1)).slice(-2) + '-' + ('0' + startDate.day).slice(-2),
+            endDate: endDate.year + '-' + ('0' + (endDate.month + 1)).slice(-2) + '-' + ('0' + endDate.day).slice(-2)
           },
         });
 
@@ -54,7 +57,7 @@ const PaginatedProductList = ({ pageSize = 6 }) => {
 
     fetchProducts();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categoryName, currentPage]);
+  }, [categoryName, currentPage, searchToggle]);
 
   const handleCardClick = (productId) => {
     navigate(`/detail/${productId}`); // Navigate to the detail page with productId
@@ -73,7 +76,7 @@ const PaginatedProductList = ({ pageSize = 6 }) => {
       {categoryName ? (
         <DetailHeader title={categoryName}/>
       ) : (
-        <h2 className={styles.titulo}>{"Nuestros Productos"}</h2>
+        <h2 className={styles.titulo}>{"Resultados de la búsqueda"}</h2>
       )}
 
       {categoryDescription && <h3>{categoryDescription}</h3>} {/* Show subtitle only if provided */}
@@ -117,4 +120,4 @@ const PaginatedProductList = ({ pageSize = 6 }) => {
   );
 };
 
-export default PaginatedProductList;
+export default PaginatedSearchList;

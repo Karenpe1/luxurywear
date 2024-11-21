@@ -214,7 +214,7 @@ const NewAdmin = () => {
                                 <td>{product.color}</td>
                                 <td>{product.designer}</td>
                                 <td>{formatCurrency(product.price, 'es-CO', 'COP')}</td>
-                                <td>{product.categories[0].name}</td>
+                                <td>{product.category.name}</td>
                                 <td>
                                     <div className={styles.containerImage}>
                                         <img className={styles.prodImage} src={product.images[0].url} />
