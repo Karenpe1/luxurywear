@@ -1,10 +1,9 @@
 import Body from "../components/Body";
-import Carrusel from "../components/Carrusel";
 
-const Home = () => {
+const Home = ({isSearch}) => {
   return (
     <>
-      <Body />
+      <Body isSearch={isSearch}/>
     </>
   );
 };
