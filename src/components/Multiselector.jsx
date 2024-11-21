@@ -48,7 +48,15 @@ const MultiSelector = ({ options, placeholder, onChange , multiselector,error,la
           onClick={handleToggleDropdown}
           tabIndex={0}
         >
-          <span className={styles.interTitle}>
+          <span className={`${styles.interTitle} ${
+              multiselector
+                ? selectedOptions.length > 0
+                  ? styles.hasValue
+                  : styles.noValue
+                : selectedValue
+                ? styles.hasValue
+                : styles.noValue
+            }`}>
           {multiselector
               ? selectedOptions.length > 0
                 ? selectedOptions.map(

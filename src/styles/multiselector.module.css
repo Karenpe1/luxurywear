@@ -27,7 +27,16 @@
     font-family: "Encode Sans";
     font-size: 15px;
     font-weight: 400;
-    color: #717171;
+    transition: color 0.3s ease; /* Animación opcional */
+  }
+ 
+  
+  .hasValue {
+    color: black; /* Color del texto cuando tiene un valor */
+  }
+  
+  .noValue {
+    color: #717171; /* Color del texto cuando no tiene un valor */
   }
   @media(min-width:700px){
     .dropdownHeader{
