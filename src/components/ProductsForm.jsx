@@ -6,6 +6,7 @@ import Button from "./Button";
 import FilePicker from "./FilePicker";
 import MultiSelector from "./Multiselector";
 import useAxios from "../Utils/axiosInstance";
+import Modal from "./Modal";
 
 const ProductsForm = ({onClose,clase, isEdit=false,initialData={}}) => {
 
@@ -44,7 +45,7 @@ const ProductsForm = ({onClose,clase, isEdit=false,initialData={}}) => {
   // eslint-disable-next-line no-useless-escape
   const noNumbersRegex = /^[^\d]*$/;
   const onlyNumbers=/^-?\d+(\.\d+)?$/;
-  const axios= useAxios;
+  const axios= useAxios();
   const url = "http://localhost:8080/api/v1/products";
   const url1 = "http://localhost:8080/api/v1/categories";
   const [categoriesTitle, setCategoriesTitle]=useState([])

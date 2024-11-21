@@ -94,7 +94,7 @@ const PaginatedProductList = ({ pageSize = 6 }) => {
             className={styles.productCard}
             onClick={() => handleCardClick(product.productId)}
           >
-            <HeartButton className={styles.heart}/>
+            <HeartButton id={product.productId}/>
             <img
               src={`/${product.images[0].url}`}
               alt={product.name}

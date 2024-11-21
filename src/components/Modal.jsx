@@ -9,7 +9,9 @@ const Modal = ({titulo, subtitulo, mensaje,img,onClose}) => {
         <h2 className={StyleModal.titulo}>{titulo}</h2>
         <h2 className={StyleModal.subtitulo}>{subtitulo}</h2>
         <p className={StyleModal.mensaje}>{mensaje}</p>
-        <Button onClick={onClose}>Continuar</Button>
+        <Button onClick={(e) => {
+            e.stopPropagation(); // Detiene la propagación del clic hacia el fondo
+            onClose();}}>Continuar</Button>
     </div>
   )
 }
