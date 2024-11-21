@@ -354,6 +354,7 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
                 error={error.name}
                 className={stylesProduct.nombre}
               />
+              
               <MultiSelector
                   label="Categorías"
                   options={categoriesTitle}
@@ -361,6 +362,7 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
                   onChange={handleCategories}
                   multiselector={false}
                   error={error.category}
+                  preselected= {product.categories}
                 />
 
               <div className={stylesProduct.grid}>
@@ -425,6 +427,7 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
                   // onChange={(selected) => handleSizeChange(selected.map((opt) => opt.value))}
                   onChange={handleSizeChange}
                   multiselector={true}
+                  preselected={product.sizes.map((size) => size.value)} // Valores iniciales
                   error={error.sizes}
                 />
               </div>

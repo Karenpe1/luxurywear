@@ -1,17 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../styles/multiselector.module.css"; // Archivo CSS
 
-const MultiSelector = ({ options, placeholder, onChange , multiselector,error,label}) => {
+const MultiSelector = ({ options, placeholder, onChange , multiselector,error,label, preselected}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [selected, setSelected] = useState("");
+  const [selectedValue, setSelectedValue] = useState("");
 
+  // Prellenar valores iniciales en caso de editar
+  useEffect   (() => {
+    if (preselected) {
+      if (multiselector) {
+        setSelectedOptions(preselected); // Para múltiples selecciones
+      } else {
+        const selectedOption = options.find((opt) => opt.value === preselected.value);  
+        setSelectedValue(selectedOption ? selectedOption.label : "");
+        console.log("seleccionado previo", selectedValue)
+      }
+    }
+  }, [preselected, options, multiselector]);
 
   const handleToggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
   const handleOptionChange = (value) => {
+    // Manejo de selección múltiple
     const updatedSelected = selectedOptions.includes(value)
       ? selectedOptions.filter((opt) => opt !== value)  //Si ya está seleccionado, lo elimina
       : [...selectedOptions, value]; // Si no está seleccionado, lo agrega
@@ -20,7 +33,8 @@ const MultiSelector = ({ options, placeholder, onChange , multiselector,error,la
     onChange(updatedSelected); // Notifica al componente padre
   };
   const handleOptionClick = (option) => {
-    setSelected(option.label);
+    // Manejo de selección única
+    setSelectedValue(option.label);
     setIsOpen(false);
     if (onChange) onChange({value:option.value});
   };
@@ -34,7 +48,15 @@ const MultiSelector = ({ options, placeholder, onChange , multiselector,error,la
           onClick={handleToggleDropdown}
           tabIndex={0}
         >
-          <span className={styles.interTitle}>{selected || placeholder || "Selecciona una opción"}</span>
+          <span className={styles.interTitle}>
+          {multiselector
+              ? selectedOptions.length > 0
+                ? selectedOptions.map(
+                    (val) => options.find((opt) => opt.value === val)?.label
+                  ).join(", ")
+                : placeholder || "Selecciona una opción"
+              : selectedValue || placeholder || "Selecciona una opción"}
+           </span>
           <span className={`${styles.icon} ${isOpen ? styles.open : ""}`} />
         </div>
         {isOpen && (
