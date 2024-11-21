@@ -228,7 +228,7 @@ const NewAdmin = ({pageSize=6}) => {
     try {
       const response = await axios.get(`http://localhost:8080/api/v1/products/${id}`);
       const productData = response.data;
-  
+      console.log("data a editar", productData)
       setSelectedProductId(id); // Almacena el ID seleccionado
       setProductToEdit({
         name: productData.name,
@@ -239,8 +239,16 @@ const NewAdmin = ({pageSize=6}) => {
         designer: productData.designer,
         price: productData.price,
         images: productData.images || [],
-        categories: productData.category?.name || "",
-        sizes: productData.sizes || [],
+        categories: productData.category?
+          {
+            value: productData.category.id,
+            label: productData.category.name,
+          }
+        :null,
+        sizes: productData.sizes.map((size) => ({
+          value: size.id,
+          label: size.size,
+        })),
       });
       setShowEditModal(true);   // Abre el modal para edición
     } catch (error) {
