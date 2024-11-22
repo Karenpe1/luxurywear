@@ -1,3 +1,7 @@
+.no-border {
+    border: 0;
+}
+
 .container {
     height: 120px;
     background-color: #231942;
@@ -59,6 +63,17 @@
     cursor: pointer;
 }
 
+.dateOuterContainerToggled {
+    display: flex;
+    justify-content: space-between;
+    border-radius: 50px;
+    padding: 5px 20px;
+    width: 150px;
+    align-items: center;
+    cursor: pointer;
+    background-color: #E9E4F7;
+}
+
 .dateOuterContainer:hover {
     background-color: #E9E4F7;
 }
@@ -89,18 +104,18 @@
 }
 
 .calendarContainer {
-    width: 100vw;
+    /* width: 100vw;
     height: 100vh;
     position: absolute;
     top: -100px;
-    right: -80px;
+    right: -80px; */
 }
 
 .calendar {
     position: absolute;
-    z-index: 100;
-    top: 290px;
-    right: 40px;
+    z-index: 2;
+    top: 180px;
+    right: -20px;
 }
 
 @media(min-width: 550px) and (max-width: 1079px) {

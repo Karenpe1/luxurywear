@@ -3,12 +3,17 @@ import { useParams, Link } from "react-router-dom";
 import styles from "../styles/Detail.module.css";
 import backButton from "../Images/backArrow.png";
 import { formatCurrency } from "../Utils/currencyFormatter";
+import Calendar from "../components/Calendar";
 
 const Detail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [mainImage, setMainImage] = useState(""); // Estado para la imagen principal
   const [caracteristicas, setCaracteristicas] = useState(false);
+  const [startDate, setStartDate] = useState({day: null, month: null, year: null});
+  const [endDate, setEndDate] = useState({day: null, month: null, year: null});
+  const [isOpen, setIsOpen] = useState(false);
+  const [closedDates, setClosedDates] = useState([]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -22,6 +27,13 @@ const Detail = () => {
         console.log(data);
         setProduct(data);
         setMainImage(data.images[0]?.url ?? "placeholder.svg"); // Establece la primera imagen como principal
+        const response2 = await fetch(
+          `http://localhost:8080/api/v1/products/${id}/availability`
+        );
+        const data2 = await response2.json();
+        setClosedDates(data2.unavailableDates.map((date) => {
+          let arr = date.split('-');
+          return {day: parseInt(arr[2]), month: parseInt(arr[1]) - 1, year: parseInt(arr[0])}}));
       } catch (error) {
         console.error("Error fetching product detail:", error);
       }
@@ -71,6 +83,29 @@ const Detail = () => {
             Alquiler:{" "}
             <span>{formatCurrency(product.price, "es-CO", "COP")}</span>
           </p>
+
+          <div className={styles.dateSelector}>
+            <div className={styles.dateOuterContainer} onClick={() => setIsOpen(true)}>
+              <div className={styles.dateContainer}>
+                <span>Alquila</span>
+                <span className={styles.date}>{startDate.day == null ? 'Desde' : startDate.day + '/' + (startDate.month + 1) + '/' + startDate.year}</span>
+              </div>
+              <span onClick={() => {setStartDate({day: null, month: null, year: null}); setEndDate({day: null, month: null, year: null});}}>{startDate.day != null ? 'x' : ''}</span>
+            </div>
+            <span className={styles.separator}>|</span>
+            <div className={styles.dateOuterContainer} onClick={() => setIsOpen(true)}>
+              <div className={styles.dateContainer}>
+                <span>Devuelve</span>
+                <span className={styles.date}>{endDate.day == null ? 'Hasta' : endDate.day + '/' + (endDate.month + 1) + '/' + endDate.year}</span>
+              </div>
+              <span onClick={() => setEndDate({day: null, month: null, year: null})}>{endDate.day != null ? 'x' : ''}</span>
+            </div>
+          </div>
+          {isOpen && <div className={styles.calendarContainer} onClick={() => setIsOpen(false)}>
+                <div className={styles.calendar} onClick={(e) => e.stopPropagation()}>
+                  <Calendar setStartDate={setStartDate} setEndDate={setEndDate} startDate={startDate} endDate={endDate} closedDates={closedDates}/>
+                </div>
+              </div>}
 
           <div className={styles.caract}>
             <div className={styles.encabezado} onClick={toggleCaracteristicas}>
