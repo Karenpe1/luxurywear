@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from "../styles/Calendar.module.css";
 
-const Calendar = ({setStartDate, setEndDate, startDate, endDate}) => {
+const Calendar = ({setStartDate, setEndDate, startDate, endDate, closedDates = [], startDateToggle = false, setStartDateToggle, setIsOpen}) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [currentDate2, setCurrentDate2] = useState(new Date(new Date(currentDate).setMonth(currentDate.getMonth() + 1)));
 
@@ -86,9 +86,22 @@ const Calendar = ({setStartDate, setEndDate, startDate, endDate}) => {
     else {
         return -1
     }
-  } 
+  }
+
+  const searchInClosedDates = (dayObj) => {
+    for(let i = 0; i < closedDates.length; i++) {
+        if(compareDays(dayObj, closedDates[i]) == 0) return true;
+    }
+    return false;
+  }
 
   const handleDayClick = (dayObj) => {
+    if(startDateToggle) {
+        setStartDate(dayObj);
+        setStartDateToggle(false);
+        if(compareDays(dayObj, endDate) == 1) setEndDate(dayObj);
+        return;
+    }
     if(compareDays(dayObj, {day: new Date().getDate(), month: new Date().getMonth(), year: new Date().getFullYear()}) == -1) {
         alert("No puede rentar dias anteriores a hoy.");
         return;
@@ -105,7 +118,32 @@ const Calendar = ({setStartDate, setEndDate, startDate, endDate}) => {
     }
   }
 
+  useEffect(() => {
+    if(startDate.day != null && endDate.day != null) {
+        let start = new Date(startDate.year + '-' + ('0' + (startDate.month + 1)).slice(-2) + '-' + ('0' + startDate.day).slice(-2));
+        let end = new Date(endDate.year + '-' + ('0' + (endDate.month + 1)).slice(-2) + '-' + ('0' + endDate.day).slice(-2));
+        let arr = [];
+        while(start < end) {
+            start.setDate(start.getDate() + 1);
+            arr.push(new Date(start));
+        }
+        arr = arr.map((date) => {return {day: date.getDate(), month: date.getMonth(), year: date.getFullYear()}});
+        for(let i = 0; i < arr.length; i++) {
+            if(searchInClosedDates(arr[i])) {
+                setStartDate({day: null, month: null, year: null});
+                setEndDate({day: null, month: null, year: null});
+                alert("No puede seleccionar fechas ya reservadas.");
+                return;
+            }
+        }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [startDate, endDate])
+
   return (
+      <div style={{backgroundColor: 'white', borderRadius: '20px', textAlign: 'center'}}>
+        <span style={{position: 'absolute', top: '10px', right: '15px', fontWeight: 'bold', cursor: 'pointer'}} onClick={() => setIsOpen(false)}>X</span>
+        <h1 style={{paddingTop: '10px'}}>¿Cuándo es tu evento?</h1>
     <div style={{display: 'flex'}}>
         <div style={{ textAlign: 'center', width: '320px', margin: '0', backgroundColor: 'white', padding: '10px', borderRadius: '20px 0 0 20px' }}>
         <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
@@ -126,9 +164,9 @@ const Calendar = ({setStartDate, setEndDate, startDate, endDate}) => {
         <div style={{ display: 'flex', flexWrap: 'wrap', backgroundColor: 'white' }}>
             {daysArray.map((dayObj, index) => (
             <div
-                className={(compareDays(dayObj, startDate) == 0) ? styles.selectedStart : (compareDays(dayObj, endDate) == 0) ? styles.selectedEnd : (compareDays(dayObj, startDate) == 1 && compareDays(dayObj, endDate) == -1) ? styles.between : compareDays(dayObj, {day: new Date().getDate(), month: new Date().getMonth(), year: new Date().getFullYear()}) == -1 ? styles.disabledDay : (dayObj.isCurrentMonth ? styles.dayobj : styles.dayobj2)}
+                className={(compareDays(dayObj, startDate) == 0) ? styles.selectedStart : (compareDays(dayObj, endDate) == 0) ? styles.selectedEnd : (compareDays(dayObj, startDate) == 1 && compareDays(dayObj, endDate) == -1) ? styles.between : compareDays(dayObj, {day: new Date().getDate(), month: new Date().getMonth(), year: new Date().getFullYear()}) == -1 ? styles.disabledDay : searchInClosedDates(dayObj) ? styles.disabledDay : (dayObj.isCurrentMonth ? styles.dayobj : styles.dayobj2)}
                 key={index}
-                onClick={() => compareDays(dayObj, {day: new Date().getDate(), month: new Date().getMonth(), year: new Date().getFullYear()}) == -1 ? null : handleDayClick(dayObj)}
+                onClick={() => compareDays(dayObj, {day: new Date().getDate(), month: new Date().getMonth(), year: new Date().getFullYear()}) == -1 ?  null : searchInClosedDates(dayObj) ? null : handleDayClick(dayObj)}
             >
                 {dayObj.day}
             </div>
@@ -155,15 +193,16 @@ const Calendar = ({setStartDate, setEndDate, startDate, endDate}) => {
         <div style={{ display: 'flex', flexWrap: 'wrap', backgroundColor: 'white' }}>
             {daysArray2.map((dayObj, index) => (
             <div
-                className={(compareDays(dayObj, startDate) == 0) ? styles.selectedStart : (compareDays(dayObj, endDate) == 0) ? styles.selectedEnd : (compareDays(dayObj, startDate) == 1 && compareDays(dayObj, endDate) == -1) ? styles.between : compareDays(dayObj, {day: new Date().getDate(), month: new Date().getMonth(), year: new Date().getFullYear()}) == -1 ? styles.disabledDay : (dayObj.isCurrentMonth ? styles.dayobj : styles.dayobj2)}
+                className={(compareDays(dayObj, startDate) == 0) ? styles.selectedStart : (compareDays(dayObj, endDate) == 0) ? styles.selectedEnd : (compareDays(dayObj, startDate) == 1 && compareDays(dayObj, endDate) == -1) ? styles.between : compareDays(dayObj, {day: new Date().getDate(), month: new Date().getMonth(), year: new Date().getFullYear()}) == -1 ? styles.disabledDay : searchInClosedDates(dayObj) ? styles.disabledDay : (dayObj.isCurrentMonth ? styles.dayobj : styles.dayobj2)}
                 key={index}
-                onClick={() => compareDays(dayObj, {day: new Date().getDate(), month: new Date().getMonth(), year: new Date().getFullYear()}) == -1 ? null : handleDayClick(dayObj)}
+                onClick={() => compareDays(dayObj, {day: new Date().getDate(), month: new Date().getMonth(), year: new Date().getFullYear()}) == -1 ? null : searchInClosedDates(dayObj) ? null : handleDayClick(dayObj)}
             >
                 {dayObj.day}
             </div>
             ))}
         </div>
         </div>
+    </div>
     </div>
   );
 };

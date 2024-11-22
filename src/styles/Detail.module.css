@@ -109,6 +109,55 @@
   border-color: var(--medium-purple);
 }
 
+.dateOuterContainer {
+  display: flex;
+  justify-content: space-between;
+  border-radius: 50px;
+  padding: 5px 20px;
+  width: 150px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.dateOuterContainer:hover {
+  background-color: #E9E4F7;
+}
+
+.dateContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.date {
+  color: gray;
+}
+
+.separator {
+  color: rgb(182, 182, 182);
+}
+
+.calendarContainer {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: -100px;
+  right: -80px;
+}
+
+.calendar {
+  position: absolute;
+  z-index: 100;
+  top: 560px;
+  right: 100px;
+}
+
+.dateSelector {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+  position: relative;
+}
+
 /* Mobile Styles - below 600px */
 @media (max-width: 599px) {
 
