@@ -12,11 +12,14 @@ import PrivateRoute from "./components/PrivateRoute";
 import NewFooter from "./components/NewFooter.jsx";
 import PaginatedProductList from "./components/PaginatedProductList";
 import NewAdmin from "./Routes/NewAdmin.jsx";
+import FavList from "./Routes/FavList.jsx";
+import { useState } from "react";
 
 function App() {
   const location = useLocation();
   const isLocation = location.pathname === "/register";
   const currentPath = location.pathname;
+  const [isSearch, setIsSearch] = useState(false);
 
   return (
     <ContextProvider>

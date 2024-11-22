@@ -20,7 +20,7 @@ function Login() {
     img: ""
   });
   const navigate = useNavigate();
-  
+
   // eslint-disable-next-line no-useless-escape
   const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
@@ -30,13 +30,22 @@ function Login() {
     let formIsValid = true;
 
     // Validación de correo
-    if (!emailRegex.test(email)) {
-      errors.email = "Ingresa un correo válido.";
+    if (!email) {
+      errors.email = "Por favor, ingresa tu correo electrónico.";
+      formIsValid = false;
+    } else if (!email.includes("@") || !email.includes(".")) {
+      errors.email = "El correo electrónico parece incorrecto. Revisa el formato.";
+      formIsValid = false;
+    } else if (!emailRegex.test(email)) {
+      errors.email = "Ingresa un correo electrónico válido.";
       formIsValid = false;
     }
 
     // Validación de contraseña
-    if (password.length < 6) {
+    if (!password) {
+      errors.password = "Por favor, ingresa tu contraseña.";
+      formIsValid = false;
+    } else if (password.length < 6) {
       errors.password = "La contraseña debe tener al menos 6 caracteres.";
       formIsValid = false;
     }
@@ -55,8 +64,12 @@ function Login() {
         if (response.ok) {
           loginUser(data);
           navigate("/"); // Redirige al inicio después de iniciar sesión
+        } else if (response.status === 404) {
+          setError({ email: "No encontramos una cuenta asociada a este correo electrónico." });
+        } else if (response.status === 401) {
+          setError({ password: "La contraseña ingresada es incorrecta. Vuelve a intentarlo." });
         } else {
-          setError({ ...errors, general: "Credenciales incorrectas. Intente nuevamente." });
+          setError({ general: " El correo o contraseña ingresados es incorrecto. Vuelve a intentarlo." });
         }
       } catch (error) {
         setModalInfo({
@@ -68,6 +81,7 @@ function Login() {
       }
     }
   };
+
 
   return (
     <div className={loginStyles.loginWrapper}>
@@ -81,7 +95,7 @@ function Login() {
             <label>
               Correo electrónico
               <Input
-  
+                placeholder="Por favor, ingresa tu correo electrónico."
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -95,6 +109,7 @@ function Login() {
             <label>
               Contraseña
               <Input
+                placeholder="Por favor, ingresa tu contraseña."
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

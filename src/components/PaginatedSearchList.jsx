@@ -6,9 +6,8 @@ import HeartButton from "./HeartButton";
 import Pagination from "./Pagination";
 import useAxios from "../Utils/axiosInstance";
 import DetailHeader from "./DetailHeader";
-import ModalGlobal from "./ModalGlobal";
 
-const PaginatedProductList = ({ pageSize = 6 }) => {
+const PaginatedSearchList = ({ pageSize = 6, searchTerm, startDate, endDate, searchToggle }) => {
   const { categoryName } = useParams(); // Get categoryName from URL
   const { state } = useLocation(); // Get state from navigation
 
@@ -37,11 +36,13 @@ const PaginatedProductList = ({ pageSize = 6 }) => {
             page: currentPage,
             size: pageSize,
             category: categoryName || "",
+            search: searchTerm,
+            startDate: startDate.year + '-' + ('0' + (startDate.month + 1)).slice(-2) + '-' + ('0' + startDate.day).slice(-2),
+            endDate: endDate.year + '-' + ('0' + (endDate.month + 1)).slice(-2) + '-' + ('0' + endDate.day).slice(-2)
           },
         });
 
         const data = response.data;
-        console.log("contenido de paginado",data)
         setProducts(data.content); // Set product data
         setTotalPages(data.totalPages); // Set total pages from response
         setTotalElements(data.totalElements);
@@ -56,7 +57,7 @@ const PaginatedProductList = ({ pageSize = 6 }) => {
 
     fetchProducts();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categoryName, currentPage]);
+  }, [categoryName, currentPage, searchToggle]);
 
   const handleCardClick = (productId) => {
     navigate(`/detail/${productId}`); // Navigate to the detail page with productId
@@ -75,7 +76,7 @@ const PaginatedProductList = ({ pageSize = 6 }) => {
       {categoryName ? (
         <DetailHeader title={categoryName}/>
       ) : (
-        <h2 className={styles.titulo}>{"Nuestros Productos"}</h2>
+        <h2 className={styles.titulo}>{"Resultados de la búsqueda"}</h2>
       )}
 
       {categoryDescription && <h3>{categoryDescription}</h3>} {/* Show subtitle only if provided */}
@@ -84,6 +85,11 @@ const PaginatedProductList = ({ pageSize = 6 }) => {
       <p className={styles.paginationInfo}>
         Mostrando {startRange}-{endRange} de {totalElements} productos {categoryName && "con categoría " + categoryName} (Página {currentPage + 1} de {totalPages})
       </p>
+
+      {products.length == 0 && <div style={{textAlign: 'center'}}>
+        <img src="ohNo2.png" style={{width: '300px'}}/>
+        <h2>No hay resultados para tu búsqueda.</h2>
+      </div>}
 
       {/* Loading and Error states */}
       {loading && <p>Loading...</p>}
@@ -97,23 +103,11 @@ const PaginatedProductList = ({ pageSize = 6 }) => {
             className={styles.productCard}
             onClick={() => handleCardClick(product.productId)}
           >
-            <HeartButton id={product.productId}/>
+            <HeartButton className={styles.heart}/>
             <img
-              className={styles.productImage}
-              src={`http://localhost:8080${product.images[0].url}`}
+              src={`/${product.images[0].url}`}
               alt={product.name}
-              onError={(e) => {
-                const fallback1 = `http://localhost:8080/${product.images[0].url}`; // First fallback image
-                const fallback2 = "placeholder.svg"; // Second fallback image
-
-                if (e.target.src === `http://localhost:8080${product.images[0].url}`) {
-                  e.target.src = fallback1; // Switch to the first fallback
-                } else if (e.target.src === fallback1) {
-                  e.target.src = fallback2; // Switch to the second fallback
-                } else {
-                  e.target.onerror = null; // Prevent infinite fallback loop
-                }
-              }}
+              className={styles.productImage}
             />
             <div className={styles.contenedor}>
               <h2>{product.name}</h2>
@@ -127,9 +121,8 @@ const PaginatedProductList = ({ pageSize = 6 }) => {
         totalPage={totalPages}
         onPageChange={handlePageChange}
       />
-      <ModalGlobal/>
     </div>
   );
 };
 
-export default PaginatedProductList;
+export default PaginatedSearchList;
