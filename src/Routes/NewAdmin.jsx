@@ -586,8 +586,12 @@ const NewAdmin = ({pageSize=6}) => {
                 <div className={styles.containerImage}>
                   <img
                     className={styles.prodImage}
-                    src={product.images[0].url}
+                    src={`http://localhost:8080/public/${product.images[0].url}`}
                     alt={product.name}
+                    onError={(e) => {
+                      e.target.src = "placeholder.svg"; // Fallback image
+                      e.target.onerror = null; // Prevent infinite fallback loop
+                    }}
                   />
                 </div>
               ),
@@ -699,6 +703,10 @@ const NewAdmin = ({pageSize=6}) => {
                     className={styles.prodImage}
                     src={`http://localhost:8080${categorie.cover.url}`}
                     alt={categorie.name}
+                    onError={(e) => {
+                      e.target.src = "placeholder.svg"; // Fallback image
+                      e.target.onerror = null; // Prevent infinite fallback loop
+                    }}
                   />
                 </div>
               ),
