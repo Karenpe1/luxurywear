@@ -3,6 +3,7 @@ import Button from './Button'
 import StyleModal from "../styles/modal.module.css";
 
 const Modal = ({titulo, subtitulo, mensaje,img,onClose}) => {
+  
   return (
     <div className={StyleModal.contenedor}>
         <img src={img} alt={""}/>

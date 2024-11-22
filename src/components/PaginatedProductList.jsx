@@ -6,6 +6,7 @@ import HeartButton from "./HeartButton";
 import Pagination from "./Pagination";
 import useAxios from "../Utils/axiosInstance";
 import DetailHeader from "./DetailHeader";
+import ModalGlobal from "./ModalGlobal";
 
 const PaginatedProductList = ({ pageSize = 6 }) => {
   const { categoryName } = useParams(); // Get categoryName from URL
@@ -116,6 +117,7 @@ const PaginatedProductList = ({ pageSize = 6 }) => {
         totalPage={totalPages}
         onPageChange={handlePageChange}
       />
+      <ModalGlobal/>
     </div>
   );
 };
