@@ -136,7 +136,7 @@ const NewAdmin = ({pageSize=6}) => {
     };
 
     fetchCategoria();
-  }, [ currentPageCategories]);
+  }, [ currentPageCategories,reload]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -293,6 +293,7 @@ const NewAdmin = ({pageSize=6}) => {
         categories.filter((categorie) => categorie.id !== selectedCategorieId)
       ); // Remove product from list
       setShowModalCategorie(false);
+      setReload((prev) => !prev); // Actualizar la tabla
     } catch (error) {
       console.error("Error deleting:", error);
     }
@@ -343,6 +344,7 @@ const NewAdmin = ({pageSize=6}) => {
 
   const handleCloseCategoryModal = () => {
     setShowCategoryModal(false);
+    setReload((prev) => !prev); // Actualizar la tabla
   };
   const handleOpenProductModal= ()=>{
     setShowProductModal(true);

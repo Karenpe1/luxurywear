@@ -228,7 +228,7 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
       // Si la respuesta no lanza error, significa que el nombre existe
       return false; // nombre ya existente
     } catch (error) {
-      if (error.response && error.response.status === 403) {
+      if (error.response && error.response.status === 404) {
         // 404 significa que el nombre no existe y es válida
         return true;
       }
@@ -509,7 +509,7 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
                   label="Precio"
                   id="precio"
                   placeholder="Ingrese el precio"
-                  type="text"
+                  type="number"
                   value={product.price}
                   onChange={handlePrice}
                   error={error.price}
