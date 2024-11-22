@@ -1,17 +1,54 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import AuthContext from "../context/AuthContext";
+import stylesHeart from "../styles/heart.module.css";
+import useAxios from "../Utils/axiosInstance";
+import { useContextGlobal } from "../context/globalContext";
 
-const HeartButton = ({ className }) => {
+const HeartButton = ({id }) => {
   const [liked, setLiked] = useState(false);
+  const {user}=useContext(AuthContext);
+  const{dispatch}= useContextGlobal();
+  const axios = useAxios() 
 
-  const toggleLike = (e) => {
+  const toggleLike = async (e) => {
     e.stopPropagation();
-    setLiked(!liked);
+    if (!user) {     
+      dispatch({
+        type: "SHOW_MODAL",
+        payload: {
+          img: "./ohNo.png",
+          titulo: "Error",
+          subtitulo: "Hubo un problema.",
+          mensaje: "Por favor, inicia sesión para añadir este producto a tu lista de favoritos.",
+        },
+      });
+      return;
+    }
+    // Alternar estado de "Like" solo después de una solicitud exitosa
+    try {
+
+      // Realiza el POST a la API con el ID de la tarjeta
+      const response = await axios.post(
+        `http://localhost:8080/api/v1/users/toggle-favorites?page=0&size=6&productId=${id}`,null,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log(response.data); // Opcional: manejar la respuesta
+      setLiked(!liked); // Cambia el estado de "Like"
+    } catch (error) {
+      console.error("Error al hacer toggle de favoritos:", error);
+    }
   };
+
   return (
     <>
-      <button
+        <button
         onClick={toggleLike}
-        className={className}
+        className={stylesHeart.heart}
         style={{
           background: "none",
           border: "none",

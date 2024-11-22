@@ -12,7 +12,7 @@ const FilePicker = ({ label, type, accept, onChange, error, archivos}) => {
                 setFileError("No puedes seleccionar más de un archivo.");
               } else {
                 setFileError("");
-                onChange(files); // Pasa los archivos si están en el rango permitido
+                onChange(e); // Pasa los archivos si están en el rango permitido
               }
         }else{
             if (files.length < 1) {
@@ -21,13 +21,13 @@ const FilePicker = ({ label, type, accept, onChange, error, archivos}) => {
                 setFileError("No puedes seleccionar más de cinco archivos.");
               } else {
                 setFileError("");
-                onChange(files); // Pasa los archivos si están en el rango permitido
+                onChange(e); // Pasa los archivos si están en el rango permitido
               }
         }
     }
   return (
     <>
-      <label className={StyleFile.label}>{label}</label>
+      <label className={StyleFile.labelFile}>{label}</label>
       <input className={StyleFile.archivo} type={type} multiple accept={accept} onChange={handleFileChange} />
       {(fileError || error) && (
         <span className={StyleFile.error}>{fileError || error }</span>

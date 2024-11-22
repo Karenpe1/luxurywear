@@ -1,8 +1,27 @@
 .container {
-    margin-top: 66px;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+}
+.menu{
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    border-right: 1.6px solid rgb(223, 214, 214);
+}
+.titlePanel{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    padding: 1.2em 0em;
+
 }
 
 .notAvailable {
+    margin: 100px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -14,7 +33,7 @@
 }
 
 .ohNo {
-    width: 360px;
+    width: 70%;
 }
 
 .panel {
@@ -26,11 +45,16 @@
       display: none;
     }
 }
+@media (max-width: 1024px) {
+    .menu {
+      display: none;
+    }
+}
 
 @media (min-width: 1025px) {
 
     .container {
-      margin-top: calc(120px);
+      margin-top: calc(100px);
     }
 
     .notAvailable {
@@ -41,30 +65,28 @@
         display: flex;
         flex-direction: column;
         background-color: white;
-        padding: 20px;
-    }
-
-    .tabs {
-        background-color: #f4f4f4;
-        width: 212px;
-        display: flex;
-        gap: 10px;
-        height: 50px;
-        padding: 5px 10px;
-        border-radius: 5px;
-        margin-bottom: 20px;
+        width: 100%;
+        padding: 2em;
     }
 
     .tab {
         padding: 10px;
-        background-color: transparent;
         height: 40px;
+        width: 90%;
         border-radius: 8px;
+        margin-left: 1em;
         cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        font-size: 1em;
+        gap: 1em;
+        color: rgb(86, 86, 86);
     }
 
     .tab:hover {
-        background-color: white;
+        background-color: #dbc7f68a;
+        color: black;
     }
 
     .containerImage {
@@ -76,12 +98,17 @@
     }
 
     .prodImage {
-        height: 70px;
+        width: 70px;
+        object-fit: cover;
     }
-
-    .titles {
+    .containerTitles{
         display: flex;
         flex-direction: column;
+        justify-content: center;
+    }
+    .titles {
+        display: flex;
+        justify-content: space-between;
         margin-bottom: 40px;
     }
 
@@ -89,9 +116,13 @@
         font-weight: bold;
         font-size: 32px;
     }
-
-    .subtitle {
-        font-size: 20px;
+ 
+    .inputBuscar{
+        width: 100%;
+        margin-bottom: 2em;
+        padding: 1em;
+        border-radius: 10px;
+        border: .5px solid gainsboro;
     }
 
     .actions {
@@ -104,13 +135,16 @@
         cursor: pointer;
     }
 
-    .cell {
+    .cells {
         position: relative;
     }
 
     .actionsMenuContainer {
-        height: 100vh;
-        width: 100vw;
+        position: absolute;
+        top: -300px;
+        right: -20px;
+    }
+    .actionsMenuUser {
         position: absolute;
         top: -300px;
         right: -20px;
@@ -136,8 +170,21 @@
         background-color: white;
         width: 100px;
         position: absolute;
-        top: 330px;
+        top: 320px;
         right: 100px;
+        padding: 10px;
+        z-index: 100;
+        border: 1px solid #715EAE;
+        border-radius: 8px;
+    }
+    .actionsMenuCategorie {
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+        width: 100px;
+        position: absolute;
+        top: 340px;
+        right: 70px;
         padding: 10px;
         z-index: 100;
         border: 1px solid #715EAE;
@@ -147,15 +194,6 @@
     .action {
         cursor: pointer;
         padding: 5px;
-    }
-
-    table th {
-        text-align: left;
-    }
-
-    table {
-        border-collapse: separate;
-        border-spacing: 10px;
     }
 }
 
@@ -210,7 +248,7 @@
     background-color: #b5a0f9;
   }
 .cancelButton:hover,   .categoryModalCancelButton:hover{
-    background-color:#e3e1e9 ;
+    background-color:#c6c5ca ;
   }
 
 /* Modal Overlay */
@@ -219,11 +257,24 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     background: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1000;
+}
+.categoryModalOverlayProducts {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow: auto;
     z-index: 1000;
 }
 
@@ -236,6 +287,14 @@
     max-width: 600px;
     position: relative;
 }
+.categoryModalContentProduct {
+    background: #E9E4F7;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 630px;
+    position: relative;
+}
 
 /* Cancel Button */
 .categoryModalCancelButton {
@@ -244,6 +303,7 @@
     width: 100%;
     height: 48px;
     text-align: center;
+    margin-top: 1em;
     cursor: pointer;
     border-radius: 8px;
     transition: all 0.3s ease;
@@ -257,13 +317,14 @@
     background: #231942;
     color: white;
     border: none;
-    width: 100%;
+    width: 15%;
     padding: 8px 20px;
     text-align: center;
     font-size: 14px;
     border-radius: 10px;
     cursor: pointer;
     align-self: center;
+    margin-right: 2em;
 }
 
 .addCategoryButton:hover {

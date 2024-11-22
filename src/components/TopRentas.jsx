@@ -29,7 +29,10 @@ const TopRentas = () => {
         {/*recorre lista aleatorizada */}
           {topRentas.map((data, index) => (
             <div onClick={()=>handleCardClick(data.productId)} key={data.productId} className={RentaStyle.producto}>
-              <Card image={data.images[0].url} name={data.name} />
+              <Card
+                image={`http://localhost:8080${data.images[0].url}`}
+                name={data.name}
+              />
               <div className={RentaStyle.contenedorEstrellas}>
                 <div>
                   <i className={`fas fa-star ${RentaStyle.relleno}`}></i>

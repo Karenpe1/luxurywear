@@ -46,7 +46,7 @@ const CategoryForm = ({ onClose, clase }) => {
 
   const handleDescription = (e) => {
     setCategory({ ...category, description: e.target.value });
-    setError({ ...error, [description]: "" }); // Limpiar el error al cambiar el valor
+    setError({ ...error, description: "" }); // Limpiar el error al cambiar el valor
   };
 
   const handleFileChange = (e) => {
@@ -208,7 +208,7 @@ const CategoryForm = ({ onClose, clase }) => {
                 label="imagen *"
                 type="file"
                 accept=".jpg,.jpeg,.png"
-                cambio={handleFileChange}
+                onChange={handleFileChange}
                 error={error.imageFile}
                 archivos={1}
               />

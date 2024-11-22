@@ -6,6 +6,7 @@ import HeartButton from "./HeartButton";
 import Pagination from "./Pagination";
 import useAxios from "../Utils/axiosInstance";
 import DetailHeader from "./DetailHeader";
+import ModalGlobal from "./ModalGlobal";
 
 const PaginatedProductList = ({ pageSize = 6 }) => {
   const { categoryName } = useParams(); // Get categoryName from URL
@@ -40,6 +41,7 @@ const PaginatedProductList = ({ pageSize = 6 }) => {
         });
 
         const data = response.data;
+        console.log("contenido de paginado",data)
         setProducts(data.content); // Set product data
         setTotalPages(data.totalPages); // Set total pages from response
         setTotalElements(data.totalElements);
@@ -95,11 +97,23 @@ const PaginatedProductList = ({ pageSize = 6 }) => {
             className={styles.productCard}
             onClick={() => handleCardClick(product.productId)}
           >
-            <HeartButton className={styles.heart}/>
+            <HeartButton id={product.productId}/>
             <img
-              src={`/${product.images[0].url}`}
-              alt={product.name}
               className={styles.productImage}
+              src={`http://localhost:8080${product.images[0].url}`}
+              alt={product.name}
+              onError={(e) => {
+                const fallback1 = `http://localhost:8080/${product.images[0].url}`; // First fallback image
+                const fallback2 = "placeholder.svg"; // Second fallback image
+
+                if (e.target.src === `http://localhost:8080${product.images[0].url}`) {
+                  e.target.src = fallback1; // Switch to the first fallback
+                } else if (e.target.src === fallback1) {
+                  e.target.src = fallback2; // Switch to the second fallback
+                } else {
+                  e.target.onerror = null; // Prevent infinite fallback loop
+                }
+              }}
             />
             <div className={styles.contenedor}>
               <h2>{product.name}</h2>
@@ -113,6 +127,7 @@ const PaginatedProductList = ({ pageSize = 6 }) => {
         totalPage={totalPages}
         onPageChange={handlePageChange}
       />
+      <ModalGlobal/>
     </div>
   );
 };
