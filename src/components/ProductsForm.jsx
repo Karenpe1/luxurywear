@@ -206,11 +206,53 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
     console.log("Tallas seleccionadas:", selected);
   };
 
+  const validateReference = async (reference) => {
+    try {
+      const response = await axios.get(`/api/v1/products/by-reference/${reference}`);
+      // Si la respuesta no lanza error, significa que la referencia existe
+      return false; // Referencia ya existente
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        // 404 significa que la referencia no existe y es válida
+        return true;
+      }
+      // Si otro error ocurre, manejarlo
+      console.error("Error al validar la referencia:", error);
+      return false;
+    }
+  };
+  const validateName = async (name) => {
+    try {
+      const response = await axios.get(`/api/v1/products/by-name/${name}`);
+      // Si la respuesta no lanza error, significa que el nombre existe
+      return false; // nombre ya existente
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        // 404 significa que el nombre no existe y es válida
+        return true;
+      }
+      // Si otro error ocurre, manejarlo
+      console.error("Error al validar el nombre:", error);
+      return false;
+    }
+  };
+
   const handdleSubmit = async (e) => {
     e.preventDefault();
 
     let formIsValid = true;
     let errors = {};
+    const isReferenceValid= await validateReference(product.reference);
+    const isNameValid= await validateName(product.name);
+
+    if(!isReferenceValid){
+      errors.reference= "La referencia ya existe.Elija otra";
+      formIsValid=false;
+    }
+    if(!isNameValid){
+      errors.name="El nombre de ese producto ya existe. Elija otro"
+      formIsValid=false;
+    }
 
     if (!noNumbersRegex.test(product.name) || product.name.trim().length < 3) {
       errors.name= "El nombre debe ser válido y tener al menos 3 caracteres";
