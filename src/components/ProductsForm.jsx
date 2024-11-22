@@ -303,7 +303,7 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
         });
 
         // Handle non-201 status codes
-        if (response.status === 201) {
+        if (response.status === 200 || response.status == 201 ) {
           setModalInfo({
             show: true,
             titulo: "¡Felicidades!",
@@ -324,6 +324,54 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
       }
     }
   };
+  const handleSuccessClose = () => {
+    // Reset form fields
+    setProduct(
+      () =>
+        isEdit && initialData
+          ? {
+            name: initialData.name || "",
+            reference: initialData.reference || "",
+            description: initialData.description || "",
+            material: initialData.material || "",
+            color: initialData.color || "",
+            designer: initialData.designer || "",
+            price: initialData.price || "",
+            images: initialData.images || [],
+            category: initialData.category || null,
+            sizes: initialData.sizes || [],
+            id: initialData.id || null, // Explicitly include id here
+          }
+          : {
+            name: "",
+            reference: "",
+            description: "",
+            material: "",
+            color: "",
+            designer: "",
+            price: "",
+            images: [],
+            category: null,
+            sizes: [],
+          }
+    );
+    setError({
+      name: "",
+      reference: "",
+      description: "",
+      material: "",
+      color: "",
+      designer: "",
+      price: "",
+      images: "",
+      category: "",
+      sizes: "",
+    });
+
+    // Close the modal
+    setModalInfo({ ...modalInfo, show: false });
+    if (onClose) onClose(); // Notify parent to close the modal
+  };
 
   return (
     <div className={stylesProduct.containerProduct}>
@@ -334,9 +382,7 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
             titulo={modalInfo.titulo}
             subtitulo={modalInfo.subtitulo}
             mensaje={modalInfo.mensaje}
-            onClose={() => {
-              setModalInfo({ ...modalInfo, show: false });
-            }}
+            onClose={handleSuccessClose}
           />
         ) : (
           <div className={stylesProduct.formularioProduct}>

@@ -8,6 +8,7 @@ const PrivateRoute = ({ children, requiredRole }) => {
   if (!user) {
     // User is not authenticated
     return <Navigate to="/login" />;
+    
   }
 
   if (requiredRole && user.role !== requiredRole) {
