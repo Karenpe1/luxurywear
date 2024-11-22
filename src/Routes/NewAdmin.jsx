@@ -586,7 +586,7 @@ const NewAdmin = ({pageSize=6}) => {
                 <div className={styles.containerImage}>
                   <img
                     className={styles.prodImage}
-                    src={`http://localhost:8080/public/${product.images[0].url}`}
+                    src={`http://localhost:8080${product.images[0].url}`}
                     alt={product.name}
                     onError={(e) => {
                       e.target.src = "placeholder.svg"; // Fallback image

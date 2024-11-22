@@ -49,7 +49,7 @@ const Detail = () => {
       <div className={styles.content}>
         {/* Imagen principal */}
         <img
-          src={`/${mainImage}`}
+          src={`http://localhost:8080${mainImage}`}
           alt={product.name}
           className={styles.productImage}
         />
@@ -58,7 +58,7 @@ const Detail = () => {
           {product.images.map((img, index) => (
             <img
               key={index}
-              src={`/${img.url}`}
+              src={`http://localhost:8080${img.url}`}
               alt={`${product.name} thumbnail ${index + 1}`}
               className={styles.thumbnail}
               onClick={() => setMainImage(img.url)} // Cambia la imagen principal
