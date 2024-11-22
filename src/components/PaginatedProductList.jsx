@@ -96,9 +96,13 @@ const PaginatedProductList = ({ pageSize = 6 }) => {
           >
             <HeartButton id={product.productId}/>
             <img
-              src={`/${product.images[0].url}`}
-              alt={product.name}
               className={styles.productImage}
+              src={`http://localhost:8080/public/${product.images[0].url}`}
+              alt={product.name}
+              onError={(e) => {
+                e.target.src = "placeholder.svg"; // Fallback image
+                e.target.onerror = null; // Prevent infinite fallback loop
+              }}
             />
             <div className={styles.contenedor}>
               <h2>{product.name}</h2>
