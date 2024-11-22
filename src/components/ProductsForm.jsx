@@ -228,7 +228,7 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
       // Si la respuesta no lanza error, significa que el nombre existe
       return false; // nombre ya existente
     } catch (error) {
-      if (error.response && error.response.status === 404) {
+      if (error.response && error.response.status === 403) {
         // 404 significa que el nombre no existe y es válida
         return true;
       }
@@ -285,6 +285,10 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
     }
     if (!onlyNumbers.test(product.price)|| !product.price || isNaN(product.price)) {
         errors.price = "el precio del producto solo debe contener numeros";
+        formIsValid = false;
+    }
+    if (product.price> 99999999) {
+        errors.price = "el precio del producto debe ser menor a 99.999.999";
         formIsValid = false;
     }
     if (product.images.length==0 || product.images.length>5) {

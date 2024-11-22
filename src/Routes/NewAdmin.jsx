@@ -38,6 +38,7 @@ const NewAdmin = ({pageSize=6}) => {
   const [showProducModal, setShowProductModal] = useState(false);
   const [showEditModal, setShowEditModal]= useState(false)
   const { logoutUser } = useContext(AuthContext);
+  const [reload, setReload]= useState(false);
   const axios = axiosInstance();
 
   //prueba
@@ -83,7 +84,7 @@ const NewAdmin = ({pageSize=6}) => {
     };
 
     fetchProducts();
-  }, [categoryName, currentPage]);
+  }, [categoryName, currentPage,reload]);
 
     // fetch de los usuarios paginados 
   useEffect(() => {
@@ -266,6 +267,7 @@ const NewAdmin = ({pageSize=6}) => {
         products.filter((product) => product.productId !== selectedProductId)
       ); // Remove product from list
       setShowModal(false);
+      setReload((prev) => !prev); // Actualizar la tabla
     } catch (error) {
       console.error("Error deleting:", error);
     }
@@ -347,6 +349,7 @@ const NewAdmin = ({pageSize=6}) => {
   };
   const handleCloseProductModal=()=>{
     setShowProductModal(false);
+    setReload((prev)=> !prev)
   };
 
 
@@ -354,6 +357,7 @@ const NewAdmin = ({pageSize=6}) => {
     console.log("Cerrando modal de edición...")
     setShowEditModal(false);
     setProductToEdit(null);
+    setReload((prev)=> !prev)
   }
   
 
