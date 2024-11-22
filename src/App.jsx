@@ -7,6 +7,7 @@ import Login from "./Routes/Login";
 import Register from "./Routes/Register.jsx";
 import Search from "./components/Search.jsx";
 import { AuthProvider } from "./context/AuthContext";
+import ContextProvider from "./context/globalContext.jsx";
 import PrivateRoute from "./components/PrivateRoute";
 import NewFooter from "./components/NewFooter.jsx";
 import PaginatedProductList from "./components/PaginatedProductList";
@@ -18,35 +19,37 @@ function App() {
   const currentPath = location.pathname;
 
   return (
-    <AuthProvider>
-    {!isLocation && (
-      <>
-      <NewHeader />
-      {currentPath == "/" && <Search/>}
-      </>  )/*condicion para no mostrar el header en el registro */} 
-        <div className={appStyles.container}>
-          <Routes>
-            <Route path="/detail/:id" element={<Detail />} />
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route
-              path="/admin"
-              element={
-                <PrivateRoute requiredRole="ADMIN">
-                  <NewAdmin />
-                </PrivateRoute>
-              }
-            />
-            {/* Dynamic category route */}
-            <Route
-              path="/:categoryName"
-              element={<PaginatedProductList />}
-            />
-          </Routes>
-        </div>
-      {!isLocation && <NewFooter />}
-    </AuthProvider>
+    <ContextProvider>
+      <AuthProvider>
+        {!isLocation && (
+          <>
+          <NewHeader />
+          {currentPath == "/" && <Search/>}
+          </>  )/*condicion para no mostrar el header en el registro */} 
+            <div className={appStyles.container}>
+              <Routes>
+                <Route path="/detail/:id" element={<Detail />} />
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route
+                  path="/admin"
+                  element={
+                    <PrivateRoute requiredRole="ADMIN">
+                      <NewAdmin />
+                    </PrivateRoute>
+                  }
+                />
+                {/* Dynamic category route */}
+                <Route
+                  path="/:categoryName"
+                  element={<PaginatedProductList />}
+                />
+              </Routes>
+            </div>
+          {!isLocation && <NewFooter />}
+      </AuthProvider>    
+    </ContextProvider>
   );
 }
 
