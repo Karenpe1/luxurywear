@@ -337,7 +337,7 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
 
       const method = isEdit ? "PUT" : "POST";
       // const endpoint = isEdit ? `${url}/${product.id}` : url;
-      const endpoint = isEdit && product.id ? `${url}/${product.id}` : url;
+      const endpoint = isEdit && product.productId ? `${url}/${product.productId}` : url;
 
 
       try {
