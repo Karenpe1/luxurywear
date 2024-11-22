@@ -9,8 +9,7 @@ const ModalGlobal = () => {
 
     if(!state.modalData.isOpen){
         return null;
-    }
-    
+    }   
     
   return (
     <div className={stylesHeart.modalOverlay}>
