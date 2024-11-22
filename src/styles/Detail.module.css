@@ -137,17 +137,17 @@
 }
 
 .calendarContainer {
-  width: 100vw;
+  /* width: 100vw;
   height: 100vh;
   position: absolute;
   top: -100px;
-  right: -80px;
+  right: -80px; */
 }
 
 .calendar {
   position: absolute;
   z-index: 100;
-  top: 560px;
+  top: 420px;
   right: 100px;
 }
 
@@ -156,6 +156,17 @@
   align-items: center;
   margin: 20px 0;
   position: relative;
+}
+
+.dateOuterContainerToggled {
+  display: flex;
+  justify-content: space-between;
+  border-radius: 50px;
+  padding: 5px 20px;
+  width: 150px;
+  align-items: center;
+  cursor: pointer;
+  background-color: #E9E4F7;
 }
 
 /* Mobile Styles - below 600px */

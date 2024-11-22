@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from "../styles/Calendar.module.css";
+import Swal from "sweetalert2";
 
 const Calendar = ({setStartDate, setEndDate, startDate, endDate, closedDates = [], startDateToggle = false, setStartDateToggle, setIsOpen}) => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -132,7 +133,11 @@ const Calendar = ({setStartDate, setEndDate, startDate, endDate, closedDates = [
             if(searchInClosedDates(arr[i])) {
                 setStartDate({day: null, month: null, year: null});
                 setEndDate({day: null, month: null, year: null});
-                alert("No puede seleccionar fechas ya reservadas.");
+                Swal.fire({
+                    title: "¡Fecha no disponible!",
+                    text: "El producto no se encuentra disponible para las fechas seleccionadas. Por favor, elige otra fecha o verifica la disponibilidad en el calendario.",
+                    iconHtml: '<img src="ohNo2.png" style="width: 150px;"/>',
+                })
                 return;
             }
         }
