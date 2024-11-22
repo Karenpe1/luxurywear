@@ -73,6 +73,7 @@
     }
 
     .errorMessage {
+        text-align: left;
         color: #FF6666;
         font-size: 0.9em;
     }
