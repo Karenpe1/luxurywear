@@ -19,7 +19,7 @@ const MultiSelector = ({ options, placeholder, onChange , multiselector,error,la
         }
       }
     }
-  }, [preselected, options, multiselector,onChange]);
+  }, [preselected, options, multiselector]);
 
   const handleToggleDropdown = () => {
     setIsOpen(!isOpen);

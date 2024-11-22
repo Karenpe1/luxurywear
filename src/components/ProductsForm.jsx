@@ -26,9 +26,10 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
         images: initialData.images || [],
         category: initialData.category || null,
         sizes: initialData.sizes || [],
-        id: initialData.id || null, // Explicitly include id here
+        productId: initialData.productId || null, // Explicitly include id here
       }
       : {
+        id:"",
         name: "",
         reference: "",
         description: "",
@@ -338,6 +339,7 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
       const method = isEdit ? "PUT" : "POST";
       // const endpoint = isEdit ? `${url}/${product.id}` : url;
       const endpoint = isEdit && product.productId ? `${url}/${product.productId}` : url;
+      console.log("id correcto", product.productId)
 
 
       try {
@@ -385,7 +387,7 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
             images: initialData.images || [],
             category: initialData.category || null,
             sizes: initialData.sizes || [],
-            id: initialData.id || null, // Explicitly include id here
+            productId: initialData.productId || null, // Explicitly include id here
           }
           : {
             name: "",

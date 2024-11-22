@@ -231,6 +231,7 @@ const NewAdmin = ({pageSize=6}) => {
       console.log("data a editar", productData)
       setSelectedProductId(id); // Almacena el ID seleccionado
       setProductToEdit({
+        productId: productData.productId,
         name: productData.name,
         reference: productData.reference,
         description: productData.description,
