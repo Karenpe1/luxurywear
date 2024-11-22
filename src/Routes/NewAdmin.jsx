@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styles from "../styles/NewAdmin.module.css";
 import { formatCurrency } from "../Utils/currencyFormatter";
 import axiosInstance from "../Utils/axiosInstance";
 import CategoryForm from "../components/CategoryForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import AuthContext from "../context/AuthContext";
 import {
   faUsers,
   faList,
@@ -13,7 +14,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Table from "../components/Table";
 import { useParams } from "react-router-dom";
-import Search from "../components/Search";
 import ProductsForm from "../components/ProductsForm";
 
 const NewAdmin = ({pageSize=6}) => {
@@ -37,7 +37,7 @@ const NewAdmin = ({pageSize=6}) => {
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [showProducModal, setShowProductModal] = useState(false);
   const [showEditModal, setShowEditModal]= useState(false)
-
+  const { logoutUser } = useContext(AuthContext);
   const axios = axiosInstance();
 
   //prueba
@@ -306,6 +306,12 @@ const NewAdmin = ({pageSize=6}) => {
           email: selectedUserEmail,
         });
       setShowModalAdmin(false);
+
+      // Si se quitó el rol "ADMIN" y el usuario actual es el mismo que el modificado
+      if (selectedUserRole === "ADMIN" && users.email === selectedUserEmail) {
+      console.log("Se quitó el rol ADMIN al usuario actual, cerrando sesión...");
+      logoutUser(); // Desloguea al usuario actual
+      }
       const fetchUsers = async () => {
         try {
           const response = await axios.get(
