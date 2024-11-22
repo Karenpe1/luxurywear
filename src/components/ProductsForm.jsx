@@ -242,16 +242,19 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
 
     let formIsValid = true;
     let errors = {};
-    const isReferenceValid= await validateReference(product.reference);
-    const isNameValid= await validateName(product.name);
 
-    if(!isReferenceValid){
-      errors.reference= "La referencia ya existe.Elija otra";
-      formIsValid=false;
-    }
-    if(!isNameValid){
-      errors.name="El nombre de ese producto ya existe. Elija otro"
-      formIsValid=false;
+    if(!isEdit){
+        const isReferenceValid= await validateReference(product.reference);
+        const isNameValid= await validateName(product.name);
+
+        if(!isReferenceValid){
+          errors.reference= "La referencia ya existe.Elija otra";
+          formIsValid=false;
+        }
+        if(!isNameValid){
+          errors.name="El nombre de ese producto ya existe. Elija otro"
+          formIsValid=false;
+        }
     }
 
     if (!noNumbersRegex.test(product.name) || product.name.trim().length < 3) {
@@ -442,7 +445,6 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
                 error={error.name}
                 className={stylesProduct.nombre}
               />
-              
               <MultiSelector
                   label="Categorías"
                   options={categoriesTitle}

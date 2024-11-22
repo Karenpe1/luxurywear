@@ -14,10 +14,12 @@ const MultiSelector = ({ options, placeholder, onChange , multiselector,error,la
       } else {
         const selectedOption = options.find((opt) => opt.value === preselected.value);  
         setSelectedValue(selectedOption ? selectedOption.label : "");
-        console.log("seleccionado previo", selectedValue)
+        if(selectedOption){
+          onChange({value: selectedOption.value})
+        }
       }
     }
-  }, [preselected, options, multiselector]);
+  }, [preselected, options, multiselector,onChange]);
 
   const handleToggleDropdown = () => {
     setIsOpen(!isOpen);
