@@ -76,11 +76,14 @@ const Detail = () => {
           className={styles.productImage}
           onError={(e) => {
             const fallback1 = `http://localhost:8080/${mainImage}`; // First fallback image
-            const fallback2 = "placeholder.svg"; // Second fallback image
+            const fallback2 = `http://localhost:8080/public${mainImage}`; // Second fallback image
+            const fallback3 = "placeholder.svg"; // Third fallback image
             if (e.target.src === `http://localhost:8080${mainImage}`) {
               e.target.src = fallback1; // Switch to the first fallback
             } else if (e.target.src === fallback1) {
               e.target.src = fallback2; // Switch to the second fallback
+            } else if (e.target.src === fallback2) {
+              e.target.src = fallback3; // Switch to the third fallback
             } else {
               e.target.onerror = null; // Prevent infinite fallback loop
             }
@@ -97,11 +100,14 @@ const Detail = () => {
               onClick={() => setMainImage(img.url)} // Cambia la imagen principal
               onError={(e) => {
                 const fallback1 = `http://localhost:8080/${img.url}`; // First fallback image
-                const fallback2 = "placeholder.svg"; // Second fallback image
+                const fallback2 = `http://localhost:8080/public${img.url}`; // Second fallback image
+                const fallback3 = "placeholder.svg"; // Third fallback image
                 if (e.target.src === `http://localhost:8080${img.url}`) {
                   e.target.src = fallback1; // Switch to the first fallback
                 } else if (e.target.src === fallback1) {
                   e.target.src = fallback2; // Switch to the second fallback
+                } else if (e.target.src === fallback2) {
+                  e.target.src = fallback3; // Switch to the third fallback
                 } else {
                   e.target.onerror = null; // Prevent infinite fallback loop
                 }
