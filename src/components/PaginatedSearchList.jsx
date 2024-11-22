@@ -86,6 +86,11 @@ const PaginatedSearchList = ({ pageSize = 6, searchTerm, startDate, endDate, sea
         Mostrando {startRange}-{endRange} de {totalElements} productos {categoryName && "con categoría " + categoryName} (Página {currentPage + 1} de {totalPages})
       </p>
 
+      {products.length == 0 && <div style={{textAlign: 'center'}}>
+        <img src="ohNo2.png" style={{width: '300px'}}/>
+        <h2>No hay resultados para tu búsqueda.</h2>
+      </div>}
+
       {/* Loading and Error states */}
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
