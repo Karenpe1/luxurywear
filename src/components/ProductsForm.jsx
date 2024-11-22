@@ -13,18 +13,35 @@ const MAX_FILES = 5;
 
 const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
 
-  const [product, setProduct] = useState({
-    name: "",
-    reference: "",
-    description: "",
-    material: "",
-    color: "",
-    designer: "",
-    price: "",
-    images: [],
-    category: null, // Change to null to represent an object
-    sizes: [], // Updated to handle objects
-  });
+  const [product, setProduct] = useState(() =>
+    isEdit && initialData
+      ? {
+        name: initialData.name || "",
+        reference: initialData.reference || "",
+        description: initialData.description || "",
+        material: initialData.material || "",
+        color: initialData.color || "",
+        designer: initialData.designer || "",
+        price: initialData.price || "",
+        images: initialData.images || [],
+        category: initialData.category || null,
+        sizes: initialData.sizes || [],
+        id: initialData.id || null, // Explicitly include id here
+      }
+      : {
+        name: "",
+        reference: "",
+        description: "",
+        material: "",
+        color: "",
+        designer: "",
+        price: "",
+        images: [],
+        category: null,
+        sizes: [],
+      }
+  );
+
   const [error, setError] = useState({
     name: "",
     reference: "",
@@ -92,10 +109,11 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
   // Prellenar los campos si se está editando
   useEffect(() => {
     if (isEdit && initialData) {
-      setProduct({
-        ...initialData, // Include all properties from initialData
-        id: initialData.id, // Explicitly include the id
-      });
+      setProduct((prev) => ({
+        ...prev,
+        ...initialData,
+        id: initialData.id || prev.id, // Update id if provided
+      }));
     }
   }, [isEdit, initialData]);
 
@@ -273,7 +291,9 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
       };
 
       const method = isEdit ? "PUT" : "POST";
-      const endpoint = isEdit ? `${url}/${product.id}` : url;
+      // const endpoint = isEdit ? `${url}/${product.id}` : url;
+      const endpoint = isEdit && product.id ? `${url}/${product.id}` : url;
+
 
       try {
         const response = await axios({
