@@ -90,11 +90,14 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
   }, []);
 
   // Prellenar los campos si se está editando
-  useEffect(()=>{
-    if(isEdit && initialData){
-      setProduct(initialData);
+  useEffect(() => {
+    if (isEdit && initialData) {
+      setProduct({
+        ...initialData, // Include all properties from initialData
+        id: initialData.id, // Explicitly include the id
+      });
     }
-  },[isEdit,initialData]);
+  }, [isEdit, initialData]);
 
   const handleNombre = (e) => {
     setProduct({ ...product, name: e.target.value });
@@ -288,39 +291,16 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
             mensaje: "El producto se ha guardado correctamente.",
             img: "./Estrellas.svg",
           }); //mostrar el mensaje de exito
-        } else {
-          const errorMessages = {
-            409: "Ya hay un usuario creado con ese correo electrónico.",
-            400: "Solicitud inválida. Por favor, verifica los datos ingresados.",
-            500: "Error del servidor. Por favor, intenta más tarde.",
-          };
-
-          const message =
-            errorMessages[response.status] ||
-            `Ocurrió un error inesperado (Código: ${response.status}).`;
-          setModalInfo({
-            show: true,
-            img: "./ohNo.png",
-            titulo: "Error",
-            subtitulo: "Ha ocurrido un problema.",
-            mensaje: message,
-          });
         }
-
-        // Parse the successful response
-        const data = await response.json();
-        console.log(data);
       }catch (err) {
-        // Handle network or other fetch errors
+        console.error("Error during form submission:", err);
         setModalInfo({
           show: true,
           titulo: "Error de conexión",
           subtitulo: "Hubo un problema con la conexión.",
-          mensaje:
-            "Por favor, verifica tu conexión a Internet e intenta nuevamente.",
+          mensaje: "Por favor, verifica tu conexión a Internet e intenta nuevamente.",
           img: "./ohNo.png",
         });
-        console.error("Error al realizar el registro:", err);
       }
     }
   };

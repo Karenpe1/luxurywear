@@ -30,7 +30,7 @@ const TopRentas = () => {
           {topRentas.map((data, index) => (
             <div onClick={()=>handleCardClick(data.productId)} key={data.productId} className={RentaStyle.producto}>
               <Card
-                image={`http://localhost:8080/public/${data.images[0].url}`}
+                image={`http://localhost:8080${data.images[0].url}`}
                 name={data.name}
               />
               <div className={RentaStyle.contenedorEstrellas}>
