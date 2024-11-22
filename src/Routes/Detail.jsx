@@ -18,6 +18,10 @@ const Detail = () => {
 
   const [politicas, setPoliticas] = useState(false); // Nuevo estado para políticas
 
+  const [startDateToggle, setStartDateToggle] = useState(false);
+
+  document.addEventListener('scroll', () => {setIsOpen(false); setStartDateToggle(false);});
+
   useEffect(() => {
     window.scrollTo(0, 0);
     // Llamada a la API para obtener el detalle del producto
@@ -91,7 +95,7 @@ const Detail = () => {
           </p>
 
           <div className={styles.dateSelector}>
-            <div className={styles.dateOuterContainer} onClick={() => setIsOpen(true)}>
+            <div className={startDateToggle ? styles.dateOuterContainerToggled : styles.dateOuterContainer} onClick={() => {setIsOpen(true); setStartDateToggle(!startDateToggle);}}>
               <div className={styles.dateContainer}>
                 <span>Alquila</span>
                 <span className={styles.date}>{startDate.day == null ? 'Desde' : startDate.day + '/' + (startDate.month + 1) + '/' + startDate.year}</span>
@@ -109,7 +113,15 @@ const Detail = () => {
           </div>
           {isOpen && <div className={styles.calendarContainer} onClick={() => setIsOpen(false)}>
                 <div className={styles.calendar} onClick={(e) => e.stopPropagation()}>
-                  <Calendar setStartDate={setStartDate} setEndDate={setEndDate} startDate={startDate} endDate={endDate} closedDates={closedDates}/>
+                  <Calendar 
+                    setStartDate={setStartDate} 
+                    setEndDate={setEndDate} 
+                    startDate={startDate} 
+                    endDate={endDate} 
+                    closedDates={closedDates}
+                    startDateToggle={startDateToggle}
+                    setStartDateToggle={setStartDateToggle} 
+                    setIsOpen={setIsOpen}/>
                 </div>
               </div>}
 
