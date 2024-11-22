@@ -24,34 +24,42 @@ function App() {
   return (
     <ContextProvider>
       <AuthProvider>
-        {!isLocation && (
-          <>
-          <NewHeader />
-          {currentPath == "/" && <Search/>}
-          </>  )/*condicion para no mostrar el header en el registro */} 
-            <div className={appStyles.container}>
-              <Routes>
-                <Route path="/detail/:id" element={<Detail />} />
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route
-                  path="/admin"
-                  element={
-                    <PrivateRoute requiredRole="ADMIN">
-                      <NewAdmin />
-                    </PrivateRoute>
-                  }
-                />
-                {/* Dynamic category route */}
-                <Route
-                  path="/:categoryName"
-                  element={<PaginatedProductList />}
-                />
-              </Routes>
-            </div>
-          {!isLocation && <NewFooter />}
-      </AuthProvider>    
+      {!isLocation && (
+        <>
+        <NewHeader />
+        {currentPath == "/" && <Search isSearch={isSearch} setIsSearch={setIsSearch}/>}
+        </>  )/*condicion para no mostrar el header en el registro */} 
+          <div className={appStyles.container}>
+            <Routes>
+              <Route path="/detail/:id" element={<Detail />} />
+              <Route path="/" element={<Home isSearch={isSearch}/>} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route
+                path="/favList"
+                element={
+                  <PrivateRoute>
+                    <FavList />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/admin"
+                element={
+                  <PrivateRoute requiredRole="ADMIN">
+                    <NewAdmin />
+                  </PrivateRoute>
+                }
+              />
+              {/* Dynamic category route */}
+              <Route
+                path="/:categoryName"
+                element={<PaginatedProductList />}
+              />
+            </Routes>
+          </div>
+        {!isLocation && <NewFooter />}
+      </AuthProvider>
     </ContextProvider>
   );
 }
