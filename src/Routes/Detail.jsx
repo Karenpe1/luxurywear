@@ -52,6 +52,17 @@ const Detail = () => {
           src={`http://localhost:8080${mainImage}`}
           alt={product.name}
           className={styles.productImage}
+          onError={(e) => {
+            const fallback1 = `http://localhost:8080/${mainImage}`; // First fallback image
+            const fallback2 = "placeholder.svg"; // Second fallback image
+            if (e.target.src === `http://localhost:8080${mainImage}`) {
+              e.target.src = fallback1; // Switch to the first fallback
+            } else if (e.target.src === fallback1) {
+              e.target.src = fallback2; // Switch to the second fallback
+            } else {
+              e.target.onerror = null; // Prevent infinite fallback loop
+            }
+          }}
         />
         <div className={styles.gallery}>
           {/* Galería de miniaturas */}
@@ -62,6 +73,17 @@ const Detail = () => {
               alt={`${product.name} thumbnail ${index + 1}`}
               className={styles.thumbnail}
               onClick={() => setMainImage(img.url)} // Cambia la imagen principal
+              onError={(e) => {
+                const fallback1 = `http://localhost:8080/${img.url}`; // First fallback image
+                const fallback2 = "placeholder.svg"; // Second fallback image
+                if (e.target.src === `http://localhost:8080${img.url}`) {
+                  e.target.src = fallback1; // Switch to the first fallback
+                } else if (e.target.src === fallback1) {
+                  e.target.src = fallback2; // Switch to the second fallback
+                } else {
+                  e.target.onerror = null; // Prevent infinite fallback loop
+                }
+              }}
             />
           ))}
         </div>

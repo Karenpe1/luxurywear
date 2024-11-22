@@ -100,8 +100,16 @@ const PaginatedProductList = ({ pageSize = 6 }) => {
               src={`http://localhost:8080${product.images[0].url}`}
               alt={product.name}
               onError={(e) => {
-                e.target.src = "placeholder.svg"; // Fallback image
-                e.target.onerror = null; // Prevent infinite fallback loop
+                const fallback1 = `http://localhost:8080/${product.images[0].url}`; // First fallback image
+                const fallback2 = "placeholder.svg"; // Second fallback image
+
+                if (e.target.src === `http://localhost:8080${product.images[0].url}`) {
+                  e.target.src = fallback1; // Switch to the first fallback
+                } else if (e.target.src === fallback1) {
+                  e.target.src = fallback2; // Switch to the second fallback
+                } else {
+                  e.target.onerror = null; // Prevent infinite fallback loop
+                }
               }}
             />
             <div className={styles.contenedor}>
