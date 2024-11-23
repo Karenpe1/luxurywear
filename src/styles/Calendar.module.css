@@ -1,3 +1,9 @@
+.container {
+    background-color: white;
+    border-radius: 20px; 
+    text-align: center;
+}
+
 .dayobj {
     width: 42px;
     height: 42px;
@@ -75,4 +81,27 @@
     color: rgb(164, 164, 164);
     margin: 1px 0;
     border-radius: 50%;
+}
+
+.calendars {
+    display: flex;
+}
+
+.calendarTitle {
+    padding-top: 10px;
+}
+
+@media (min-width: 360px) and (max-width: 500px) {
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .calendars {
+        flex-direction: column;
+    }
+
+    .calendarTitle {
+        font-size: 20px;
+    }
 }
