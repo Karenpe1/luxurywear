@@ -1,5 +1,5 @@
 .container {
-    height: 120px;
+    min-height: 120px;
     background-color: #231942;
     margin-top: 64px;
     display: flex;
@@ -129,14 +129,26 @@
     }
 
     .search {
-        height: 44px;
-        width: 500px;
+        height: 66px;
+        width: 700px;
         margin-top: 22px;
     }
 
     .input {
         font-size: 12px;
         width: 468px;
+    }
+
+    .input:hover {
+        background-color: white;
+    }
+
+    .dateOuterContainer {
+        width: 250px;
+    }
+
+    .dateOuterContainerToggled {
+        width: 250px;
     }
 }
 
@@ -163,5 +175,37 @@
     .input {
         font-size: 14px;
         width: 660px;
+    }
+}
+
+@media(min-width: 300px) and (max-width: 500px) {
+    .search {
+        flex-direction: column;
+        gap: 10px;
+        height: 250px;
+        margin-bottom: 10px;
+        background-color: transparent;
+    }
+
+    .separator {
+        display: none;
+    }
+
+    .input {
+        font-size: 15px;
+    }
+
+    .calendar {
+        top: 330px;
+        right: 10px;
+    }
+
+    .dateOuterContainer {
+        background-color: white;
+        width: 320px;
+    }
+
+    .dateOuterContainerToggled {
+        width: 320px;
     }
 }

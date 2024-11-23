@@ -151,6 +151,19 @@
   right: 100px;
 }
 
+@media (min-width: 500px) and (max-width: 1200px) {
+  .calendar {
+    top: 1010px;
+  }
+}
+
+@media (min-width: 360px) and (max-width: 500px) {
+  .calendar {
+    top: 750px;
+    right: 30px;
+  }
+}
+
 .dateSelector {
   display: flex;
   align-items: center;

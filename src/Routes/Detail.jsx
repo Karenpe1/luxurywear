@@ -20,7 +20,7 @@ const Detail = () => {
 
   const [startDateToggle, setStartDateToggle] = useState(false);
 
-  document.addEventListener('scroll', () => {setIsOpen(false); setStartDateToggle(false);});
+  document.addEventListener('scroll', () => {if(window.screen.width > 500) {setIsOpen(false); setStartDateToggle(false);}});
 
   useEffect(() => {
     window.scrollTo(0, 0);
