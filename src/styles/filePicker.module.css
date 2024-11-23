@@ -1,15 +1,42 @@
 
+.filePickerContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
 .labelFile{
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     align-self: stretch;
+    margin-bottom: 1em;
 }
 @media(min-width:700px){
-.labelFile{
+    .labelFile{
+        font-size: 15px;
+    }
+}
+.filePikerWrapper{
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+.customButton {
+    background:#C3B2FB;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    cursor: pointer;
     font-size: 15px;
+    text-align: center;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+.customButton:hover{
+    background-color: #b5a0f9;
 }
+.hiddenInput{
+    display: none;
 }
+
 .archivo{
     padding: 1em 0em;
 }
