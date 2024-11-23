@@ -561,13 +561,13 @@ const NewAdmin = ({pageSize=6}) => {
                   className={styles.addCategoryButton}
                   onClick={handleOpenCategoryModal}
               >
-                  Agregar categoría
+                  Agregar Categoría
               </button>)}
               {tab == "Productos" && 
               (<button 
                   className={styles.addCategoryButton} 
                   onClick={handleOpenProductModal}>
-                    agregar Producto
+                    Agregar Producto
                 </button>)}
           </div>
           <div className={styles.buscar}>

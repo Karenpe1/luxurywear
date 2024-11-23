@@ -263,38 +263,37 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
       formIsValid = false;
     }
     if (product.reference.trim().length < 1) {
-      errors.reference =
-        "La referencia debe ser válido y tener al menos 1 caractere";
+      errors.reference = "La referencia debe ser válida y tener al menos 1 caractere";
       formIsValid = false;
     }
     if (product.description.trim().length < 5) {
         errors.description = "La descripción debe tener al menos 5 caracteres.";
       formIsValid = false;
     }
-    if (!noNumbersRegex.test(product.material)||product.material.trim().length < 4) {
-      errors.material = "el material debe ser valido y tener más de 4 caracteres";
+    if (!noNumbersRegex.test(product.material) || product.material.trim().length < 4) {
+      errors.material = "El material debe ser válido y tener más de 4 caracteres";
       formIsValid = false;
     }
-    if (!noNumbersRegex.test(product.color)|| product.color.trim().length < 3) {
-        errors.color = "el material debe ser valido y tener más de 3 caracteres";
+    if (!noNumbersRegex.test(product.color) || product.color.trim().length < 3) {
+        errors.color = "El color debe ser válido y tener más de 3 caracteres";
         formIsValid = false;
     }
-    if (!noNumbersRegex.test(product.designer)||product.designer.trim().length < 3) {
-        errors.designer = "el Diseñador debe ser valido y tener más de 3 caracteres";
+    if (!noNumbersRegex.test(product.designer) || product.designer.trim().length < 3) {
+        errors.designer = "El Diseñador debe ser válido y tener más de 3 caracteres";
         formIsValid = false;
     }
-    if (!onlyNumbers.test(product.price)|| !product.price || isNaN(product.price)) {
-        errors.price = "el precio del producto solo debe contener numeros";
+    if (!onlyNumbers.test(product.price) || !product.price || isNaN(product.price)) {
+        errors.price = "El precio del producto solo debe contener números";
         formIsValid = false;
     }
-    if (product.price> 99999999) {
-        errors.price = "el precio del producto debe ser menor a 99.999.999";
+    if (product.price > 99999999) {
+        errors.price = "El precio del producto debe ser menor a 99.999.999";
         formIsValid = false;
     }
-    if (product.images.length==0 || product.images.length>5) {
-        errors.images = "Debes subir al menos una imagen y maximo 5 al producto";
+    if (product.images.length === 0 || product.images.length > 5) {
+        errors.images = "Debes subir al menos una imagen y máximo 5 al producto";
         formIsValid = false;
-      }
+    }
 
     if (product.category === null) {
       errors.category = "Debes seleccionar una categoría.";
@@ -304,6 +303,7 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
       errors.sizes = "Debes seleccionar al menos una talla.";
       formIsValid = false;
     }
+
     setError(errors);
 
     if (formIsValid) {
@@ -354,7 +354,7 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
         });
 
         // Handle non-201 status codes
-        if (response.status === 200 || response.status == 201 ) {
+        if (response.status === 200 || response.status === 201 ) {
           setModalInfo({
             show: true,
             titulo: "¡Felicidades!",
@@ -421,8 +421,8 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
 
     // Close the modal
     setModalInfo({ ...modalInfo, show: false });
-    if (onClose) onClose(); // Notify parent to close the modal
-  };
+    if (onClose) onClose();  // Notify parent to close modal
+};
 
   return (
     <div className={stylesProduct.containerProduct}>
