@@ -17,7 +17,7 @@ const Search = ({isSearch, setIsSearch}) => {
     setSearchTerm(e.target.value);
   }
 
-  document.addEventListener('scroll', () => {setIsOpen(false); setStartDateToggle(false);});
+  document.addEventListener('scroll', () => {if(window.screen.width > 500) {setIsOpen(false); setStartDateToggle(false);}});
   
   return (
     <>

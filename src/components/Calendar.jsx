@@ -146,10 +146,10 @@ const Calendar = ({setStartDate, setEndDate, startDate, endDate, closedDates = [
   }, [startDate, endDate])
 
   return (
-      <div style={{backgroundColor: 'white', borderRadius: '20px', textAlign: 'center'}}>
-        <span style={{position: 'absolute', top: '10px', right: '15px', fontWeight: 'bold', cursor: 'pointer'}} onClick={() => setIsOpen(false)}>X</span>
-        <h1 style={{paddingTop: '10px'}}>¿Cuándo es tu evento?</h1>
-    <div style={{display: 'flex'}}>
+      <div className={styles.container}>
+        <span style={{position: 'absolute', top: '10px', right: '15px', fontWeight: 'bold', cursor: 'pointer'}} onClick={() => {setIsOpen(false); setStartDateToggle(false);}}>X</span>
+        <h1 className={styles.calendarTitle}>¿Cuándo es tu evento?</h1>
+    <div className={styles.calendars}>
         <div style={{ textAlign: 'center', width: '320px', margin: '0', backgroundColor: 'white', padding: '10px', borderRadius: '20px 0 0 20px' }}>
         <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
             <button onClick={handlePreviousMonth} style={{visibility: currentDate.getMonth() == new Date().getMonth() && currentDate.getFullYear() == new Date().getFullYear() ? 'none' : 'visible'}}>&lt;</button>
