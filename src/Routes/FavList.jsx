@@ -77,9 +77,24 @@ const FavList = ({ pageSize = 6 }) => {
                             onToggle={() => handleToggleFavorite(product.productId)}
                         />
                         <img
-                            src={product.images[0]?.url || "placeholder.jpg"}
+                            src={`http://localhost:8080${product.images[0].url}`}
                             alt={product.name}
                             className={styles.productImage}
+                            onError={(e) => {
+                                const fallback1 = `http://localhost:8080/${product.images[0].url}`; // First fallback image
+                                const fallback2 = `http://localhost:8080/public${product.images[0].url}`; // Second fallback image
+                                const fallback3 = "placeholder.svg"; // Second fallback image
+
+                                if (e.target.src === `http://localhost:8080${product.images[0].url}`) {
+                                    e.target.src = fallback1; // Switch to the first fallback
+                                } else if (e.target.src === fallback1) {
+                                    e.target.src = fallback2; // Switch to the second fallback
+                                } else if (e.target.src === fallback2) {
+                                    e.target.src = fallback3; // Switch to the third fallback
+                                } else {
+                                    e.target.onerror = null; // Prevent infinite fallback loop
+                                }
+                            }}
                         />
                         <div className={styles.contenedor}>
                             <h2>{product.name}</h2>
