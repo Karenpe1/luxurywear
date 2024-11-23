@@ -103,7 +103,7 @@ const PaginatedSearchList = ({ pageSize = 6, searchTerm, startDate, endDate, sea
             className={styles.productCard}
             onClick={() => handleCardClick(product.productId)}
           >
-            <HeartButton className={styles.heart}/>
+            <HeartButton id={product.productId} className={styles.heart}/>
             <img
               src={`/${product.images[0].url}`}
               alt={product.name}

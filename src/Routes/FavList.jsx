@@ -11,6 +11,7 @@ const FavList = ({ pageSize = 6 }) => {
     const [totalPages, setTotalPages] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [reload,setReload]= useState(false);
 
     // Fetch favorite products
     const fetchFavorites = async () => {
@@ -23,8 +24,8 @@ const FavList = ({ pageSize = 6 }) => {
                 { params: { page: currentPage, size: pageSize } }
             );
             const data = response.data;
-            setFavorites(data.content);
-            setTotalPages(data.totalPages);
+            setFavorites(data.content || []);
+            setTotalPages(data.totalPages || 0);
         } catch (err) {
             setError("Error al obtener los favoritos.");
         } finally {
@@ -34,19 +35,8 @@ const FavList = ({ pageSize = 6 }) => {
 
     useEffect(() => {
         fetchFavorites();
-    }, [currentPage]);
+    }, [currentPage,reload]);
 
-    // Toggle favorite status
-    const handleToggleFavorite = async (productId) => {
-        try {
-            await axios.post(`http://localhost:8080/api/v1/users/toggle-favorites`, {
-                productId,
-            });
-            await fetchFavorites(); // Refetch favorites after toggling
-        } catch {
-            setError("No se pudo actualizar el estado del favorito.");
-        }
-    };
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
@@ -73,8 +63,9 @@ const FavList = ({ pageSize = 6 }) => {
                     >
                         <HeartButton
                             className={styles.heart}
-                            productId={product.productId}
-                            onToggle={() => handleToggleFavorite(product.productId)}
+                            id={product.productId}
+                            onToggle={() => setReload((prev) => !prev)}
+
                         />
                         <img
                             src={product.images[0]?.url || "placeholder.jpg"}

@@ -1,14 +1,35 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AuthContext from "../context/AuthContext";
 import stylesHeart from "../styles/heart.module.css";
 import useAxios from "../Utils/axiosInstance";
 import { useContextGlobal } from "../context/globalContext";
 
-const HeartButton = ({id }) => {
+const HeartButton = ({id,onToggle }) => {
   const [liked, setLiked] = useState(false);
   const {user}=useContext(AuthContext);
   const{dispatch}= useContextGlobal();
   const axios = useAxios() 
+  // Cargar el estado inicial del botón al montar el componente
+  useEffect(() => {
+    const fetchFavoriteStatus = async () => {
+      if (user) {
+        try {
+          const response = await axios.get(
+            `http://localhost:8080/api/v1/users/favorites`
+          );
+          // Verifica si el producto está en la lista de favoritos
+          const isFavorite = response.data.content.some(
+            (favorite) => favorite.productId === id
+          );
+          setLiked(isFavorite); // Actualiza el estado local
+        } catch (error) {
+          console.error("Error al cargar el estado de favoritos:", error);
+        }
+      }
+    };
+
+    fetchFavoriteStatus();
+  }, [user, id, axios]);
 
   const toggleLike = async (e) => {
     e.stopPropagation();
@@ -39,6 +60,7 @@ const HeartButton = ({id }) => {
 
       console.log(response.data); // Opcional: manejar la respuesta
       setLiked(!liked); // Cambia el estado de "Like"
+      if (onToggle) onToggle();
     } catch (error) {
       console.error("Error al hacer toggle de favoritos:", error);
     }
