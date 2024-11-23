@@ -211,6 +211,32 @@
   }
 }
 
+.politicasSection {
+  margin-top: 20px;
+}
+
+.politicasTitle {
+  font-size: 1.1rem;
+  /* font-weight: bold; */
+  text-decoration: underline; /* Subrayar el título */
+  margin-bottom: 15px;
+}
+
+.politicasContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Distribuir en columnas */
+  gap: 10px;
+}
+
+.politica {
+  /* padding: 10px; */
+  background-color: white; /* Color de fondo suave */
+  border: 1px solid #e0e0e0; /* Borde suave */
+  border-radius: 5px;
+  font-size: 0.9rem;
+}
+
+
 /* Tablet Styles - below 1024px */
 @media (min-width: 600px) and (max-width: 1024px) {
 

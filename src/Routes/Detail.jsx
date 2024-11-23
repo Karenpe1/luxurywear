@@ -11,8 +11,8 @@ const Detail = () => {
   const [mainImage, setMainImage] = useState(""); // Estado para la imagen principal
   const [caracteristicas, setCaracteristicas] = useState(false);
 
-  const [startDate, setStartDate] = useState({day: null, month: null, year: null});
-  const [endDate, setEndDate] = useState({day: null, month: null, year: null});
+  const [startDate, setStartDate] = useState({ day: null, month: null, year: null });
+  const [endDate, setEndDate] = useState({ day: null, month: null, year: null });
   const [isOpen, setIsOpen] = useState(false);
   const [closedDates, setClosedDates] = useState([]);
 
@@ -20,7 +20,7 @@ const Detail = () => {
 
   const [startDateToggle, setStartDateToggle] = useState(false);
 
-  document.addEventListener('scroll', () => {if(window.screen.width > 500) {setIsOpen(false); setStartDateToggle(false);}});
+  document.addEventListener('scroll', () => { if (window.screen.width > 500) { setIsOpen(false); setStartDateToggle(false); } });
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -40,7 +40,8 @@ const Detail = () => {
         const data2 = await response2.json();
         setClosedDates(data2.unavailableDates.map((date) => {
           let arr = date.split('-');
-          return {day: parseInt(arr[2]), month: parseInt(arr[1]) - 1, year: parseInt(arr[0])}}));
+          return { day: parseInt(arr[2]), month: parseInt(arr[1]) - 1, year: parseInt(arr[0]) }
+        }));
       } catch (error) {
         console.error("Error fetching product detail:", error);
       }
@@ -123,12 +124,12 @@ const Detail = () => {
           </p>
 
           <div className={styles.dateSelector}>
-            <div className={startDateToggle ? styles.dateOuterContainerToggled : styles.dateOuterContainer} onClick={() => {setIsOpen(true); setStartDateToggle(!startDateToggle);}}>
+            <div className={startDateToggle ? styles.dateOuterContainerToggled : styles.dateOuterContainer} onClick={() => { setIsOpen(true); setStartDateToggle(!startDateToggle); }}>
               <div className={styles.dateContainer}>
                 <span>Alquila</span>
                 <span className={styles.date}>{startDate.day == null ? 'Desde' : startDate.day + '/' + (startDate.month + 1) + '/' + startDate.year}</span>
               </div>
-              <span onClick={() => {setStartDate({day: null, month: null, year: null}); setEndDate({day: null, month: null, year: null});}}>{startDate.day != null ? 'x' : ''}</span>
+              <span onClick={() => { setStartDate({ day: null, month: null, year: null }); setEndDate({ day: null, month: null, year: null }); }}>{startDate.day != null ? 'x' : ''}</span>
             </div>
             <span className={styles.separator}>|</span>
             <div className={styles.dateOuterContainer} onClick={() => setIsOpen(true)}>
@@ -136,30 +137,29 @@ const Detail = () => {
                 <span>Devuelve</span>
                 <span className={styles.date}>{endDate.day == null ? 'Hasta' : endDate.day + '/' + (endDate.month + 1) + '/' + endDate.year}</span>
               </div>
-              <span onClick={() => setEndDate({day: null, month: null, year: null})}>{endDate.day != null ? 'x' : ''}</span>
+              <span onClick={() => setEndDate({ day: null, month: null, year: null })}>{endDate.day != null ? 'x' : ''}</span>
             </div>
           </div>
           {isOpen && <div className={styles.calendarContainer} onClick={() => setIsOpen(false)}>
-                <div className={styles.calendar} onClick={(e) => e.stopPropagation()}>
-                  <Calendar 
-                    setStartDate={setStartDate} 
-                    setEndDate={setEndDate} 
-                    startDate={startDate} 
-                    endDate={endDate} 
-                    closedDates={closedDates}
-                    startDateToggle={startDateToggle}
-                    setStartDateToggle={setStartDateToggle} 
-                    setIsOpen={setIsOpen}/>
-                </div>
-              </div>}
+            <div className={styles.calendar} onClick={(e) => e.stopPropagation()}>
+              <Calendar
+                setStartDate={setStartDate}
+                setEndDate={setEndDate}
+                startDate={startDate}
+                endDate={endDate}
+                closedDates={closedDates}
+                startDateToggle={startDateToggle}
+                setStartDateToggle={setStartDateToggle}
+                setIsOpen={setIsOpen} />
+            </div>
+          </div>}
 
           <div className={styles.caract}>
             <div className={styles.encabezado} onClick={toggleCaracteristicas}>
               <p className={styles.titleHeader}>Caracteristicas</p>
               <span
-                className={`${styles.arrow} ${
-                  caracteristicas ? "" : styles.open 
-                }`}
+                className={`${styles.arrow} ${caracteristicas ? "" : styles.open
+                  }`}
               >
                 <img src="/Right.svg" alt="" />
               </span>
@@ -167,9 +167,8 @@ const Detail = () => {
 
             {/* tabla caracteristicas  */}
             <div
-              className={`${styles.tabla} ${
-                caracteristicas ? styles.visible : ""
-              }`}
+              className={`${styles.tabla} ${caracteristicas ? styles.visible : ""
+                }`}
             >
               <div className={styles.table} >
                 <tbody>
@@ -254,43 +253,50 @@ const Detail = () => {
           {/* Políticas del producto */}
           <div className={styles.caract}>
             <div className={styles.encabezado} onClick={togglePoliticas}>
-              <p className={styles.titleHeader}>Políticas del producto</p>
+              <p className={styles.politicasTitle}>Políticas del producto</p>
               <span
-                className={`${styles.arrow} ${
-                  politicas ? "" : styles.open
-                }`}
+                className={`${styles.arrow} ${politicas ? "" : styles.open
+                  }`}
               >
                 <img src="/Right.svg" alt="" />
               </span>
             </div>
 
             <div
-              className={`${styles.tabla} ${
-                politicas ? styles.visible : ""
-              }`}
+              className={`${styles.tabla} ${politicas ? styles.visible : ""
+                }`}
             >
+
+
               <div className={styles.politicasContent}>
-                <ul>
-                <li><strong>Depósito:</strong></li>
-                  <li>El cliente debe pagar un depósito para apartar el vestido y garantizar su devolución en buen estado.</li>
-                  <li><strong>Entrega:</strong></li>
-                  <li>El cliente debe entregar el vestido en la fecha y lugar acordados. Si se retrasa, se le puede descontar del depósito.</li>
-                  <li><strong>Condiciones del vestido: </strong></li>
-                  <li>El cliente debe entregar el vestido en las mismas condiciones en que lo recibió, sin modificaciones, desperfectos o lavados.</li>
-                  <li><strong>Notificación de daños: </strong></li>
-                  <li>El cliente debe notificar cualquier daño o pérdida del vestido de manera oportuna. </li>
-                  <li><strong>Arreglos:</strong></li>
-                  <li>El cliente no puede realizar arreglos, ajustes o modificaciones en el vestido. Si lo hace, la empresa puede cobrarle el costo de reposición. </li>
-                  <li><strong>Limpieza: </strong></li>
-                  <li>La empresa se encarga de la limpieza del vestido, por lo que el cliente no debe lavarlo. </li>
-                  <li><strong>Recomendaciones de tiempo: </strong></li>
-                  <li>Se recomienda realizar el alquiler con al menos una semana de anticipación.</li>
-                </ul>
+
+                <div className={styles.politicasContainer}>
+                  <div className={styles.politica}>
+                    <strong>Depósito:</strong> El cliente debe pagar un depósito para apartar el vestido y garantizar su devolución en buen estado.
+                  </div>
+                  <div className={styles.politica}>
+                    <strong>Entrega:</strong> El cliente debe entregar el vestido en la fecha y lugar acordados. Si se retrasa, se le puede descontar del depósito.
+                  </div>
+                  <div className={styles.politica}>
+                    <strong>Condiciones del vestido:</strong> El cliente debe entregar el vestido en las mismas condiciones en que lo recibió, sin modificaciones, desperfectos o lavados.
+                  </div>
+                  <div className={styles.politica}>
+                    <strong>Notificación de daños:</strong> El cliente debe notificar cualquier daño o pérdida del vestido de manera oportuna.
+                  </div>
+                  <div className={styles.politica}>
+                    <strong>Arreglos:</strong> El cliente no puede realizar arreglos, ajustes o modificaciones en el vestido. Si lo hace, la empresa puede cobrarle el costo de reposición.
+                  </div>
+                  <div className={styles.politica}>
+                    <strong>Limpieza:</strong> La empresa se encarga de la limpieza del vestido, por lo que el cliente no debe lavarlo.
+                  </div>
+                  <div className={styles.politica}>
+                    <strong>Recomendaciones de tiempo: </strong> Se recomienda realizar el alquiler con al menos una semana de anticipación.
+                  </div>
+                  {/* Puedes agregar más políticas aquí */}
+                </div>
               </div>
             </div>
           </div>
-
-
 
         </div>
       </div>
