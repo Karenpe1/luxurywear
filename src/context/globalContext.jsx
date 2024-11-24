@@ -67,9 +67,9 @@ const reducer = (state, action)=>{
       };
     case "SET_ERROR":
       return {...state,error:action.payload}
-    case "SHOW_MODAL":
+    case "SHOW_MODAL_GLOBAL":
       return {...state, modalData: {isOpen:true, ...action.payload}} // muestro el modal global del error en favoritos
-    case "HIDE_MODAL":
+    case "HIDE_MODAL_GLOBAL":
       return {...state, modalData: {isOpen: false}}  // escondo el modal global del error en favoritos
     default:
     throw new Error();

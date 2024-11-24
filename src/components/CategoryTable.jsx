@@ -3,6 +3,7 @@ import Table from "../components/Table";
 import styles from "../styles/NewAdmin.module.css";
 import axiosInstance from "../Utils/axiosInstance";
 import { useContextGlobal } from "../context/globalContext";
+import ModalConfirm from "./ModalConfirm";
 
 const CategoryTable = ({ pageSize = 6,reload,setReload }) => {
   //cosas que se deben tener por cada table
@@ -75,23 +76,11 @@ const CategoryTable = ({ pageSize = 6,reload,setReload }) => {
   return (
     <>
       {state.showModal && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modalContent}>
-            <h3>¿Estás seguro de que deseas eliminar esta categoria?</h3>
-            <button
-              onClick={confirmDeleteCategories}
-              className={styles.confirmButton}
-            >
-              Confirmar
-            </button>
-            <button
-              onClick={() => dispatch({type:"HIDDEN_MODAL"})}
-              className={styles.cancelButton}
-            >
-              Cancelar
-            </button>
-          </div>
-        </div>
+        <ModalConfirm
+        title="¿Estás seguro de que deseas eliminar esta categoria?"
+        onClick={confirmDeleteCategories}
+        onClick2={() => dispatch({type:"HIDDEN_MODAL"})}
+        />
       )}
       <Table
         headers={["ID", "Nombre", "Descripción", "Imagen"]}

@@ -4,6 +4,7 @@ import Table from "../components/Table";
 import styles from "../styles/NewAdmin.module.css";
 import axiosInstance from "../Utils/axiosInstance";
 import { useContextGlobal } from "../context/globalContext";
+import ModalConfirm from "./ModalConfirm";
 
 const UserTable = ({ pageSize = 6, reload, setReload }) => {
   //cosas que se deben tener por cada table
@@ -106,45 +107,20 @@ const UserTable = ({ pageSize = 6, reload, setReload }) => {
 
   return (
     <>
-        {state.showModal && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modalContent}>
-            <h3>¿Estás seguro de que deseas eliminar este usuario?</h3>
-            <button
-              onClick={confirmDeleteUser}
-              className={styles.confirmButton}
-            >
-              Confirmar
-            </button>
-            <button
-              onClick={() => dispatch({type:"HIDDEN_MODAL"})}
-              className={styles.cancelButton}
-            >
-              Cancelar
-            </button>
-          </div>
-        </div>
+
+      {state.showModal &&(
+        <ModalConfirm
+        title="¿Estás seguro de que deseas eliminar este usuario?"
+        onClick={confirmDeleteUser}
+        onClick2={() => dispatch({ type: "HIDDEN_MODAL"})}
+        />
       )}
-      {showModalAdmin && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modalContent}>
-            <h3>
-              ¿Estás seguro de que deseas cambiar los permisos de este usuario?
-            </h3>
-            <button
-              onClick={confirmChangePermissions}
-              className={styles.confirmButton}
-            >
-              Confirmar
-            </button>
-            <button
-              onClick={() => setShowModalAdmin(false)}
-              className={styles.cancelButton}
-            >
-              Cancelar
-            </button>
-          </div>
-        </div>
+      {showModalAdmin &&(
+        <ModalConfirm
+        title="¿Estás seguro de que deseas cambiar los permisos de este usuario?"
+        onClick={confirmChangePermissions}
+        onClick2={() => setShowModalAdmin(false)}
+        />
       )}
       <Table
         headers={["ID", "Nombre", "Apellido", "Email", "Rol"]}

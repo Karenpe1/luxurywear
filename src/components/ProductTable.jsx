@@ -6,6 +6,7 @@ import { formatCurrency } from "../Utils/currencyFormatter";
 import styles from "../styles/NewAdmin.module.css";
 import ProductsForm from "../components/ProductsForm";
 import { useContextGlobal } from "../context/globalContext";
+import ModalConfirm from "./ModalConfirm";
 
 const ProductTable = ({ pageSize = 6, reload, setReload }) => {
   //cosas que se deben tener por cada table
@@ -137,21 +138,12 @@ const handleEditClick = async (id) => {
           </div>
         </div>
       )}
-      {state.showModal && !productToEdit && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modalContent}>
-            <h3>¿Estás seguro de que deseas eliminar este producto?</h3>
-            <button onClick={confirmDelete} className={styles.confirmButton}>
-              Confirmar
-            </button>
-            <button
-              onClick={() => dispatch({type:"HIDDEN_MODAL"})}
-              className={styles.cancelButton}
-            >
-              Cancelar
-            </button>
-          </div>
-        </div>
+      {state.showModal && !productToEdit &&(
+        <ModalConfirm
+        title="¿Estás seguro de que deseas eliminar este producto?"
+        onClick={confirmDelete}
+        onClick2={() => dispatch({type:"HIDDEN_MODAL"})}
+        />
       )}
       <Table
         headers={[
