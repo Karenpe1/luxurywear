@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "../styles/multiselector.module.css"; // Archivo CSS
 
 const MultiSelector = ({ options, placeholder, onChange , multiselector,error,label, preselected}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [selectedValue, setSelectedValue] = useState("");
+  const dropdownRef = useRef(null);
 
   // Prellenar valores iniciales en caso de editar
   useEffect   (() => {
@@ -41,8 +42,22 @@ const MultiSelector = ({ options, placeholder, onChange , multiselector,error,la
     if (onChange) onChange({value:option.value});
   };
 
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsOpen(false); // Cierra el dropdown si se hace clic fuera
+    }
+  };
+
+   // Escuchar eventos globales de clic
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div>
+    <div ref={dropdownRef}>
        <h4 className={styles.title}>{label}</h4>
        <div className={`${multiselector? styles.containerMulti : styles.container}`}>
         <div
