@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import styles from "../styles/NewAdmin.module.css";
-import axiosInstance from "../Utils/axiosInstance";
 import CategoryForm from "../components/CategoryForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faUsers,faList,faLayerGroup,faUserTie,faInbox,} from "@fortawesome/free-solid-svg-icons";
@@ -14,7 +13,6 @@ const NewAdmin = () => {
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [showProducModal, setShowProductModal] = useState(false);
   const [reload, setReload]= useState(false);
-  const axios = axiosInstance();
 
 
   const handleSelectTab = (tab) => {
