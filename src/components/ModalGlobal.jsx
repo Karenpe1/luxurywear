@@ -18,7 +18,7 @@ const ModalGlobal = () => {
         titulo={state.modalData.titulo}
         subtitulo={state.modalData.subtitulo}
         mensaje={state.modalData.mensaje}
-        onClose={()=>dispatch({type: "HIDE_MODAL"})}
+        onClose={()=>dispatch({type: "HIDE_MODAL_GLOBAL"})}
         />
   </div>
   )

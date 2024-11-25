@@ -63,8 +63,8 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
     mensaje: "",
     img: "",
   });
-  // eslint-disable-next-line no-useless-escape
-  const noNumbersRegex = /^[^\d]*$/;
+
+  const noNumbersRegex = /^\D*$/;
   const onlyNumbers=/^-?\d+(\.\d+)?$/;
 
   const toUrlFriendlyString = (str) =>
@@ -187,7 +187,6 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
       // For creating a new product
       setProduct({...product, images: files});
     }
-
     setError({ ...error, images: "" });
   };
 
@@ -198,13 +197,11 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
   };
 
   const handleSizeChange = (selected) => {
-    console.log(selected);
     const selectedSizes = selected.map((sizeId) =>
       sizesOptions.find((size) => size.value === sizeId)
     );
     setProduct({ ...product, sizes: selectedSizes }); // Assign objects
     setError({ ...error, sizes: "" });
-    console.log("Tallas seleccionadas:", selected);
   };
 
   const validateReference = async (reference) => {
@@ -222,6 +219,7 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
       return false;
     }
   };
+
   const validateName = async (name) => {
     try {
       const response = await axios.get(`/api/v1/products/by-name/${name}`);
@@ -238,24 +236,24 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
     }
   };
 
-  const handdleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     let formIsValid = true;
     let errors = {};
 
-    if(!isEdit){
-        const isReferenceValid= await validateReference(product.reference);
-        const isNameValid= await validateName(product.name);
+    if (!isEdit) {
+      const isReferenceValid= await validateReference(product.reference);
+      const isNameValid= await validateName(product.name);
 
-        if(!isReferenceValid){
-          errors.reference= "La referencia ya existe.Elija otra";
-          formIsValid=false;
-        }
-        if(!isNameValid){
-          errors.name="El nombre de ese producto ya existe. Elija otro"
-          formIsValid=false;
-        }
+      if (!isReferenceValid) {
+        errors.reference= "La referencia ya existe.Elija otra";
+        formIsValid=false;
+      }
+      if (!isNameValid) {
+        errors.name="El nombre de ese producto ya existe. Elija otro"
+        formIsValid=false;
+      }
     }
 
     if (!noNumbersRegex.test(product.name) || product.name.trim().length < 3) {
@@ -267,7 +265,7 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
       formIsValid = false;
     }
     if (product.description.trim().length < 5) {
-        errors.description = "La descripción debe tener al menos 5 caracteres.";
+      errors.description = "La descripción debe tener al menos 5 caracteres.";
       formIsValid = false;
     }
     if (!noNumbersRegex.test(product.material) || product.material.trim().length < 4) {
@@ -275,26 +273,25 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
       formIsValid = false;
     }
     if (!noNumbersRegex.test(product.color) || product.color.trim().length < 3) {
-        errors.color = "El color debe ser válido y tener más de 3 caracteres";
-        formIsValid = false;
+      errors.color = "El color debe ser válido y tener más de 3 caracteres";
+      formIsValid = false;
     }
     if (!noNumbersRegex.test(product.designer) || product.designer.trim().length < 3) {
-        errors.designer = "El Diseñador debe ser válido y tener más de 3 caracteres";
-        formIsValid = false;
+      errors.designer = "El Diseñador debe ser válido y tener más de 3 caracteres";
+      formIsValid = false;
     }
     if (!onlyNumbers.test(product.price) || !product.price || isNaN(product.price)) {
-        errors.price = "El precio del producto solo debe contener números";
-        formIsValid = false;
+      errors.price = "El precio del producto solo debe contener números";
+      formIsValid = false;
     }
     if (product.price > 99999999) {
-        errors.price = "El precio del producto debe ser menor a 99.999.999";
-        formIsValid = false;
+      errors.price = "El precio del producto debe ser menor a 99.999.999";
+      formIsValid = false;
     }
     if (product.images.length === 0 || product.images.length > 5) {
-        errors.images = "Debes subir al menos una imagen y máximo 5 al producto";
-        formIsValid = false;
+      errors.images = "Debes subir al menos una imagen y máximo 5 al producto";
+      formIsValid = false;
     }
-
     if (product.category === null) {
       errors.category = "Debes seleccionar una categoría.";
       formIsValid = false;
@@ -314,7 +311,6 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
             const formData = new FormData();
             const uniqueIdentifier = uuidv4();
             const fileExtension = file.name.split(".").pop();
-            // const fileName = `${product.name.toLowerCase()}__${uniqueIdentifier}.${fileExtension}`;
             const fileName = `${toUrlFriendlyString(product.name)}__${uniqueIdentifier}.${fileExtension}`;
             formData.append("file", file);
             formData.append("name", fileName);
@@ -341,10 +337,7 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
       };
 
       const method = isEdit ? "PUT" : "POST";
-      // const endpoint = isEdit ? `${url}/${product.id}` : url;
       const endpoint = isEdit && product.productId ? `${url}/${product.productId}` : url;
-      console.log("id correcto", product.productId)
-
 
       try {
         const response = await axios({
@@ -363,7 +356,7 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
             img: "./Estrellas.svg",
           }); //mostrar el mensaje de exito
         }
-      }catch (err) {
+      } catch (err) {
         console.error("Error during form submission:", err);
         setModalInfo({
           show: true,
@@ -440,7 +433,7 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
             <h2 className={stylesProduct.title}>
               {isEdit? "Editar Producto": "Crear Producto"}
             </h2>
-            <form onSubmit={handdleSubmit} className={stylesProduct.registroProduct}>
+            <form onSubmit={handleSubmit} className={stylesProduct.registroProduct}>
               <Input
                 id="nombre"
                 label="Nombre"
@@ -460,7 +453,6 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
                   error={error.category}
                   preselected= {product.categories}
                 />
-
               <div className={stylesProduct.grid}>
                 <Input
                   id="Referencia"
@@ -472,7 +464,6 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
                   error={error.reference}
                   className={stylesProduct.inputMedio}
                 />
-
                 <Input
                   label="Material"
                   id="material"
@@ -483,7 +474,6 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
                   error={error.material}
                   className={stylesProduct.inputMedio}
                 />
-
                 <Input
                   label="Color"
                   id="color"
@@ -494,7 +484,6 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
                   error={error.color}
                   className={stylesProduct.inputMedio}
                 />
-
                 <Input
                   label="Diseñador"
                   id="diseñador"
@@ -515,7 +504,6 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
                   error={error.price}
                   className={stylesProduct.inputMedio}
                 />
-
                 <MultiSelector
                   label="Tallas"
                   options={sizesOptions}

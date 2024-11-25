@@ -35,7 +35,7 @@ const HeartButton = ({id,onToggle }) => {
     e.stopPropagation();
     if (!user) {     
       dispatch({
-        type: "SHOW_MODAL",
+        type: "SHOW_MODAL_GLOBAL",
         payload: {
           img: "./ohNo.png",
           titulo: "Error",
