@@ -107,9 +107,10 @@ const NewAdmin = () => {
         onClick={handleCloseProductModal}>
           <div className={styles.categoryModalContentProduct}
           onClick={(e)=>e.stopPropagation()}>
-            <ProductsForm 
-            onClose={handleCloseProductModal} 
-            clase={styles.categoryModalCancelButton}/>
+            <ProductsForm
+              onClose={handleCloseProductModal}
+              clase={styles.categoryModalCancelButton}
+            />
           </div>
         </div>
       )}
