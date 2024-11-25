@@ -111,13 +111,6 @@ const NewAdmin = () => {
               >
                   Agregar Categoría
               </button>)}
-              {tab == "Admin" && 
-              (<button
-                  className={styles.addCategoryButton}
-                  onClick={handleOpenCategoryModal}
-              >
-                  Agregar Categoría
-              </button>)}
               {tab == "Productos" && 
               (<button 
                   className={styles.addCategoryButton} 

@@ -7,13 +7,13 @@ const ModalConfirm = ({title,onClick, onClick2,label1, label2}) => {
       <div className={styles.modalContent}>
         <h3>{title}</h3>
         <button onClick={onClick} className={styles.confirmButton}>
-          Confirmar
+          {"Confirmar" || label1}
         </button>
         <button
           onClick={onClick2}
           className={styles.cancelButton}
         >
-          Cancelar
+          {"Cancelar" || label2}
         </button>
       </div>
     </div>

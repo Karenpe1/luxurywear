@@ -84,6 +84,7 @@
     display: flex;
     align-items: center;
     padding: 10px;
+    gap: .7em;
     cursor: pointer;
   }
   
