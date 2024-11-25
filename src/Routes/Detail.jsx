@@ -272,25 +272,32 @@ const Detail = () => {
 
                 <div className={styles.politicasContainer}>
                   <div className={styles.politica}>
-                    <strong>Depósito:</strong> El cliente debe pagar un depósito para apartar el vestido y garantizar su devolución en buen estado.
+                    <strong>Depósito:</strong> 
+                    <li>El cliente debe pagar un depósito para apartar el vestido y garantizar su devolución en buen estado.</li>
                   </div>
                   <div className={styles.politica}>
-                    <strong>Entrega:</strong> El cliente debe entregar el vestido en la fecha y lugar acordados. Si se retrasa, se le puede descontar del depósito.
+                    <strong>Entrega:</strong> 
+                    <li>El cliente debe entregar el vestido en la fecha y lugar acordados. Si se retrasa, se le puede descontar del depósito.</li>
                   </div>
                   <div className={styles.politica}>
-                    <strong>Condiciones del vestido:</strong> El cliente debe entregar el vestido en las mismas condiciones en que lo recibió, sin modificaciones, desperfectos o lavados.
+                    <strong>Condiciones del vestido:</strong> 
+                    <li>El cliente debe entregar el vestido en las mismas condiciones en que lo recibió, sin modificaciones, desperfectos o lavados.</li>
                   </div>
                   <div className={styles.politica}>
-                    <strong>Notificación de daños:</strong> El cliente debe notificar cualquier daño o pérdida del vestido de manera oportuna.
+                    <strong>Notificación de daños:</strong> 
+                    <li>El cliente debe notificar cualquier daño o pérdida del vestido de manera oportuna.</li>
                   </div>
                   <div className={styles.politica}>
-                    <strong>Arreglos:</strong> El cliente no puede realizar arreglos, ajustes o modificaciones en el vestido. Si lo hace, la empresa puede cobrarle el costo de reposición.
+                    <strong>Arreglos:</strong> 
+                    <li>El cliente no puede realizar arreglos, ajustes o modificaciones en el vestido. Si lo hace, la empresa puede cobrarle el costo de reposición.</li>
                   </div>
                   <div className={styles.politica}>
-                    <strong>Limpieza:</strong> La empresa se encarga de la limpieza del vestido, por lo que el cliente no debe lavarlo.
+                    <strong>Limpieza:</strong> 
+                    <li>La empresa se encarga de la limpieza del vestido, por lo que el cliente no debe lavarlo.</li>
                   </div>
                   <div className={styles.politica}>
-                    <strong>Recomendaciones de tiempo: </strong> Se recomienda realizar el alquiler con al menos una semana de anticipación.
+                    <strong>Recomendaciones de tiempo: </strong> 
+                    <li>Se recomienda realizar el alquiler con al menos una semana de anticipación.</li>
                   </div>
                   {/* Puedes agregar más políticas aquí */}
                 </div>
