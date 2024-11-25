@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axiosInstance from "../Utils/axiosInstance";
 import { useParams } from "react-router-dom";
 import Table from "./Table";
@@ -44,7 +44,6 @@ const ProductTable = ({ pageSize = 6, reload, setReload }) => {
 
     fetchProducts();
   }, [categoryName, currentPage, reload]);
-  
 
   // Calculate the range of products displayed
   const startRange = currentPage * pageSize + 1;
@@ -56,20 +55,19 @@ const ProductTable = ({ pageSize = 6, reload, setReload }) => {
   
   const handleShowActions = (i) => {
     dispatch({type:"TOGGLE_SHOW_ACTIONS", payload:i})
-};
+  };
 
+  const handleCloseEditProduct = () => {
+    console.log("Cerrando modal de edición...");
+    dispatch({type:("HIDDEN_MODAL")})
+    setProductToEdit(null);
+    setReload((prev) => !prev);
+  };
 
-const handleCloseEditProduct = () => {
-  console.log("Cerrando modal de edición...");
-  dispatch({type:("HIDDEN_MODAL")})
-  setProductToEdit(null);
-  setReload((prev) => !prev);
-};
-
-const handleEditClick = async (id) => {
-  try {
-    const response = await axios.get(
-      `http://localhost:8080/api/v1/products/${id}`
+  const handleEditClick = async (id) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/v1/products/${id}`
       );
       const productData = response.data;
       dispatch({type:"GET_ID",id})
@@ -90,6 +88,8 @@ const handleEditClick = async (id) => {
         }
         : null,
         sizes: productData.sizes.map((size) => ({
+          id: size.id,
+          size: size.size,
           value: size.id,
           label: size.size,
         })),
@@ -197,7 +197,7 @@ const handleEditClick = async (id) => {
             <div className={styles.actions}>
               <img
                 className={styles.dots}
-                src="dots.png"
+                src="/dots.png"
                 onClick={(e) => {
                   e.stopPropagation(); // Detiene la propagación del evento click
                   handleShowActions(idx); // Llama a tu función de manejo
