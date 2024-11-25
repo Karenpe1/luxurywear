@@ -248,6 +248,8 @@ const NewAdmin = ({pageSize=6}) => {
           }
         :null,
         sizes: productData.sizes.map((size) => ({
+          id: size.id,
+          size: size.size,
           value: size.id,
           label: size.size,
         })),
