@@ -67,3 +67,10 @@
 .option:hover {
     text-decoration: underline;
 }
+/* Ocultar el avatar en pantallas pequeñas */
+@media (max-width: 768px) {
+    .avatar {
+        display: none;
+    }
+    
+}
