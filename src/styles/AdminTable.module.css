@@ -1,0 +1,22 @@
+.contenedorCards{
+    display: flex;
+    justify-content: space-between;
+    gap: 1em;
+}
+.contenedorTable{
+    width: 100%;
+    padding-top: 2em;
+}
+.title{
+    font-size: 1.7em;
+    font-weight: 700;
+    text-align: start;
+    font-style: normal;
+    font-family: "Noto Sans";
+}
+.subtitle{
+    font-size: 1em;
+    font-weight: 400;
+    color:rgb(86, 86, 86);
+    padding-bottom: 2em;
+}

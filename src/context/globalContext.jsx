@@ -7,6 +7,7 @@ const initialState = {
   productsPaginados:[],
   categoriesPaginados:[],
   usersPaginados:[],
+  reservationsPaginados:[],
   selectedId:null,
   showActions:[],
   productToEdit: null,
@@ -25,6 +26,8 @@ const reducer = (state, action)=>{
       return{...state, categoriesPaginados: action.payload,} // y obtengo lista de categorias
     case "GET_USERS":
       return{...state, usersPaginados: action.payload,} // y obtengo lista de users
+    case "GET_RESERVATIONS":
+      return{...state, reservationsPaginados: action.payload,} // y obtengo lista de reservaciones
     case "DELETE_PRODUCT":
       return {
         ...state,

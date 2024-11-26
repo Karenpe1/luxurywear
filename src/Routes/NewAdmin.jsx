@@ -7,6 +7,8 @@ import ProductsForm from "../components/ProductsForm";
 import ProductTable from "../components/ProductTable";
 import CategoryTable from "../components/CategoryTable";
 import UserTable from "../components/UserTable";
+import CardInfo from "../components/CardInfo";
+import AdminTable from "../components/AdminTable";
 
 const NewAdmin = () => {
   const [tab, setTab] = useState("Productos");
@@ -150,6 +152,10 @@ const NewAdmin = () => {
         )}
         {tab === "Usuarios" && (
           <UserTable reload={reload} setReload={setReload}/>
+        )}
+        {
+          tab === "Admin" && (
+            <AdminTable reload={reload} setReload={setReload}/>
         )}
         
       </div>
