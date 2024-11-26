@@ -1,6 +1,6 @@
 import styles from "../styles/NewHeader.module.css";
 import { useState, useContext } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import User from "./User";
 
@@ -8,11 +8,17 @@ const NewHeader = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, logoutUser } = useContext(AuthContext);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const currentPath = location.pathname;
 
   const handleHamburger = () => {
     setIsOpen(false);
+  };
+
+  const goToFavorites = () => {
+    navigate('/favList'); // Redirige a la ruta de favoritos
+    handleHamburger(); // Cierra el menú
   };
 
   return (
@@ -26,12 +32,15 @@ const NewHeader = () => {
           <div className={`${styles.rightSection} ${isOpen ? styles.showMenu : ""}`}>
             {user ? (
               <>
-                {( user.role === "ADMIN" && currentPath !== "/admin" ) && (
+                {user.role === "ADMIN" && currentPath !== "/admin" && (
                   <Link to="/admin" className={styles.navButton} onClick={handleHamburger}>
                     <i className="fas fa-user-shield"></i> Panel Administrador
                   </Link>
                 )}
-                {/* Aqui deberia ir el avatar */}
+                {/* Nueva opción para "Mis Favoritos" */}
+                <div className={styles.navButton} onClick={goToFavorites}>
+                  <i className="fas fa-heart" style={{ color: "#C3B2FB", fontSize: "20px" }}></i> Mis favoritos
+                </div>
                 <div onClick={() => {logoutUser(); handleHamburger();}} className={styles.navButton}>
                   <i className="fas fa-sign-out-alt"></i> Cerrar sesión
                 </div>
@@ -65,7 +74,7 @@ const NewHeader = () => {
                 <button className={styles.button}>Panel Administrador</button>
               </Link>
             )}
-            <User/>
+            <User />
           </div>
         ) : (
           <>
