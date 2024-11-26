@@ -3,6 +3,7 @@ import AuthContext from "../context/AuthContext";
 import stylesHeart from "../styles/heart.module.css";
 import useAxios from "../Utils/axiosInstance";
 import { useContextGlobal } from "../context/globalContext";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
 const HeartButton = ({id,onToggle }) => {
   const [liked, setLiked] = useState(false);
@@ -25,6 +26,9 @@ const HeartButton = ({id,onToggle }) => {
         } catch (error) {
           console.error("Error al cargar el estado de favoritos:", error);
         }
+      }
+      else{
+        setLiked(false) // Si no hay usuario, resetea a no favorito
       }
     };
 
