@@ -20,51 +20,28 @@ const NewHeader = () => {
       {isOpen && (
         <div className={styles.menu}>
           <div className={styles.menuHeader}>
-            <a href="/">
-              <img className={styles.logo} src="/logo.png" alt="App Logo" />
-            </a>
+            <a href="/"><img className={styles.logo} src="/logo.png" alt="App Logo" /></a>
             <img src="/cerrar.png" alt="Close Menu" onClick={handleHamburger} />
           </div>
-          <div
-            className={`${styles.rightSection} ${
-              isOpen ? styles.showMenu : ""
-            }`}
-          >
+          <div className={`${styles.rightSection} ${isOpen ? styles.showMenu : ""}`}>
             {user ? (
               <>
-                {user.role === "ADMIN" && currentPath !== "/admin" && (
-                  <Link
-                    to="/admin"
-                    className={styles.navButton}
-                    onClick={handleHamburger}
-                  >
+                {(user.role === "ADMIN" && currentPath !== "/admin") && (
+                  <Link to="/admin" className={styles.navButton} onClick={handleHamburger}>
                     <i className="fas fa-user-shield"></i> Panel Administrador
                   </Link>
                 )}
-                <div
-                  onClick={() => {
-                    logoutUser();
-                    handleHamburger();
-                  }}
-                  className={styles.navButton}
-                >
+                {/* Avatar solo en la vista principal */}
+                <div onClick={() => { logoutUser(); handleHamburger(); }} className={styles.navButton}>
                   <i className="fas fa-sign-out-alt"></i> Cerrar sesión
                 </div>
               </>
             ) : (
               <>
-                <Link
-                  to="/register"
-                  className={styles.navButton}
-                  onClick={handleHamburger}
-                >
+                <Link to="/register" className={styles.navButton} onClick={handleHamburger}>
                   <i className="fas fa-user-plus"></i> Crear cuenta
                 </Link>
-                <Link
-                  to="/login"
-                  className={styles.navButton}
-                  onClick={handleHamburger}
-                >
+                <Link to="/login" className={styles.navButton} onClick={handleHamburger}>
                   <i className="fas fa-sign-in-alt"></i> Iniciar sesión
                 </Link>
               </>
@@ -73,17 +50,38 @@ const NewHeader = () => {
         </div>
       )}
 
-      <a href="/" onClick={handleHamburger}>
-        <img className={styles.logo} src="/logo.png" alt="App Logo" />
-      </a>
+      <a href="/" onClick={handleHamburger}><img className={styles.logo} src="/logo.png" alt="App Logo" /></a>
 
-      {/* Aquí se agrega el componente User */}
-      {user && (
-        <div className={styles.avatarContainer}>
-          <User />
-        </div>
-      )}
+      <div className={styles.links}>
+        <span>Nosotros</span>
+        <span>Sostenibilidad</span>
+        <span>Contacto</span>
+      </div>
 
+      <div className={styles.buttons}>
+        {user ? (
+          <div className={styles.user}>
+            {user.role === "ADMIN" && currentPath !== "/admin" && (
+              <Link to="/admin">
+                <button className={styles.button}>Panel Administrador</button>
+              </Link>
+            )}
+            {/* Avatar solo en la vista principal, no en el menú hamburguesa */}
+            {!isOpen && <User />}
+          </div>
+        ) : (
+          <>
+            <Link to="/register">
+              <button className={styles.button}>Crear Cuenta</button>
+            </Link>
+            <Link to="/login">
+              <button className={styles.button}>Iniciar Sesión</button>
+            </Link>
+          </>
+        )}
+      </div>
+
+      {/* Mostrar el icono del menú solo en pantallas pequeñas */}
       <img
         className={styles.hamburger}
         src="/menu.png"
