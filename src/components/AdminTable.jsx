@@ -71,7 +71,7 @@ const AdminTable = ({ pageSize = 6,reload,setReload}) => {
         />
         <CardInfo
           title={"Valor Promedio Pedido"}
-          subtitle={"Numero de pedidos realizados"}
+          subtitle={"Valor promedio por cada pedido"}
           total={"$ 230.000"}
         />
       </div>
