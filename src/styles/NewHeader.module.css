@@ -76,6 +76,18 @@
     font-size: 20px;
     text-decoration: underline;
 }
+.avatarContainer {
+    display: flex;
+    align-items: center;
+    margin-right: 16px; /* Ajusta según sea necesario */
+  }
+  
+  @media (min-width: 1080px) {
+    .avatarContainer {
+      margin-right: 40px; /* Mayor espacio para pantallas grandes */
+    }
+  }
+  
 
 @media(min-width: 481px) and (max-width: 1079px) {
    
