@@ -26,9 +26,19 @@ const Search = ({isSearch, setIsSearch}) => {
     "turquesa", "beige", "esmeralda", "champán", "nude"
   ];
 
+  // Función para manejar los cambios en el campo de entrada
   const handleSearchTermChange = (e) => {
-    setSearchTerm(e.target.value);
-  }
+    const userInput = e.target.value.toLowerCase();
+    setSearchTerm(userInput);
+
+    // Filtrar las sugerencias que coinciden con el texto ingresado
+    if (userInput) {
+      const filtered = searchTerms.filter(term => term.toLowerCase().includes(userInput));
+      setFilteredSuggestions(filtered);
+    } else {
+      setFilteredSuggestions([]);
+    }
+  };
 
   document.addEventListener('scroll', () => {if(window.screen.width > 500) {setIsOpen(false); setStartDateToggle(false);}});
   
