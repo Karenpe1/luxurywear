@@ -14,7 +14,7 @@
     font-weight: 400;
   }
   .dropdownHeader {
-    border: 1px solid  #231942;
+    border: 1px solid  gainsboro;
     border-radius: 12px;
     padding: 10px 14px 10px 22px;
     display: flex;

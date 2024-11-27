@@ -17,7 +17,7 @@
     padding: 10px 14px 10px 22px;
     width: 280px;
     resize: none;
-    border: 1px solid black;
+    border: 1px solid gainsboro;
 }
 .area:focus {
     outline: 2px solid #0078d4;

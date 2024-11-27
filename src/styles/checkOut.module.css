@@ -1,0 +1,216 @@
+.contenedor{
+    display: flex;
+    flex-direction: row;
+}
+.checkoutLeft{
+    width: 60%;
+    background-color: #c8bbf4;
+    padding: 6em 4em 3em 4em;
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+}
+.logo{
+    background-color: white;
+    border-radius: 8px;
+    width: 20%;
+}
+.info{
+    background-color: white;
+    border-radius: 8px;
+    padding: 2em;
+}
+.info h2{
+    text-align: start;
+    padding-bottom: 1em;
+    font-size: 20px;
+}
+.grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .5em;
+}
+.inputMedio{
+    max-width: 100%;
+}
+.ciudadGrid{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1em;
+    padding-bottom: 1em;
+}
+.option{
+    border: 1px solid gainsboro;
+    display: flex;
+    flex-direction: row;
+}
+.label {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 1em;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #fff;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+.label.active {
+    border-color: #007bff;
+    background-color: #e9f3ff;
+}
+
+
+
+
+
+
+.checkoutRight{
+    width: 40%;
+    background-color: white;
+    padding: 6em;
+}
+.producto{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.detailProduct{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1em;
+   
+}
+.detailProduct img{
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+.descriptionProduct{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    font-family: "Noto Sans";
+    
+}
+.descriptionProduct:first-child{
+    font-size: 1em;
+    font-weight: 600;
+    font-style: normal;
+    font-family: "Noto Sans";
+}
+.precioProduct h3{
+
+    font-size: 1em;
+    font-weight: 600;
+    font-style: normal;
+    font-family: "Noto Sans";
+}
+.cupon{
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding-bottom: 1em;
+    border-bottom: 1.5px solid gainsboro;
+}
+.cuponTitle{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center ;
+}
+.title{
+    font-size: 1.05em;
+    font-weight: 400;
+    font-style: normal;
+    font-family: "Noto Sans";
+    padding: 0;
+    display: flex;
+    gap: .7em;
+    align-items: center;
+}
+.arrowContainer{
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    background-color: #C3B2FB;
+}
+.arrowContainer:hover {
+    outline: 2px solid gainsboro;
+}
+.arrow {
+    transition: transform 0.3s ease; /* Transición suave para el giro */
+}
+.arrow.open {
+    transform: rotate(180deg); /* Girar 180 grados */
+}
+.inputCupon{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1em;
+    max-height: 0px;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+}
+.inputCupon.visible{
+    max-height: 200px;
+}
+.input{
+    padding: 17px 55px 17px 25px;
+    width: 70%;
+    border-radius: 8px;
+    border: 1.5px solid gainsboro;
+}
+.inputButton{
+    padding: 10px;
+    border-radius: 8px;
+    width: 30%;
+    background:#C3B2FB;
+}
+.resumenPago{
+    padding: 3em 0em;
+    display: flex;
+    flex-direction: column;
+    gap:1em;
+}
+.resumenFila{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1em;
+}
+.resumenFila span{
+    font-size: 1em;
+    font-weight: 400;
+    font-style: normal;
+    font-family: "Noto Sans";
+
+}
+.resumenFila span:first-child{
+    font-weight: 600;
+}
+.resumenFila .total{
+    font-weight: 600;
+}
+.condiciones{
+    font-size: 1em;
+    font-weight: 400;
+    font-style: normal;
+    font-family: "Noto Sans";
+    margin: 2em 0em;
+}
+.condiciones a{
+    text-decoration: none;
+    color: #C3B2FB;
+}
+.condiciones a:hover{
+    text-decoration: underline;
+}
+.buttonReservar{
+    padding-top: 2em;
+}
