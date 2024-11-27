@@ -10,10 +10,21 @@ const Search = ({isSearch, setIsSearch}) => {
   const [endDate, setEndDate] = useState({day: null, month: null, year: null});
   const [searchTerm, setSearchTerm] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  const [filteredSuggestions, setFilteredSuggestions] = useState([]);
   const [searchToggle, setSearchToggle] = useState(false);
   const [startDateToggle, setStartDateToggle] = useState(false);
 
-  const searchTerms = ["verde", "azul", "plateado", "rosa"];
+  const searchTerms = [
+    "vestido", "elegante", "evento", "corto", "vestido corto", "largo", "vestido largo",
+    "juvenil", "encaje", "corte juvenil y elegante", "casual", "formal", "gala", "fiesta",
+    "coctel", "moderno", "clásico", "sencillo", "sofisticado", "glamoroso", "bohemio",
+    "vintage", "minimalista", "bordado", "con pedrería", "con brillo", "floral", "plisado",
+    "de noche", "de día", "seda", "gasa", "poliéster", "chiffon", "algodón", "terciopelo",
+    "lino", "tul", "raso", "satén", "organza", "crepé", "tafetán", "azul", "verde", 
+    "blanco", "rosa", "rosado", "marfil", "dorado", "coral", "perla", "plateado", 
+    "rojo", "negro", "gris", "amarillo", "morado", "fucsia", "vino", "lavanda", 
+    "turquesa", "beige", "esmeralda", "champán", "nude"
+  ];
 
   const handleSearchTermChange = (e) => {
     setSearchTerm(e.target.value);
