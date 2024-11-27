@@ -4,6 +4,8 @@ import styles from "../styles/Detail.module.css";
 import backButton from "../Images/backArrow.png";
 import { formatCurrency } from "../Utils/currencyFormatter";
 import Calendar from "../components/Calendar";
+import { useNavigate } from "react-router-dom";
+import Button from "../components/Button";
 
 const Detail = () => {
   const { id } = useParams();
@@ -19,6 +21,8 @@ const Detail = () => {
   const [politicas, setPoliticas] = useState(false); // Nuevo estado para políticas
 
   const [startDateToggle, setStartDateToggle] = useState(false);
+
+  const navigate = useNavigate();
 
   document.addEventListener('scroll', () => { if (window.screen.width > 500) { setIsOpen(false); setStartDateToggle(false); } });
 
@@ -58,6 +62,19 @@ const Detail = () => {
     setPoliticas(!politicas);
   };
   if (!product) return <p>Cargando...</p>;
+
+  // Function to handle button click
+  const handleReserve = () => {
+    if (startDate.day && endDate.day) {
+      navigate("/checkout", {
+        state: {
+          id,
+          startDate,
+          endDate,
+        },
+      });
+    }
+  };
 
   return (
     <div className={styles.detailContainer}>
@@ -122,23 +139,38 @@ const Detail = () => {
             Alquiler:{" "}
             <span>{formatCurrency(product.price, "es-CO", "COP")}</span>
           </p>
-
           <div className={styles.dateSelector}>
-            <div className={startDateToggle ? styles.dateOuterContainerToggled : styles.dateOuterContainer} onClick={() => { setIsOpen(true); setStartDateToggle(!startDateToggle); }}>
+            <div className={startDateToggle ? styles.dateOuterContainerToggled : styles.dateOuterContainer}
+                 onClick={() => {
+                   setIsOpen(true);
+                   setStartDateToggle(!startDateToggle);
+                 }}>
               <div className={styles.dateContainer}>
                 <span>Alquila</span>
-                <span className={styles.date}>{startDate.day == null ? 'Desde' : startDate.day + '/' + (startDate.month + 1) + '/' + startDate.year}</span>
+                <span
+                  className={styles.date}>{startDate.day == null ? 'Desde' : startDate.day + '/' + (startDate.month + 1) + '/' + startDate.year}</span>
               </div>
-              <span onClick={() => { setStartDate({ day: null, month: null, year: null }); setEndDate({ day: null, month: null, year: null }); }}>{startDate.day != null ? 'x' : ''}</span>
+              <span onClick={() => {
+                setStartDate({day: null, month: null, year: null});
+                setEndDate({day: null, month: null, year: null});
+              }}>{startDate.day != null ? 'x' : ''}</span>
             </div>
             <span className={styles.separator}>|</span>
             <div className={styles.dateOuterContainer} onClick={() => setIsOpen(true)}>
               <div className={styles.dateContainer}>
                 <span>Devuelve</span>
-                <span className={styles.date}>{endDate.day == null ? 'Hasta' : endDate.day + '/' + (endDate.month + 1) + '/' + endDate.year}</span>
+                <span
+                  className={styles.date}>{endDate.day == null ? 'Hasta' : endDate.day + '/' + (endDate.month + 1) + '/' + endDate.year}</span>
               </div>
-              <span onClick={() => setEndDate({ day: null, month: null, year: null })}>{endDate.day != null ? 'x' : ''}</span>
+              <span
+                onClick={() => setEndDate({day: null, month: null, year: null})}>{endDate.day != null ? 'x' : ''}</span>
             </div>
+            <Button
+              onClick={handleReserve}
+              disabled={!startDate.day || !endDate.day}
+            >
+              Checkout
+            </Button>
           </div>
           {isOpen && <div className={styles.calendarContainer} onClick={() => setIsOpen(false)}>
             <div className={styles.calendar} onClick={(e) => e.stopPropagation()}>
@@ -262,51 +294,55 @@ const Detail = () => {
               </span>
             </div>
 
-            <div
-              className={`${styles.tabla} ${politicas ? styles.visible : ""
+              <div
+                className={`${styles.tabla} ${politicas ? styles.visible : ""
                 }`}
-            >
-
-
-              <div className={styles.politicasContent}>
-
-                <div className={styles.politicasContainer}>
-                  <div className={styles.politica}>
-                    <strong>Depósito:</strong> 
-                    <li>El cliente debe pagar un depósito para apartar el vestido y garantizar su devolución en buen estado.</li>
+              >
+                <div className={styles.politicasContent}>
+                  <div className={styles.politicasContainer}>
+                    <div className={styles.politica}>
+                      <strong>Depósito:</strong>
+                      <li>El cliente debe pagar un depósito para apartar el vestido y garantizar su devolución en buen
+                        estado.
+                      </li>
+                    </div>
+                    <div className={styles.politica}>
+                      <strong>Entrega:</strong>
+                      <li>El cliente debe entregar el vestido en la fecha y lugar acordados. Si se retrasa, se le puede
+                        descontar del depósito.
+                      </li>
+                    </div>
+                    <div className={styles.politica}>
+                      <strong>Condiciones del vestido:</strong>
+                      <li>El cliente debe entregar el vestido en las mismas condiciones en que lo recibió, sin
+                        modificaciones, desperfectos o lavados.
+                      </li>
+                    </div>
+                    <div className={styles.politica}>
+                      <strong>Notificación de daños:</strong>
+                      <li>El cliente debe notificar cualquier daño o pérdida del vestido de manera oportuna.</li>
+                    </div>
+                    <div className={styles.politica}>
+                      <strong>Arreglos:</strong>
+                      <li>El cliente no puede realizar arreglos, ajustes o modificaciones en el vestido. Si lo hace, la
+                        empresa puede cobrarle el costo de reposición.
+                      </li>
+                    </div>
+                    <div className={styles.politica}>
+                      <strong>Limpieza:</strong>
+                      <li>La empresa se encarga de la limpieza del vestido, por lo que el cliente no debe lavarlo.</li>
+                    </div>
+                    <div className={styles.politica}>
+                      <strong>Recomendaciones de tiempo: </strong>
+                      <li>Se recomienda realizar el alquiler con al menos una semana de anticipación.</li>
+                    </div>
+                    {/* Puedes agregar más políticas aquí */}
                   </div>
-                  <div className={styles.politica}>
-                    <strong>Entrega:</strong> 
-                    <li>El cliente debe entregar el vestido en la fecha y lugar acordados. Si se retrasa, se le puede descontar del depósito.</li>
-                  </div>
-                  <div className={styles.politica}>
-                    <strong>Condiciones del vestido:</strong> 
-                    <li>El cliente debe entregar el vestido en las mismas condiciones en que lo recibió, sin modificaciones, desperfectos o lavados.</li>
-                  </div>
-                  <div className={styles.politica}>
-                    <strong>Notificación de daños:</strong> 
-                    <li>El cliente debe notificar cualquier daño o pérdida del vestido de manera oportuna.</li>
-                  </div>
-                  <div className={styles.politica}>
-                    <strong>Arreglos:</strong> 
-                    <li>El cliente no puede realizar arreglos, ajustes o modificaciones en el vestido. Si lo hace, la empresa puede cobrarle el costo de reposición.</li>
-                  </div>
-                  <div className={styles.politica}>
-                    <strong>Limpieza:</strong> 
-                    <li>La empresa se encarga de la limpieza del vestido, por lo que el cliente no debe lavarlo.</li>
-                  </div>
-                  <div className={styles.politica}>
-                    <strong>Recomendaciones de tiempo: </strong> 
-                    <li>Se recomienda realizar el alquiler con al menos una semana de anticipación.</li>
-                  </div>
-                  {/* Puedes agregar más políticas aquí */}
                 </div>
               </div>
             </div>
           </div>
-
         </div>
-      </div>
     </div>
   );
 };
