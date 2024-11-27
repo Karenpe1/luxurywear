@@ -1,26 +1,31 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import styles from "../styles/Detail.module.css";
 import backButton from "../Images/backArrow.png";
 import { formatCurrency } from "../Utils/currencyFormatter";
 import Calendar from "../components/Calendar";
 import { useNavigate } from "react-router-dom";
-import Button from "../components/Button";
+import AuthContext from "../context/AuthContext";
+import { faL } from "@fortawesome/free-solid-svg-icons";
+import { useContextGlobal } from "../context/globalContext";
+import ModalGlobal from "../components/ModalGlobal";
 
 const Detail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [mainImage, setMainImage] = useState(""); // Estado para la imagen principal
   const [caracteristicas, setCaracteristicas] = useState(false);
-
+  const [disabled,setDisabled]=useState(true)
+  
   const [startDate, setStartDate] = useState({ day: null, month: null, year: null });
   const [endDate, setEndDate] = useState({ day: null, month: null, year: null });
   const [isOpen, setIsOpen] = useState(false);
   const [closedDates, setClosedDates] = useState([]);
-
+  
   const [politicas, setPoliticas] = useState(false); // Nuevo estado para políticas
-
   const [startDateToggle, setStartDateToggle] = useState(false);
+  const {dispatch}=useContextGlobal();
+  const {user}=useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -53,7 +58,11 @@ const Detail = () => {
 
     fetchProductDetail();
   }, [id]);
-
+  useEffect(()=>{
+    if(startDate.day && endDate.day){
+      setDisabled(false)
+    }
+  },[startDate,endDate])
   const toggleCaracteristicas = () => {
     setCaracteristicas(!caracteristicas);
   };
@@ -63,9 +72,23 @@ const Detail = () => {
   };
   if (!product) return <p>Cargando...</p>;
 
-  // Function to handle button click
-  const handleReserve = () => {
-    if (startDate.day && endDate.day) {
+
+  //verificar si esta logueado para hacer la reserva 
+  const handleReservation=()=>{
+    if(!user){
+      dispatch({
+        type: "SHOW_MODAL_GLOBAL",
+        payload: {
+          img: "/ohNo.png",
+          titulo: "Error",
+          subtitulo: "Hubo un problema.",
+          mensaje: "Por favor, inicia sesión para poder realizar tu reserva",
+          onClose: ()=>navigate("/login"),
+        },
+      });
+      return;
+    }
+    else if(user && startDate.day && endDate.day ){
       navigate("/checkout", {
         state: {
           id,
@@ -74,7 +97,7 @@ const Detail = () => {
         },
       });
     }
-  };
+  }
 
   return (
     <div className={styles.detailContainer}>
@@ -165,12 +188,9 @@ const Detail = () => {
               <span
                 onClick={() => setEndDate({day: null, month: null, year: null})}>{endDate.day != null ? 'x' : ''}</span>
             </div>
-            <Button
-              onClick={handleReserve}
-              disabled={!startDate.day || !endDate.day}
-            >
-              Checkout
-            </Button>
+            <div>
+              <button className={`${styles.botonReserva} ${disabled ? styles.disabled : ""}`} onClick={handleReservation} >Reservar</button>
+            </div>
           </div>
           {isOpen && <div className={styles.calendarContainer} onClick={() => setIsOpen(false)}>
             <div className={styles.calendar} onClick={(e) => e.stopPropagation()}>
@@ -202,14 +222,10 @@ const Detail = () => {
               className={`${styles.tabla} ${caracteristicas ? styles.visible : ""
                 }`}
             >
-              <div className={styles.table} >
-                <tbody>
+                <tbody className={styles.table}>
                   <tr>
                     <td style={{ background: "#F9F9F9" }}>
-                      <img
-                        src="https://s3-alpha-sig.figma.com/img/4038/1265/6b121213518e0c92d228059b27433f1a?Expires=1731888000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=LXQJH5LyT2wO~PwQ-8MCbd9ddqei8SBcePR1hHxeE3aXPJwlkntHX8uqIwE5GcHZAMFBqkbMYK5JFojiZK5X864a5y1odJqDnYO7r09RMp3VmnfTTfRnNbh7Xyr4-QPLOTutdWEhRTfYvPOt~W~eJZQL0CJsBFbkcPJIZ5rVr7SuqkTc5fs1o-ojlZRJ8s53~dt~j3AUidiWai1qj1av3kHajD1QeDfRLyhpj0V530KMY3xSV0-PQ7-2RGsYCZOVjCMzBRdj9YVDnxHoZsaJiA33t7slvQpL0xzK-dhX3G-IoFyD58OpdXODkFWSJ1Phme4Q8uklOWgWbdEJkUyyNg__"
-                        alt=""
-                      />
+                      <img src="/brand.png" alt=""/>
                       Referencia
                     </td>
                     <td style={{ background: "#F9F9F9" }}>
@@ -218,20 +234,14 @@ const Detail = () => {
                   </tr>
                   <tr>
                     <td>
-                      <img
-                        src="https://s3-alpha-sig.figma.com/img/fc3d/23f2/1a3e56bac28b1d67709ff260c2d329be?Expires=1731888000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=JoWMutXmfsValFsB~i~6SCeymNwjTmBKM3GZI7Z5wX4s~bS~pua0xSzj~pLppNUdFh6oOCyuhNrTw2fScAkH5OYxE-PIPIjeJ9i40seZknSPfJy8~XsY4A5MlDlaZA8i6x~i53vxjUBajlpjlO6KHyh2pW~hwCGeR-n8csx9zAoFUfAnx9X6LXH6FjAbdPotZgPAorxOO8teg0yV22g3hgrm0dGTNpVKRCdRKN~HV7Xb9qUuT04d-NEnpdvYoNZFiOa8W5LfhLnGG7Xu2aREYi3MvKICsidnDbu5~3fvsKTd20SjrWN5Fk52xtWWWTXsimYT8R0DTYpJzQRAhi4K3A__"
-                        alt=""
-                      />
+                      <img src="/dress.png" alt="" />
                       Modelo
                     </td>
                     <td>{product.name}</td>
                   </tr>
                   <tr>
                     <td style={{ background: "#F9F9F9" }}>
-                      <img
-                        src="https://s3-alpha-sig.figma.com/img/9575/3b78/1540abb1fd7ac3ac1e85d6298d13f750?Expires=1731888000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=D8Q5EQglgvcOXX8iz2z54ezmG8DZ1Wev-x7gURqV7jpLPA6c1aX1yMs8-pvwpOmuHuJ2CLfoium66humJJwLOBKZujZeHrZF11q2As47lKS9jAABt4h-nbUizLA57-nwT0GSJmJWZHW7MKCB40OmzBWHGD-0JPp5JPjyz9CR4sGEgU3E005pFLigORi3u8Oc0aR51cwLCBr3RIbt4wqrDe-jTflJxlnU2cORmhg~QVTy2rO3PiY4oQShEFXyUSSKqJs4AQacBe6dJ~mbbGDBzCF4XLw73TVinUEgFqpJ0~RGa4S3pya9xWiQgsa4lnZCRh6bX7AcIBJGnB6aW00KDQ__"
-                        alt=""
-                      />
+                      <img src="/tijeras.png" alt="" />
                       Diseñador
                     </td>
                     <td style={{ background: "#F9F9F9" }}>
@@ -240,20 +250,14 @@ const Detail = () => {
                   </tr>
                   <tr>
                     <td>
-                      <img
-                        src="https://s3-alpha-sig.figma.com/img/0ffc/dff2/026bb7afc20791e84f73e250163ba636?Expires=1731888000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=TGty4JAono5iddXgZUbQr00ie9f9cJUypWhR9RjlhlVhjH7cXrsVdJBYQ5p3zENQ3eVkZ4-iDHUg32vSRHBdPH4N-QcMHN7~kv88VhoRJ~YX-XD~JHLseRO-cgVYlTWqe78BxcDdcmvi300ZZFQl5NyEtUq8WHIB4R0Y39a5nDOAnhYwKS6ik9xZ53CCn3FO-SFnHDZk0cw7UfDh-aUbM~W9YScCapm6UAJUadNXPzWbobBW3qMENaftc-nJyYUji5MQxKrAYWM0HuKw6AtcBdZGAg5Z8~SempN1c2XOb-Cteyzi38RO0T2mS9mZgGU6lcS-5yafYrJGqoVUQ521CQ__"
-                        alt=""
-                      />
+                      <img src="/material.png" alt="" />
                       Material
                     </td>
                     <td>{product.material}</td>
                   </tr>
                   <tr>
                     <td style={{ background: "#F9F9F9" }}>
-                      <img
-                        src="https://s3-alpha-sig.figma.com/img/04de/fa4b/b3464f829fa8a96df1b0c6c60d1203ba?Expires=1731888000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=HyCuuTHCDAeb9WTMz6OCmMApKlsGWoa3e3lRZV~24DsCgCDqCPzwKWZT0OF48xUPrOCrtPJzljlPXmF6TFGNpNI3~dymcYunKigKnldhvTV-IHlJKuP8gg6GGLCH3BmkroANyEFwVrxD6t4S9t4cKJ5R4Lc7wjrXGAi4lFJFlPMlDbtv1IrFvZick6at1swP6YW7oC0P6sTmXh-St5CNwz5g~9IRuvqPchNt15ELBXovLlAN2d7m8ZEc37-IFPwlaEe9cw3kdWPp4lA1SR6OnHSW0O88fhwOQNKbSHupuUQ-2n6SifBRvj9VxIgi6QvDcgRbJqTgvyYYnqCJPIEf4A__"
-                        alt=""
-                      />
+                      <img src="/tipo.png" alt="" />
                       Tipo
                     </td>
                     <td style={{ background: "#F9F9F9" }}>
@@ -262,10 +266,7 @@ const Detail = () => {
                   </tr>
                   <tr>
                     <td>
-                      <img
-                        src="https://s3-alpha-sig.figma.com/img/299c/6dc8/26377be67d726468de10be2eb5acf622?Expires=1731888000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=YSSYZG-KCVz3MAPkRgT7by01jrJbkoqImDBqIFMJJ2duq73txl7MXCck4sf1vC6PLD5KtSVQhfqUsSAoVVI5piIRD2K849tQIrSgeNFwrayTLKWu0t0usIkZ9QYv6VsapN0kYMJ1qMqn7yrjXFHK5fofzR4V~9tDtFMiMRIJgUqSOgg3jagf3rtIzs9uVklpZP~-qTxVpR-4IRMpD-b71VubAO3coxsKJvjkWUxQPXWmWK9vWeJeBJ77SzoohUSCtee2gUBuq12BuF0HW~rkX8e1O2UouWzyXrL~shbV-wQDf2YVmB65NywFGeOf3Lq4ap4XwBWvxuUOMGh50caxTQ__"
-                        alt=""
-                      />
+                      <img src="/talla.png" alt="" />
                       Tallas disponibles
                     </td>
                     <td>
@@ -279,7 +280,6 @@ const Detail = () => {
                     </td>
                   </tr>
                 </tbody>
-              </div>
             </div>
           </div>
           {/* Políticas del producto */}
@@ -343,6 +343,7 @@ const Detail = () => {
             </div>
           </div>
         </div>
+        <ModalGlobal/>
     </div>
   );
 };

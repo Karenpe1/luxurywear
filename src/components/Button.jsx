@@ -3,9 +3,7 @@ import StyleButton from "../styles/button.module.css";
 const Button = (props) => {
   return (
     <button
-      className={`${StyleButton.botonRegistro} ${
-        props.disabled ? StyleButton.disabled : ""
-      }`}
+      className={StyleButton.botonRegistro}
       onClick={props.disabled ? undefined : props.onClick} // Prevent click when disabled
     >
       {props.children}

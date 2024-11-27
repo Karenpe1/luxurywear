@@ -18,7 +18,7 @@ import Checkout from "./Routes/Checkout.jsx";
 
 function App() {
   const location = useLocation();
-  const isLocation = location.pathname === "/register";
+  const isLocation = ["/register","/checkout"].includes(location.pathname)
   const currentPath = location.pathname;
   const [isSearch, setIsSearch] = useState(false);
 

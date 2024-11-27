@@ -126,10 +126,31 @@
 .dateContainer {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .date {
   color: gray;
+}
+.botonReserva{
+  background-color: #C3B2FB;
+  width: 100%;
+  padding: 0px 15px;
+  border-radius: 12px;
+}
+.botonReserva:hover {
+  background-color: #b5a0f9; /* Slight transparency for a soft effect */
+}
+
+.botonRegistro.disabled:hover {
+  background-color: #cccccc; /* Slight transparency for a soft effect */
+}
+
+.disabled {
+  background-color: #cccccc;
+  width: 100%;
+  padding: 0px 15px;
+  border-radius: 12px;
 }
 
 .separator {
