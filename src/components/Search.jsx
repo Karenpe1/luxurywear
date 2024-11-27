@@ -13,6 +13,8 @@ const Search = ({isSearch, setIsSearch}) => {
   const [searchToggle, setSearchToggle] = useState(false);
   const [startDateToggle, setStartDateToggle] = useState(false);
 
+  const searchTerms = ["verde", "azul", "plateado", "rosa"];
+
   const handleSearchTermChange = (e) => {
     setSearchTerm(e.target.value);
   }
@@ -25,7 +27,7 @@ const Search = ({isSearch, setIsSearch}) => {
           <div className={styles.inner}>
               <p className={styles.title}>Descubre el vestido perfecto para cada ocasión.</p>
               <div className={styles.search}>
-                  <input className={styles.input} type="text" placeholder="Escribe el tipo de vestido ideal." value={searchTerm} onChange={handleSearchTermChange} onClick={() => {setIsOpen(false); setStartDateToggle(false);}} onKeyUp={(e) => {if(e.key == "Enter") {
+                  <input className={styles.input} type="text" list="searchTerms" placeholder="Escribe el tipo de vestido ideal." value={searchTerm} onChange={handleSearchTermChange} onClick={() => {setIsOpen(false); setStartDateToggle(false);}} onKeyUp={(e) => {if(e.key == "Enter") {
                     if(startDate.day != null && searchTerm != '' && endDate.day != null) 
                       {setSearchToggle(!searchToggle); setIsSearch(true);}
                       else {
@@ -33,10 +35,13 @@ const Search = ({isSearch, setIsSearch}) => {
                           title: '¡Búsqueda incompleta!',
                           text: 'Por favor, complete todos los campos.',
                           iconHtml: '<img src="busquedaIncompleta.png" style="width: 150px;"/>',
-                          customClass: 'no-border',
+                          customClass: styles.noBorder,
                         })
                       };
                   }}}/>
+                  <datalist id="searchTerms">
+                    {searchTerms.map((e, i) => <option key={i}>{e}</option>)}
+                  </datalist>
                   <span className={styles.separator}>|</span>
                   <div className={startDateToggle ? styles.dateOuterContainerToggled : styles.dateOuterContainer} onClick={() => {setIsOpen(true); setStartDateToggle(!startDateToggle);}}>
                     <div className={styles.dateContainer}>
@@ -63,7 +68,7 @@ const Search = ({isSearch, setIsSearch}) => {
                         title: '¡Búsqueda incompleta!',
                         text: 'Por favor, complete todos los campos.',
                         iconHtml: '<img src="busquedaIncompleta.png" style="width: 150px;"/>',
-                        customClass: 'no-border',
+                        customClass: styles.noBorder,
                       })
                     };
                   }}>
