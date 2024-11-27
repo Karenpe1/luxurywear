@@ -72,10 +72,7 @@ padding: 8px 12px;
 cursor: pointer;
 }
 
-.suggestion:hover {
-background-color:#dbc7f68a;
-}
-.activeSuggestion{
+.activeSuggestion, .suggestion:hover {
     background-color: #dbc7f68a;
 }
 .lens {

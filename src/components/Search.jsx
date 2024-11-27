@@ -15,6 +15,7 @@ const Search = ({isSearch, setIsSearch}) => {
   const [startDateToggle, setStartDateToggle] = useState(false);
   const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
   const inputRef = useRef(null);
+  const suggestionsRef = useRef([]); // Array de referencias para las sugerencias
 
   const searchTerms = [
     "vestido", "elegante", "evento", "corto", "vestido corto", "largo", "vestido largo",
@@ -25,7 +26,9 @@ const Search = ({isSearch, setIsSearch}) => {
     "lino", "tul", "raso", "satén", "organza", "crepé", "tafetán", "azul", "verde", 
     "blanco", "rosa", "rosado", "marfil", "dorado", "coral", "perla", "plateado", 
     "rojo", "negro", "gris", "amarillo", "morado", "fucsia", "vino", "lavanda", 
-    "turquesa", "beige", "esmeralda", "champán", "nude"
+    "turquesa", "beige", "esmeralda", "champán", "nude" , "hollywood", "brianna", "gold party",
+    "esplendor dorado", "luz de medianoche","esencia esmeralda","camelia","flor de lirio","encanto real",
+    "sueño eterno","primavera floral",
   ];
 
   // Función para manejar los cambios en el campo de entrada
@@ -37,7 +40,7 @@ const Search = ({isSearch, setIsSearch}) => {
     // Filtrar sugerencias que coinciden con el texto ingresado
     if (userInput) {
       const filtered = searchTerms.filter(term => term.toLowerCase().includes(userInput));
-      setFilteredSuggestions(filtered);
+      setFilteredSuggestions(filtered); //array de las sugerencias que coinciden con lo escrito en el input
     } else {
       setFilteredSuggestions([]);
     }
@@ -48,6 +51,7 @@ const Search = ({isSearch, setIsSearch}) => {
     setSearchTerm(suggestion); // Actualizar el valor del campo de entrada
     setFilteredSuggestions([]); // Ocultar sugerencias después de seleccionar una
   };
+   //cerrar las sugerencias si hace click fuera del input
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (inputRef.current && !inputRef.current.contains(e.target)) {
@@ -78,12 +82,6 @@ const Search = ({isSearch, setIsSearch}) => {
               prev > 0 ? prev - 1 : -1
             );
             break;
-          case 'Enter':
-            if (activeSuggestionIndex >= 0) {
-              e.preventDefault();
-              handleSuggestionClick(filteredSuggestions[activeSuggestionIndex]);
-            }
-            break;
           case 'Escape':
             setFilteredSuggestions([]);
             setActiveSuggestionIndex(-1);
@@ -98,6 +96,15 @@ const Search = ({isSearch, setIsSearch}) => {
     };
   }, [filteredSuggestions, activeSuggestionIndex]);
 
+  useEffect(() => {
+    // Scroll automático a la sugerencia activa
+    if (activeSuggestionIndex >= 0 && suggestionsRef.current[activeSuggestionIndex]) {
+      suggestionsRef.current[activeSuggestionIndex].scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    }
+  }, [activeSuggestionIndex]);
 
 
   document.addEventListener('scroll', () => {if(window.screen.width > 500) {setIsOpen(false); setStartDateToggle(false);}});
@@ -108,9 +115,15 @@ const Search = ({isSearch, setIsSearch}) => {
           <div className={styles.inner}>
               <p className={styles.title}>Descubre el vestido perfecto para cada ocasión.</p>
               <div className={styles.search} ref={inputRef}>
-                  <input className={styles.input} type="text" placeholder="Escribe el tipo de vestido ideal." value={searchTerm} onChange={handleSearchTermChange} onClick={() => {setIsOpen(false); setStartDateToggle(false);}} 
-                  onKeyUp={(e) => {
-                    if(e.key == "Enter") {
+                  <input className={styles.input} type="text" placeholder="Escribe el tipo de vestido ideal." value={searchTerm} onChange={handleSearchTermChange} onClick={(e) => {setIsOpen(false); setStartDateToggle(false);e.stopPropagation() }} 
+                  onKeyDown={(e) => {
+                    if (filteredSuggestions.length > 0 && e.key === "Enter") {
+                      // Si hay sugerencias activas y Enter se presiona, selecciona la sugerencia activa
+                      if (activeSuggestionIndex >= 0) {
+                        e.preventDefault(); // Previene que el Enter dispare el otro enter
+                        handleSuggestionClick(filteredSuggestions[activeSuggestionIndex]);
+                      }
+                    } else if(e.key == "Enter") {
                       if(startDate.day != null && searchTerm != '' && endDate.day != null) 
                         {setSearchToggle(!searchToggle); setIsSearch(true);}
                         else {
@@ -128,6 +141,7 @@ const Search = ({isSearch, setIsSearch}) => {
                       {filteredSuggestions.map((suggestion, index) => (
                         <li
                           key={index}
+                          ref={(el) => (suggestionsRef.current[index] = el)} // Asigna referencia
                           className={`${styles.suggestion} ${index === activeSuggestionIndex ? styles.activeSuggestion : ''}`}
                           onClick={() => handleSuggestionClick(suggestion)}
                         >
