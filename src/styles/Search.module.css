@@ -9,6 +9,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
 }
 
 .title {
@@ -20,12 +21,13 @@
 
 .inner {
     padding-top: 20px;
+    width: 90%;
     position: relative;
 }
 
 .search {
     height: 66px;
-    width: 350px;
+    width: 100%;
     background-color: white;
     margin-top: 20px;
     display: flex;
@@ -42,10 +44,36 @@
     width: 328px;
     padding: 16px 12px;
     border-radius: 50px;
+    position: relative;
 }
 
 .input:hover {
     background-color: #E9E4F7;
+}
+
+.suggestionsList {
+    border-radius: 10px;
+    position: absolute;
+    top: 39%;
+    background-color: white;
+    border: 1px solid #ccc;
+    list-style: none;
+    margin: 0;
+    padding: 0px;
+    width: 328px;
+    max-height: 150px;
+    overflow-y: auto;
+    scrollbar-color:#C3B2FB white;
+    z-index: 2;
+}
+
+.suggestion {
+padding: 8px 12px;
+cursor: pointer;
+}
+
+.suggestion:hover {
+background-color:#dbc7f68a;
 }
 
 .lens {
@@ -83,6 +111,7 @@
     flex-direction: column;
 }
 
+
 .date {
     color: gray;
 }
@@ -91,7 +120,7 @@
     display: flex;
     align-items: center;
     gap: 20px;
-    width: 150px;
+    width: 328px;
     justify-content: center;
     background-color: #C3B2FB;
     padding: 10px 5px;
@@ -120,6 +149,7 @@
 
 @media(min-width: 550px) and (max-width: 1079px) {
     .container {
+        width: 100%;
         height: 180px;
         margin-top: 80px;
     }
@@ -134,30 +164,40 @@
 
     .search {
         height: 66px;
-        width: 700px;
+        width: 100%;
         margin-top: 22px;
     }
 
     .input {
         font-size: 12px;
-        width: 468px;
+        width: 35%;
     }
 
     .input:hover {
         background-color: white;
     }
+    .suggestionsList {
+        top: 100%;
+        left:0%;
+        width: 37%;
+        max-height: 150px;
+    }
 
     .dateOuterContainer {
-        width: 250px;
+        width: 20%;
     }
 
     .dateOuterContainerToggled {
-        width: 250px;
+        width: 20%;
+    }
+    .searchButton {
+        width: 20%;
     }
 }
 
 @media(min-width: 1080px) {
     .container {
+        width: 100% ;
         height: 220px;
         margin-top: 100px;
     }
@@ -172,17 +212,27 @@
 
     .search {
         height: 66px;
-        width: 1200px;
+        width: 100%;
         margin-top: 22px;
+    }
+
+    .suggestionsList {
+        top: 100%;
+        left:0%;
+        width: 35%;
+        max-height: 200px;
     }
 
     .input {
         font-size: 14px;
-        width: 660px;
+        width: 30%;
+    }
+    .searchButton {
+        width: 20%;
     }
 }
 
-@media(min-width: 300px) and (max-width: 500px) {
+@media(min-width: 300px) and (max-width: 550px) {
     .search {
         flex-direction: column;
         gap: 10px;
