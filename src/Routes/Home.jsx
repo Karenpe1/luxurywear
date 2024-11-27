@@ -5,7 +5,6 @@ const Home = ({isSearch}) => {
   return (
     <>
       <Body isSearch={isSearch}/>
-      <Checkout/>
     </>
   );
 };

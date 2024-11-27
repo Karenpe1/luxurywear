@@ -29,9 +29,6 @@ const HeartButton = ({id,onToggle }) => {
       }else{
         setLiked(false) // Si no hay usuario, resetea a no favorito
       }
-      else{
-        setLiked(false) // Si no hay usuario, resetea a no favorito
-      }
     };
 
     fetchFavoriteStatus();
