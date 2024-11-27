@@ -1,26 +1,38 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styleCheckout from "../styles/checkOut.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faTag,faChevronDown} from "@fortawesome/free-solid-svg-icons";
+import { faTag, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import MultiSelector from "../components/Multiselector";
-
+import { useLocation } from "react-router-dom";
 
 const Checkout = () => {
-  const [cupon,setCupon]=useState(false)
+  const [cupon,setCupon] = useState(false)
   const [countryOptions, setCountryOptions] = useState([]);
   const [selectedOption, setSelectedOption] = useState("regular");
-  const handleCupon=()=>{
+  const location = useLocation();
+
+  // Extract state or use default values
+  const { id = "Unknown", startDate = {}, endDate = {} } = location.state || {};
+
+  const handleCupon = () => {
     setCupon(!cupon);
   }
-  useEffect(()=>{
+  useEffect(() => {
     setCountryOptions([{value:"Colombia"}]);
   },[]);
 
   const handleChange = (option) => {
     setSelectedOption(option);
   };
+
+  useEffect(() => {
+    if (!id || !startDate || !endDate) {
+      // Redirect back to detail page if data is missing
+      window.history.back();
+    }
+  }, [id, startDate, endDate]);
 
   return (
     <div className={styleCheckout.contenedor}>
@@ -72,48 +84,49 @@ const Checkout = () => {
             options={countryOptions}
             placeholder="País/Región"
             multiselector={false}
-            preselected= {countryOptions}
+            preselected={countryOptions}
           />
           <Input
-              id="direccion"
-              label="Dirección"
-              placeholder="Dirección"
-              type="text"
-            />
+            id="direccion"
+            label="Dirección"
+            placeholder="Dirección"
+            type="text"
+          />
           <Input
-              id="detalles"
-              label="Detalles de entrega"
-              placeholder="Casa, apartamento,etc. (Opcional)"
+            id="detalles"
+            label="Detalles de entrega"
+            placeholder="Casa, apartamento,etc. (Opcional)"
+            type="text"
+          />
+          <div className={styleCheckout.ciudadGrid}>
+            <Input
+              id="ciudad"
+              label="Ciudad"
+              placeholder="Ciudad"
               type="text"
             />
-            <div className={styleCheckout.ciudadGrid}>
-              <Input
-                id="ciudad"
-                label="Ciudad"
-                placeholder="Ciudad"
-                type="text"
-              />
-              <MultiSelector
-                label="Provincia"
-                options={countryOptions}
-                placeholder="Provincia/Estado"
-                multiselector={false}
-                preselected= {countryOptions}
-              />
-              <Input
-                id="codigo"
-                label="Código Postal"
-                placeholder="Codigo postal(Opcional)"
-                type="text"
-              />
-            </div>
-            <label htmlFor="">
-              <input type="checkbox" /> Guardar mi información y consultar más rápidamente la próxima vez
-            </label>
+            <MultiSelector
+              label="Provincia"
+              options={countryOptions}
+              placeholder="Provincia/Estado"
+              multiselector={false}
+              preselected={countryOptions}
+            />
+            <Input
+              id="codigo"
+              label="Código Postal"
+              placeholder="Codigo postal(Opcional)"
+              type="text"
+            />
+          </div>
+          <label htmlFor="">
+            <input type="checkbox"/> Guardar mi información y consultar más rápidamente la próxima vez
+          </label>
         </div>
         <div className={styleCheckout.info}>
           <h2>Metodos de envio</h2>
-          <p>Envío Exprés: (Solo Bogotá - Costo adicional) Si pides antes de las 3pm te llega HOY mismo, si pides después de las 3pm llega mañana</p>
+          <p>Envío Exprés: (Solo Bogotá - Costo adicional) Si pides antes de las 3pm te llega HOY mismo, si pides
+            después de las 3pm llega mañana</p>
           <div className={styleCheckout.option}>
             <label className={`${styleCheckout.label} ${selectedOption === "regular" ? styleCheckout.active : ""}`}>
               <input
@@ -159,12 +172,12 @@ const Checkout = () => {
               </div>
             </label>
           </div>
-        </div>    
+        </div>
       </div>
       <div className={styleCheckout.checkoutRight}>
         <div className={styleCheckout.producto}>
           <div className={styleCheckout.detailProduct}>
-            <img src="/img/categories/1.png" alt="" />
+            <img src="/img/categories/1.png" alt=""/>
             <div className={styleCheckout.descriptionProduct}>
               <span>Falda Cavalieri Mujer Camel</span>
               <span>XS</span>
@@ -176,14 +189,14 @@ const Checkout = () => {
         </div>
         <div className={styleCheckout.cupon}>
           <div className={styleCheckout.cuponTitle}>
-            <h3 className={styleCheckout.title}><FontAwesomeIcon icon={faTag} />¿Tienes un cupón de descuento?</h3>
+            <h3 className={styleCheckout.title}><FontAwesomeIcon icon={faTag}/>¿Tienes un cupón de descuento?</h3>
             <button className={styleCheckout.arrowContainer} onClick={handleCupon}>
-              <img className={`${styleCheckout.arrow} ${cupon ? styleCheckout.open: ""}`} src="/arrowDown.svg" alt="" />
+              <img className={`${styleCheckout.arrow} ${cupon ? styleCheckout.open : ""}`} src="/arrowDown.svg" alt=""/>
             </button>
           </div>
           <div className={`${styleCheckout.inputCupon} ${cupon ? styleCheckout.visible : ""} `}>
-              <input className={styleCheckout.input} type="text" placeholder="Introduce tu cupón aqui" />
-              <button className={styleCheckout.inputButton}>Aplicar</button>
+            <input className={styleCheckout.input} type="text" placeholder="Introduce tu cupón aqui"/>
+            <button className={styleCheckout.inputButton}>Aplicar</button>
           </div>
         </div>
         <div className={styleCheckout.resumenPago}>
@@ -201,12 +214,15 @@ const Checkout = () => {
           </div>
         </div>
         <label className={styleCheckout.condiciones}>
-            <input type="checkbox" /> He leído y acepto los <a href="#">Términos y Condiciones</a>
+          <input type="checkbox"/> He leído y acepto los <a href="#">Términos y Condiciones</a>
         </label>
         <div className={styleCheckout.buttonReservar}>
-        <Button>Reservar</Button>
-
+          <Button>Reservar</Button>
         </div>
+        <h1>Checkout</h1>
+        <p>Id del producto {id}</p>
+        <p>Fecha de inicio: {`${startDate.day}/${startDate.month + 1}/${startDate.year}`}</p>
+        <p>Fecha final {`${endDate.day}/${endDate.month + 1}/${endDate.year}`}</p>
       </div>
     </div>
   );
