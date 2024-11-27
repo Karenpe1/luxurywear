@@ -26,6 +26,8 @@ const HeartButton = ({id,onToggle }) => {
         } catch (error) {
           console.error("Error al cargar el estado de favoritos:", error);
         }
+      }else{
+        setLiked(false) // Si no hay usuario, resetea a no favorito
       }
       else{
         setLiked(false) // Si no hay usuario, resetea a no favorito

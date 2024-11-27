@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "../styles/Search.module.css";
 import Calendar from "./Calendar";
 import PaginatedSearchList from "./PaginatedSearchList";
@@ -8,15 +8,104 @@ const Search = ({isSearch, setIsSearch}) => {
 
   const [startDate, setStartDate] = useState({day: null, month: null, year: null});
   const [endDate, setEndDate] = useState({day: null, month: null, year: null});
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(''); //valor del campo input
   const [isOpen, setIsOpen] = useState(false);
+  const [filteredSuggestions, setFilteredSuggestions] = useState([]);
   const [searchToggle, setSearchToggle] = useState(false);
   const [startDateToggle, setStartDateToggle] = useState(false);
+  const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
+  const inputRef = useRef(null);
+  const suggestionsRef = useRef([]); // Array de referencias para las sugerencias
 
+  const searchTerms = [
+    "vestido", "elegante", "evento", "corto", "vestido corto", "largo", "vestido largo",
+    "juvenil", "encaje", "corte juvenil y elegante", "casual", "formal", "gala", "fiesta",
+    "coctel", "moderno", "clásico", "sencillo", "sofisticado", "glamoroso", "bohemio",
+    "vintage", "minimalista", "bordado", "con pedrería", "con brillo", "floral", "plisado",
+    "de noche", "de día", "seda", "gasa", "poliéster", "chiffon", "algodón", "terciopelo",
+    "lino", "tul", "raso", "satén", "organza", "crepé", "tafetán", "azul", "verde", 
+    "blanco", "rosa", "rosado", "marfil", "dorado", "coral", "perla", "plateado", 
+    "rojo", "negro", "gris", "amarillo", "morado", "fucsia", "vino", "lavanda", 
+    "turquesa", "beige", "esmeralda", "champán", "nude" , "hollywood", "brianna", "gold party",
+    "esplendor dorado", "luz de medianoche","esencia esmeralda","camelia","flor de lirio","encanto real",
+    "sueño eterno","primavera floral",
+  ];
+
+  // Función para manejar los cambios en el campo de entrada
   const handleSearchTermChange = (e) => {
-    setSearchTerm(e.target.value);
-  }
-  
+    const userInput = e.target.value.toLowerCase();
+    setSearchTerm(userInput);
+    setActiveSuggestionIndex(-1);
+
+    // Filtrar sugerencias que coinciden con el texto ingresado
+    if (userInput) {
+      const filtered = searchTerms.filter(term => term.toLowerCase().includes(userInput));
+      setFilteredSuggestions(filtered); //array de las sugerencias que coinciden con lo escrito en el input
+    } else {
+      setFilteredSuggestions([]);
+    }
+  };
+
+  // Función para manejar la selección de una sugerencia
+  const handleSuggestionClick = (suggestion) => {
+    setSearchTerm(suggestion); // Actualizar el valor del campo de entrada
+    setFilteredSuggestions([]); // Ocultar sugerencias después de seleccionar una
+  };
+   //cerrar las sugerencias si hace click fuera del input
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (inputRef.current && !inputRef.current.contains(e.target)) {
+        setFilteredSuggestions([]);
+        setActiveSuggestionIndex(-1);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (filteredSuggestions.length > 0) {
+        switch (e.key) {
+          case 'ArrowDown':
+            e.preventDefault();
+            setActiveSuggestionIndex(prev => 
+              prev < filteredSuggestions.length - 1 ? prev + 1 : prev
+            );
+            break;
+          case 'ArrowUp':
+            e.preventDefault();
+            setActiveSuggestionIndex(prev => 
+              prev > 0 ? prev - 1 : -1
+            );
+            break;
+          case 'Escape':
+            setFilteredSuggestions([]);
+            setActiveSuggestionIndex(-1);
+            break;
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [filteredSuggestions, activeSuggestionIndex]);
+
+  useEffect(() => {
+    // Scroll automático a la sugerencia activa
+    if (activeSuggestionIndex >= 0 && suggestionsRef.current[activeSuggestionIndex]) {
+      suggestionsRef.current[activeSuggestionIndex].scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    }
+  }, [activeSuggestionIndex]);
+
 
   document.addEventListener('scroll', () => {if(window.screen.width > 500) {setIsOpen(false); setStartDateToggle(false);}});
   
@@ -25,19 +114,47 @@ const Search = ({isSearch, setIsSearch}) => {
       <div className={styles.container}>
           <div className={styles.inner}>
               <p className={styles.title}>Descubre el vestido perfecto para cada ocasión.</p>
-              <div className={styles.search}>
-                  <input className={styles.input} type="text" placeholder="Escribe el tipo de vestido ideal." value={searchTerm} onChange={handleSearchTermChange} onClick={() => {setIsOpen(false); setStartDateToggle(false);}} onKeyUp={(e) => {if(e.key == "Enter") {
-                    if(startDate.day != null && searchTerm != '' && endDate.day != null) 
-                      {setSearchToggle(!searchToggle); setIsSearch(true);}
-                      else {
-                        Swal.fire({
-                          title: '¡Búsqueda incompleta!',
-                          text: 'Por favor, complete todos los campos.',
-                          iconHtml: '<img src="busquedaIncompleta.png" style="width: 150px;"/>',
-                          customClass: 'no-border',
-                        })
-                      };
-                  }}}/>
+              <div className={styles.search} ref={inputRef}>
+                  <input className={styles.input} type="text" placeholder="Escribe el tipo de vestido ideal." value={searchTerm} onChange={handleSearchTermChange} onClick={(e) => {setIsOpen(false); setStartDateToggle(false);e.stopPropagation() }} 
+                  onKeyDown={(e) => {
+                    if (filteredSuggestions.length > 0 && e.key === "Enter") {
+                      // Si hay sugerencias activas y Enter se presiona, selecciona la sugerencia activa
+                      if (activeSuggestionIndex >= 0) {
+                        e.preventDefault(); // Previene que el Enter dispare el otro enter
+                        handleSuggestionClick(filteredSuggestions[activeSuggestionIndex]);
+                      }
+                    } else if(e.key == "Enter") {
+                      if(startDate.day != null && searchTerm != '' && endDate.day != null) 
+                        {setSearchToggle(!searchToggle); setIsSearch(true);}
+                        else {
+                          Swal.fire({
+                            title: '¡Búsqueda incompleta!',
+                            text: 'Por favor, complete todos los campos.',
+                            iconHtml: '<img src="busquedaIncompleta.png" style="width: 150px;"/>',
+                            customClass: {
+                              icon: styles.noBorder,
+                              confirmButton: styles.confirmButton,
+                            },
+                            buttonsStyling: false,
+                          })
+                        };
+                    }}}/>
+                  {/* Mostrar sugerencias filtradas */}
+                  {filteredSuggestions.length > 0 && (
+                    <ul className={styles.suggestionsList}>
+                      {filteredSuggestions.map((suggestion, index) => (
+                        <li
+                          key={index}
+                          ref={(el) => (suggestionsRef.current[index] = el)} // Asigna referencia
+                          className={`${styles.suggestion} ${index === activeSuggestionIndex ? styles.activeSuggestion : ''}`}
+                          onClick={() => handleSuggestionClick(suggestion)}
+                        >
+                          {suggestion}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
                   <span className={styles.separator}>|</span>
                   <div className={startDateToggle ? styles.dateOuterContainerToggled : styles.dateOuterContainer} onClick={() => {setIsOpen(true); setStartDateToggle(!startDateToggle);}}>
                     <div className={styles.dateContainer}>
@@ -64,7 +181,11 @@ const Search = ({isSearch, setIsSearch}) => {
                         title: '¡Búsqueda incompleta!',
                         text: 'Por favor, complete todos los campos.',
                         iconHtml: '<img src="busquedaIncompleta.png" style="width: 150px;"/>',
-                        customClass: 'no-border',
+                        customClass: {
+                          icon: styles.noBorder,
+                          confirmButton: styles.confirmButton,
+                        },
+                        buttonsStyling: false,
                       })
                     };
                   }}>

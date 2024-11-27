@@ -26,13 +26,13 @@ const NewHeader = () => {
           <div className={`${styles.rightSection} ${isOpen ? styles.showMenu : ""}`}>
             {user ? (
               <>
-                {( user.role === "ADMIN" && currentPath !== "/admin" ) && (
+                {(user.role === "ADMIN" && currentPath !== "/admin") && (
                   <Link to="/admin" className={styles.navButton} onClick={handleHamburger}>
                     <i className="fas fa-user-shield"></i> Panel Administrador
                   </Link>
                 )}
-                {/* Aqui deberia ir el avatar */}
-                <div onClick={() => {logoutUser(); handleHamburger();}} className={styles.navButton}>
+                {/* Avatar solo en la vista principal */}
+                <div onClick={() => { logoutUser(); handleHamburger(); }} className={styles.navButton}>
                   <i className="fas fa-sign-out-alt"></i> Cerrar sesión
                 </div>
               </>
@@ -49,6 +49,7 @@ const NewHeader = () => {
           </div>
         </div>
       )}
+
       <a href="/" onClick={handleHamburger}><img className={styles.logo} src="/logo.png" alt="App Logo" /></a>
 
       <div className={styles.links}>
@@ -65,7 +66,8 @@ const NewHeader = () => {
                 <button className={styles.button}>Panel Administrador</button>
               </Link>
             )}
-            <User/>
+            {/* Avatar solo en la vista principal, no en el menú hamburguesa */}
+            {!isOpen && <User />}
           </div>
         ) : (
           <>
@@ -79,6 +81,7 @@ const NewHeader = () => {
         )}
       </div>
 
+      {/* Mostrar el icono del menú solo en pantallas pequeñas */}
       <img
         className={styles.hamburger}
         src="/menu.png"
