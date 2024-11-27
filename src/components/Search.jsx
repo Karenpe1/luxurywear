@@ -8,7 +8,7 @@ const Search = ({isSearch, setIsSearch}) => {
 
   const [startDate, setStartDate] = useState({day: null, month: null, year: null});
   const [endDate, setEndDate] = useState({day: null, month: null, year: null});
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(''); //valor del campo input
   const [isOpen, setIsOpen] = useState(false);
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
   const [searchToggle, setSearchToggle] = useState(false);
@@ -31,13 +31,19 @@ const Search = ({isSearch, setIsSearch}) => {
     const userInput = e.target.value.toLowerCase();
     setSearchTerm(userInput);
 
-    // Filtrar las sugerencias que coinciden con el texto ingresado
+    // Filtrar sugerencias que coinciden con el texto ingresado
     if (userInput) {
       const filtered = searchTerms.filter(term => term.toLowerCase().includes(userInput));
       setFilteredSuggestions(filtered);
     } else {
       setFilteredSuggestions([]);
     }
+  };
+
+  // Función para manejar la selección de una sugerencia
+  const handleSuggestionClick = (suggestion) => {
+    setSearchTerm(suggestion); // Actualizar el valor del campo de entrada
+    setFilteredSuggestions([]); // Ocultar sugerencias después de seleccionar una
   };
 
   document.addEventListener('scroll', () => {if(window.screen.width > 500) {setIsOpen(false); setStartDateToggle(false);}});
@@ -48,21 +54,35 @@ const Search = ({isSearch, setIsSearch}) => {
           <div className={styles.inner}>
               <p className={styles.title}>Descubre el vestido perfecto para cada ocasión.</p>
               <div className={styles.search}>
-                  <input className={styles.input} type="text" list="searchTerms" placeholder="Escribe el tipo de vestido ideal." value={searchTerm} onChange={handleSearchTermChange} onClick={() => {setIsOpen(false); setStartDateToggle(false);}} onKeyUp={(e) => {if(e.key == "Enter") {
-                    if(startDate.day != null && searchTerm != '' && endDate.day != null) 
-                      {setSearchToggle(!searchToggle); setIsSearch(true);}
-                      else {
-                        Swal.fire({
-                          title: '¡Búsqueda incompleta!',
-                          text: 'Por favor, complete todos los campos.',
-                          iconHtml: '<img src="busquedaIncompleta.png" style="width: 150px;"/>',
-                          customClass: styles.noBorder,
-                        })
-                      };
-                  }}}/>
-                  <datalist id="searchTerms">
-                    {searchTerms.map((e, i) => <option key={i}>{e}</option>)}
-                  </datalist>
+                  <input className={styles.input} type="text" placeholder="Escribe el tipo de vestido ideal." value={searchTerm} onChange={handleSearchTermChange} onClick={() => {setIsOpen(false); setStartDateToggle(false);}} 
+                  onKeyUp={(e) => {
+                    if(e.key == "Enter") {
+                      if(startDate.day != null && searchTerm != '' && endDate.day != null) 
+                        {setSearchToggle(!searchToggle); setIsSearch(true);}
+                        else {
+                          Swal.fire({
+                            title: '¡Búsqueda incompleta!',
+                            text: 'Por favor, complete todos los campos.',
+                            iconHtml: '<img src="busquedaIncompleta.png" style="width: 150px;"/>',
+                            customClass: styles.noBorder,
+                          })
+                        };
+                    }}}/>
+                  {/* Mostrar sugerencias filtradas */}
+                  {filteredSuggestions.length > 0 && (
+                    <ul className={styles.suggestionsList}>
+                      {filteredSuggestions.map((suggestion, index) => (
+                        <li
+                          key={index}
+                          className={styles.suggestion}
+                          onClick={() => handleSuggestionClick(suggestion)}
+                        >
+                          {suggestion}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
                   <span className={styles.separator}>|</span>
                   <div className={startDateToggle ? styles.dateOuterContainerToggled : styles.dateOuterContainer} onClick={() => {setIsOpen(true); setStartDateToggle(!startDateToggle);}}>
                     <div className={styles.dateContainer}>
