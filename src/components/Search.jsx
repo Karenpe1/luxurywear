@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "../styles/Search.module.css";
 import Calendar from "./Calendar";
 import PaginatedSearchList from "./PaginatedSearchList";
@@ -13,6 +13,8 @@ const Search = ({isSearch, setIsSearch}) => {
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
   const [searchToggle, setSearchToggle] = useState(false);
   const [startDateToggle, setStartDateToggle] = useState(false);
+  const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
+  const inputRef = useRef(null);
 
   const searchTerms = [
     "vestido", "elegante", "evento", "corto", "vestido corto", "largo", "vestido largo",
@@ -30,6 +32,7 @@ const Search = ({isSearch, setIsSearch}) => {
   const handleSearchTermChange = (e) => {
     const userInput = e.target.value.toLowerCase();
     setSearchTerm(userInput);
+    setActiveSuggestionIndex(-1);
 
     // Filtrar sugerencias que coinciden con el texto ingresado
     if (userInput) {
@@ -45,6 +48,57 @@ const Search = ({isSearch, setIsSearch}) => {
     setSearchTerm(suggestion); // Actualizar el valor del campo de entrada
     setFilteredSuggestions([]); // Ocultar sugerencias después de seleccionar una
   };
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (inputRef.current && !inputRef.current.contains(e.target)) {
+        setFilteredSuggestions([]);
+        setActiveSuggestionIndex(-1);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (filteredSuggestions.length > 0) {
+        switch (e.key) {
+          case 'ArrowDown':
+            e.preventDefault();
+            setActiveSuggestionIndex(prev => 
+              prev < filteredSuggestions.length - 1 ? prev + 1 : prev
+            );
+            break;
+          case 'ArrowUp':
+            e.preventDefault();
+            setActiveSuggestionIndex(prev => 
+              prev > 0 ? prev - 1 : -1
+            );
+            break;
+          case 'Enter':
+            if (activeSuggestionIndex >= 0) {
+              e.preventDefault();
+              handleSuggestionClick(filteredSuggestions[activeSuggestionIndex]);
+            }
+            break;
+          case 'Escape':
+            setFilteredSuggestions([]);
+            setActiveSuggestionIndex(-1);
+            break;
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [filteredSuggestions, activeSuggestionIndex]);
+
+
 
   document.addEventListener('scroll', () => {if(window.screen.width > 500) {setIsOpen(false); setStartDateToggle(false);}});
   
@@ -53,7 +107,7 @@ const Search = ({isSearch, setIsSearch}) => {
       <div className={styles.container}>
           <div className={styles.inner}>
               <p className={styles.title}>Descubre el vestido perfecto para cada ocasión.</p>
-              <div className={styles.search}>
+              <div className={styles.search} ref={inputRef}>
                   <input className={styles.input} type="text" placeholder="Escribe el tipo de vestido ideal." value={searchTerm} onChange={handleSearchTermChange} onClick={() => {setIsOpen(false); setStartDateToggle(false);}} 
                   onKeyUp={(e) => {
                     if(e.key == "Enter") {
@@ -74,7 +128,7 @@ const Search = ({isSearch, setIsSearch}) => {
                       {filteredSuggestions.map((suggestion, index) => (
                         <li
                           key={index}
-                          className={styles.suggestion}
+                          className={`${styles.suggestion} ${index === activeSuggestionIndex ? styles.activeSuggestion : ''}`}
                           onClick={() => handleSuggestionClick(suggestion)}
                         >
                           {suggestion}

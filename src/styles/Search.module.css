@@ -75,7 +75,9 @@ cursor: pointer;
 .suggestion:hover {
 background-color:#dbc7f68a;
 }
-
+.activeSuggestion{
+    background-color: #dbc7f68a;
+}
 .lens {
     height: 20px;
     width: 20px;
