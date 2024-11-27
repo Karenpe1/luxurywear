@@ -131,7 +131,11 @@ const Search = ({isSearch, setIsSearch}) => {
                             title: '¡Búsqueda incompleta!',
                             text: 'Por favor, complete todos los campos.',
                             iconHtml: '<img src="busquedaIncompleta.png" style="width: 150px;"/>',
-                            customClass: styles.noBorder,
+                            customClass: {
+                              icon: styles.noBorder,
+                              confirmButton: styles.confirmButton,
+                            },
+                            buttonsStyling: false,
                           })
                         };
                     }}}/>
@@ -177,7 +181,11 @@ const Search = ({isSearch, setIsSearch}) => {
                         title: '¡Búsqueda incompleta!',
                         text: 'Por favor, complete todos los campos.',
                         iconHtml: '<img src="busquedaIncompleta.png" style="width: 150px;"/>',
-                        customClass: styles.noBorder,
+                        customClass: {
+                          icon: styles.noBorder,
+                          confirmButton: styles.confirmButton,
+                        },
+                        buttonsStyling: false,
                       })
                     };
                   }}>
