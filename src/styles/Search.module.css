@@ -3,7 +3,11 @@
 }
 
 .confirmButton {
-    
+    color: white;
+    background-color: #231942;
+    border-radius: 5px;
+    width: 48px;
+    height: 48px;
 }
 
 .container {
