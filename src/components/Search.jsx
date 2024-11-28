@@ -3,6 +3,7 @@ import styles from "../styles/Search.module.css";
 import Calendar from "./Calendar";
 import PaginatedSearchList from "./PaginatedSearchList";
 import Swal from 'sweetalert2';
+import axios from "axios";
 
 const Search = ({isSearch, setIsSearch}) => {
 
@@ -14,22 +15,28 @@ const Search = ({isSearch, setIsSearch}) => {
   const [searchToggle, setSearchToggle] = useState(false);
   const [startDateToggle, setStartDateToggle] = useState(false);
   const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
+  const [searchTerms, setSearchTerms] = useState([]); // Store dynamic suggestions
   const inputRef = useRef(null);
   const suggestionsRef = useRef([]); // Array de referencias para las sugerencias
 
-  const searchTerms = [
-    "vestido", "elegante", "evento", "corto", "vestido corto", "largo", "vestido largo",
-    "juvenil", "encaje", "corte juvenil y elegante", "casual", "formal", "gala", "fiesta",
-    "coctel", "moderno", "clásico", "sencillo", "sofisticado", "glamoroso", "bohemio",
-    "vintage", "minimalista", "bordado", "con pedrería", "con brillo", "floral", "plisado",
-    "de noche", "de día", "seda", "gasa", "poliéster", "chiffon", "algodón", "terciopelo",
-    "lino", "tul", "raso", "satén", "organza", "crepé", "tafetán", "azul", "verde", 
-    "blanco", "rosa", "rosado", "marfil", "dorado", "coral", "perla", "plateado", 
-    "rojo", "negro", "gris", "amarillo", "morado", "fucsia", "vino", "lavanda", 
-    "turquesa", "beige", "esmeralda", "champán", "nude" , "hollywood", "brianna", "gold party",
-    "esplendor dorado", "luz de medianoche","esencia esmeralda","camelia","flor de lirio","encanto real",
-    "sueño eterno","primavera floral",
-  ];
+  // Fetch suggestions from the backend on component mount
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/v1/products/keywords"); // Update to your actual endpoint URL
+        setSearchTerms(response.data); // Save fetched suggestions
+      } catch (error) {
+        console.error("Error fetching suggestions:", error);
+        Swal.fire({
+          title: "Error",
+          text: "No se pudieron cargar las sugerencias.",
+          icon: "error",
+          confirmButtonText: "Aceptar",
+        });
+      }
+    };
+    fetchSuggestions();
+  }, []);
 
   // Función para manejar los cambios en el campo de entrada
   const handleSearchTermChange = (e) => {
