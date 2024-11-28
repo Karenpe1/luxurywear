@@ -1,20 +1,44 @@
 import { useEffect, useState } from "react";
 import styleCheckout from "../styles/checkOut.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTag, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { faTag } from "@fortawesome/free-solid-svg-icons";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import MultiSelector from "../components/Multiselector";
 import { useLocation } from "react-router-dom";
+import { useContextGlobal } from "../context/globalContext";
+import axiosInstance from "../Utils/axiosInstance";
+import { formatCurrency } from "../Utils/currencyFormatter";
 
 const Checkout = () => {
+  const {state,dispatch}=useContextGlobal();
   const [cupon,setCupon] = useState(false)
   const [countryOptions, setCountryOptions] = useState([]);
   const [selectedOption, setSelectedOption] = useState("regular");
+  const [envio, setEnvio]=useState(12000)
   const location = useLocation();
+  const axios=axiosInstance();
 
   // Extract state or use default values
   const { id = "Unknown", startDate = {}, endDate = {} } = location.state || {};
+
+  //traer el producto seleccionado por el usuario
+  useEffect(()=>{
+    const fetchById=async()=>{
+      try{
+        const response=await axios.get(`http://localhost:8080/api/v1/products/${id}`)
+        const data= response.data;
+        console.log(data)
+        dispatch({type:"GET_PRODUCT_BY_ID",payload:data})
+      }catch(err){
+        dispatch({type:"SET_ERROR", payload:"Error al encontrar el producto"})
+      }
+    }
+    fetchById();
+
+  },[])
+  //traer la informacion del user
+  
 
   const handleCupon = () => {
     setCupon(!cupon);
@@ -77,7 +101,74 @@ const Checkout = () => {
             />
           </div>
         </div>
+
         <div className={styleCheckout.info}>
+          <h2>Metodos de envio</h2>
+          <p>Envío Exprés: (Solo Bogotá - Costo adicional) Si pides antes de las 3pm te llega HOY mismo, si pides
+            después de las 3pm llega mañana</p>
+          <div className={styleCheckout.option}>
+            <label className={`${styleCheckout.label} ${selectedOption === "regular" ? styleCheckout.active : ""}`}>
+              <div className={styleCheckout.labelRadio}>
+                <input
+                  type="radio"
+                  name="envio"
+                  value="regular"
+                  checked={selectedOption === "regular"}
+                  onChange={() => {handleChange("regular"),setEnvio(6000)}}
+                />
+                <div className={styleCheckout.labelOptions}>
+                  <span>Envío Regular</span>
+                  <span>(Tiempo de entrega: 2-6 días hábiles en Bogotá)</span>
+                </div>
+              </div>
+              <div className={styleCheckout.options}>
+                <h4>
+                  <strong className={styleCheckout.price}>$6.000</strong>
+                </h4>
+              </div>
+            </label>
+          </div>
+          <div className={styleCheckout.option}>
+            <label className={`${styleCheckout.label} ${selectedOption === "tienda" ? styleCheckout.active : ""}`}>
+              <div className={styleCheckout.labelRadio}>
+                <input
+                  type="radio"
+                  name="envio"
+                  value="tienda"
+                  checked={selectedOption === "tienda"}
+                  onChange={() => {handleChange("tienda"),setEnvio(0)}}
+                />
+                <span>Recoger en tienda</span>
+              </div>
+              <div className={styleCheckout.options}>
+                <h4><strong className={styleCheckout.price}>GRATIS</strong></h4>
+              </div>
+            </label>
+          </div>
+          <div className={styleCheckout.option}>
+            <label className={`${styleCheckout.label} ${selectedOption === "expres" ? styleCheckout.active : ""}`}>
+              <div className={styleCheckout.labelRadio}>
+                <input
+                  type="radio"
+                  name="envio"
+                  value="expres"
+                  checked={selectedOption === "expres"}
+                  onChange={() =>{ handleChange("expres"), setEnvio(15000)}}
+                />
+                <span className={styleCheckout.labelOptions}>
+                  <span>Envío Exprés</span>
+                  <span>(Llega HOY mismo si lo pides antes de la 12 m)</span>
+                </span>
+              </div>
+              <div className={styleCheckout.options}>
+                <strong className={styleCheckout.price}>$15.000</strong>
+              </div>
+            </label>
+          </div>
+        </div>
+      
+        {/*  form para la entrega */}
+        <div className={`${styleCheckout.info} ${envio==0 && styleCheckout.disable}`}>
           <h2>Entrega</h2>
           <MultiSelector
             label="País"
@@ -123,68 +214,19 @@ const Checkout = () => {
             <input type="checkbox"/> Guardar mi información y consultar más rápidamente la próxima vez
           </label>
         </div>
-        <div className={styleCheckout.info}>
-          <h2>Metodos de envio</h2>
-          <p>Envío Exprés: (Solo Bogotá - Costo adicional) Si pides antes de las 3pm te llega HOY mismo, si pides
-            después de las 3pm llega mañana</p>
-          <div className={styleCheckout.option}>
-            <label className={`${styleCheckout.label} ${selectedOption === "regular" ? styleCheckout.active : ""}`}>
-              <input
-                type="radio"
-                name="envio"
-                value="regular"
-                checked={selectedOption === "regular"}
-                onChange={() => handleChange("regular")}
-              />
-              <div>
-                <span>Envío Regular (Tiempo de entrega: 2-6 días hábiles en Bogotá)</span>
-                <strong className={styleCheckout.price}>$6.000</strong>
-              </div>
-            </label>
-          </div>
-          <div className={styleCheckout.option}>
-            <label className={`${styleCheckout.label} ${selectedOption === "tienda" ? styleCheckout.active : ""}`}>
-              <input
-                type="radio"
-                name="envio"
-                value="regular"
-                checked={selectedOption === "tienda"}
-                onChange={() => handleChange("tienda")}
-              />
-              <div>
-                <span>Recoger en tienda</span>
-                <strong className={styleCheckout.price}>GRATIS</strong>
-              </div>
-            </label>
-          </div>
-          <div className={styleCheckout.option}>
-            <label className={`${styleCheckout.label} ${selectedOption === "expres" ? styleCheckout.active : ""}`}>
-              <input
-                type="radio"
-                name="envio"
-                value="expres"
-                checked={selectedOption === "expres"}
-                onChange={() => handleChange("expres")}
-              />
-              <div>
-                <span>Envío Exprés (Llega HOY mismo si lo pides antes de la 12 m) - Máximo 4 prendas</span>
-                <strong className={styleCheckout.price}>$15.000</strong>
-              </div>
-            </label>
-          </div>
-        </div>
       </div>
+      
       <div className={styleCheckout.checkoutRight}>
         <div className={styleCheckout.producto}>
           <div className={styleCheckout.detailProduct}>
-            <img src="/img/categories/1.png" alt=""/>
+            <img src={state.productId?.images[0].url} alt=""/>
             <div className={styleCheckout.descriptionProduct}>
-              <span>Falda Cavalieri Mujer Camel</span>
+              <span>{state.productId?.name}</span>
               <span>XS</span>
             </div>
           </div>
           <div className={styleCheckout.precioProduct}>
-            <h3>$ 135.400</h3>
+            <h3>{formatCurrency(state.productId?.price,"es-CO", "COP")}</h3>
           </div>
         </div>
         <div className={styleCheckout.cupon}>
@@ -202,15 +244,15 @@ const Checkout = () => {
         <div className={styleCheckout.resumenPago}>
           <div className={styleCheckout.resumenFila}>
             <span>Total Productos</span>
-            <span>$25.800</span>
+            <span>{formatCurrency(state.productId?.price ||0 ,"es-CO", "COP")}</span>
           </div>
           <div className={styleCheckout.resumenFila}>
             <span>Costo de envío</span>
-            <span>$12.475</span>
+            <span>{envio!=0 ? formatCurrency(envio ,"es-CO", "COP"): "GRATIS"}</span>
           </div>
           <div className={styleCheckout.resumenFila}>
             <span>Total a pagar</span>
-            <span className={styleCheckout.total}>$38.275</span>
+            <span className={styleCheckout.total}>{formatCurrency(state.productId?.price + envio,"es-CO", "COP")}</span>
           </div>
         </div>
         <label className={styleCheckout.condiciones}>
