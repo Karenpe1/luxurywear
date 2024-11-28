@@ -16,6 +16,7 @@ const ModalGlobal = () => {
     const handleClose=()=>{
       if(state.modalData.onClose){
         state.modalData.onClose();
+        dispatch({type: "HIDE_MODAL_GLOBAL"});
       }else{
         dispatch({type: "HIDE_MODAL_GLOBAL"})
       }   

@@ -25,6 +25,9 @@
     padding-bottom: 1em;
     font-size: 20px;
 }
+.info.disable{
+    display: none;
+}
 .grid{
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -40,14 +43,15 @@
     padding-bottom: 1em;
 }
 .option{
-    border: 1px solid gainsboro;
+
     display: flex;
     flex-direction: row;
 }
 .label {
     width: 100%;
     display: flex;
-    align-items: center;
+    justify-content: space-between;
+
     padding: 1em;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -58,6 +62,20 @@
 .label.active {
     border-color: #007bff;
     background-color: #e9f3ff;
+}
+.labelRadio{
+    display: flex;
+    gap: 8px;
+}
+.options{
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+.labelOptions{
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
 }
 
 
