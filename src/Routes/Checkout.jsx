@@ -108,8 +108,8 @@ const Checkout = () => {
     dispatch({type:"SET_ERROR_RESERVA", payload:{nombre:""}})
   }
   const handleApellido=(e)=>{
-    dispatch({type:"SET_USER_INFO_RESERVA", payload:{apellidos:e.target.value}})
-    dispatch({type:"SET_ERROR_RESERVA", payload:{apellidos:""}})
+    dispatch({type:"SET_USER_INFO_RESERVA", payload:{apellido:e.target.value}})
+    dispatch({type:"SET_ERROR_RESERVA", payload:{apellido:""}})
   }
   const handleCedula=(e)=>{
     dispatch({type:"SET_USER_INFO_RESERVA", payload:{cedula:e.target.value}})
@@ -132,8 +132,8 @@ const Checkout = () => {
     dispatch({type:"SET_USER_INFO_RESERVA", payload:{detalles:e.target.value}})
   }
   const handleCiudad=(e)=>{
-    dispatch({type:"SET_USER_INFO_RESERVA", payload:{nombre:e.target.value}})
-    dispatch({type:"SET_ERROR_RESERVA", payload:{nombre:""}})
+    dispatch({type:"SET_USER_INFO_RESERVA", payload:{ciudad:e.target.value}})
+    dispatch({type:"SET_ERROR_RESERVA", payload:{ciudad:""}})
   }
   const handleCodigoPostal=(e)=>{
     dispatch({type:"SET_USER_INFO_RESERVA", payload:{codigoPostal:e.target.value}})
