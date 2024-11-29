@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "../styles/multiselector.module.css"; // Archivo CSS
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faTag} from "@fortawesome/free-solid-svg-icons";
+import countryData from "world-countries"; // Librería o tu fuente de datos para países y provincias
 
 const MultiSelector = ({ options, placeholder, onChange , multiselector,error,label, preselected}) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -108,7 +109,7 @@ const MultiSelector = ({ options, placeholder, onChange , multiselector,error,la
                 key={index}
                 className={styles.option}
                 onClick={() => handleOptionClick(option)}
-              ><FontAwesomeIcon icon={faTag} style={{color:"#C3B2FB"}} />
+              > {label== "Categorías" && <FontAwesomeIcon icon={faTag} style={{color:"#C3B2FB"}} />}
                 {option.label}
               </li>
             ))}

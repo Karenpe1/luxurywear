@@ -4,16 +4,24 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 
 const initialState = {
   modalData:{isOpen:false, img:"",titulo: "", subtitulo:"", mensaje:"",},
+  isVisible:false,
   productsPaginados:[],
   categoriesPaginados:[],
   usersPaginados:[],
   reservationsPaginados:[],
   productId:null,
+  infoUser:null,
   selectedId:null,
   showActions:[],
   productToEdit: null,
   showModal: false,
   error:"",
+  infoUserReservation:{
+    nombre:"",apellido:"",cedula:"", telefono:"",pais: "",direccion: "",detalles: "",ciudad: "",provincia: "",codigoPostal: "",
+  },
+  errorReservation:{
+    nombre: "",apellidos: "",cedula: "",telefono: "", pais: "",direccion: "", ciudad: "",provincia: "",codigoPostal: "",
+  },
 
 }
 const ContextGlobal = createContext();
@@ -31,6 +39,14 @@ const reducer = (state, action)=>{
       return{...state, reservationsPaginados: action.payload,} // y obtengo lista de reservaciones
     case "GET_PRODUCT_BY_ID":
       return{...state, productId: action.payload,} // y obtengo lista de reservaciones
+    case "GET_USER_INFO":
+      return{...state, infoUser: action.payload,} // y obtengo informacion del usuario actual
+    case "SET_USER_INFO_RESERVA":
+      return {
+        ...state,infoUserReservation: {...state.infoUserReservation,...action.payload,}, // Actualiza solo las propiedades enviadas en el payload      
+      };
+    case "SET_ERROR_RESERVA":
+      return{...state, errorReservation: action.payload,} // obtengo la informacion de los inputs 
     case "DELETE_PRODUCT":
       return {
         ...state,
@@ -71,6 +87,8 @@ const reducer = (state, action)=>{
         ...state,
         showActions: state.showActions.map(() => false), // Resetea todos los menús de acciones
       };
+    case"TOGGLE_OPEN":
+      return{...state,isVisible:!isVisible};
     case "SET_ERROR":
       return {...state,error:action.payload}
     case "SHOW_MODAL_GLOBAL":
