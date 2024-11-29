@@ -20,7 +20,7 @@ const initialState = {
     nombre:"",apellido:"",cedula:"", telefono:"",pais: "",direccion: "",detalles: "",ciudad: "",provincia: "",codigoPostal: "",
   },
   errorReservation:{
-    nombre: "",apellidos: "",cedula: "",telefono: "", pais: "",direccion: "", ciudad: "",provincia: "",codigoPostal: "",
+    nombre: "",apellido: "",cedula: "",telefono: "", pais: "",direccion: "", ciudad: "",provincia: "",codigoPostal: "",
   },
 
 }

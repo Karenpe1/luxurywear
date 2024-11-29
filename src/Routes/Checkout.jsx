@@ -28,7 +28,7 @@ const Checkout = () => {
 
   //traer el producto seleccionado por el usuario
   useEffect(()=>{
-    const fetchById=async()=>{
+    const fetchById = async()=> {
       try{
         const response=await axios.get(`http://localhost:8080/api/v1/products/${id}`)
         const data= response.data;
@@ -41,6 +41,7 @@ const Checkout = () => {
     fetchById();
 
   },[])
+
   //traer la informacion del user
   useEffect(()=>{
     const fetchUserInfo=async()=>{
@@ -73,6 +74,7 @@ const Checkout = () => {
     }
     fetchDireccionInfo()
   },[])
+
   useEffect(() => {
     if (!id || !startDate || !endDate) {
       // Redirect back to detail page if data is missing
@@ -101,40 +103,47 @@ const Checkout = () => {
   const handleChange = (option) => {
     setSelectedOption(option);
   };
-  
 
   const handleNombre=(e)=>{
     dispatch({type:"SET_USER_INFO_RESERVA", payload:{nombre:e.target.value}})
     dispatch({type:"SET_ERROR_RESERVA", payload:{nombre:""}})
   }
+
   const handleApellido=(e)=>{
     dispatch({type:"SET_USER_INFO_RESERVA", payload:{apellido:e.target.value}})
     dispatch({type:"SET_ERROR_RESERVA", payload:{apellido:""}})
   }
+
   const handleCedula=(e)=>{
     dispatch({type:"SET_USER_INFO_RESERVA", payload:{cedula:e.target.value}})
     dispatch({type:"SET_ERROR_RESERVA", payload:{cedula:""}})
   }
+
   const handleTelefono=(e)=>{
     dispatch({type:"SET_USER_INFO_RESERVA", payload:{telefono :e.target.value}})
     dispatch({type:"SET_ERROR_RESERVA", payload:{telefono:""}})
   }
+
   const handleDireccion=(e)=>{
     dispatch({type:"SET_USER_INFO_RESERVA", payload:{direccion:e.target.value}})
     dispatch({type:"SET_ERROR_RESERVA", payload:{direccion:""}})
   }
+
   // Función para manejar la selección de una sugerencia
   const handleSuggestionClick = (suggestion) => {
     dispatch({type:"SET_USER_INFO_RESERVA", payload:{direccion:suggestion}}); // Actualizar el valor del campo de entrada
     setSuggestions([]); // Ocultar sugerencias después de seleccionar una
   };
+
   const handleDetallesEntrega=(e)=>{
     dispatch({type:"SET_USER_INFO_RESERVA", payload:{detalles:e.target.value}})
   }
+
   const handleCiudad=(e)=>{
     dispatch({type:"SET_USER_INFO_RESERVA", payload:{ciudad:e.target.value}})
     dispatch({type:"SET_ERROR_RESERVA", payload:{ciudad:""}})
   }
+
   const handleCodigoPostal=(e)=>{
     dispatch({type:"SET_USER_INFO_RESERVA", payload:{codigoPostal:e.target.value}})
     dispatch({type:"SET_ERROR_RESERVA", payload:{codigoPostal:""}})
@@ -157,12 +166,12 @@ const Checkout = () => {
       dispatch({type:"SET_ERROR",payload:{err}})
     }
   }
+
   const handleProvincia =(provincias)=>{
     dispatch({type:"SET_USER_INFO_RESERVA", payload:{provincia:provincias}})
     dispatch({type:"SET_ERROR_RESERVA", payload:{provincia:""}})
   }
 
- 
   const handleSubmit= async(e)=>{
     e.preventDefault()
     let formIsValid = true;
@@ -185,26 +194,30 @@ const Checkout = () => {
       formIsValid=false;
     }
     if(!state.infoUserReservation.pais){
-      errors.pais="debes seleccionar un pais";
+      errors.pais="Debes seleccionar un pais";
       formIsValid=false;
     }
     if(!state.infoUserReservation.provincia){
-      errors.provincia="debes seleccionar una privincia/ estado";
+      errors.provincia="Debes seleccionar una provincia/ estado";
       formIsValid=false;
     }
-    if(state.infoUserReservation.codigoPostal && !numbersRegex.test(state.infoUserReservation.codigoPostal )){
+
+    if(!state.infoUserReservation.direccion){
+      errors.direccion="La direccion no puede estar vacia";
+      formIsValid=false;
+    }
+
+    if(state.infoUserReservation.codigoPostal && !numbersRegex.test(state.infoUserReservation.codigoPostal)){
       errors.codigoPostal="El codigo postal no puede contener letras"
       formIsValid=false
     }
-    if(!numbersRegex.test(state.infoUserReservation.ciudad) || !state.infoUserReservation.ciudad){
+
+    if(!noNumbersRegex.test(state.infoUserReservation.ciudad) || !state.infoUserReservation.ciudad){
       errors.ciudad="La ciudad debe ser valida"
       formIsValid=false
     }
-    
-
     dispatch({type:"SET_ERROR_RESERVA", payload:errors})
   }
-
 
   return (
     <div className={styleCheckout.contenedor}>
@@ -237,8 +250,8 @@ const Checkout = () => {
                 placeholder="Apellidos"
                 type="text"
                 onChange={handleApellido}
-                value={state.infoUserReservation.apellido}
-                error={state.errorReservation.apellido}
+                value={state.infoUserReservation?.apellido}
+                error={state.errorReservation?.apellido}
                 className={styleCheckout.inputMedio}
               />
               <Input
@@ -247,8 +260,8 @@ const Checkout = () => {
                 placeholder="Cedula o Nit"
                 type="text"
                 onChange={handleCedula}
-                value={state.infoUserReservation.cedula}
-                error={state.errorReservation.cedula}
+                value={state.infoUserReservation?.cedula}
+                error={state.errorReservation?.cedula}
                 className={styleCheckout.inputMedio}
               />
               <Input
@@ -257,8 +270,8 @@ const Checkout = () => {
                 placeholder="Teléfono"
                 type="tel"
                 onChange={handleTelefono}
-                value={state.infoUserReservation.telefono}
-                error={state.errorReservation.telefono}
+                value={state.infoUserReservation?.telefono}
+                error={state.errorReservation?.telefono}
                 className={styleCheckout.inputMedio}
               />
             </div>
@@ -340,6 +353,7 @@ const Checkout = () => {
               placeholder="País/Región"
               multiselector={false}
               onChange={(option) => handlePais(option.value)}
+              error={state.errorReservation?.pais}
             />
             <Input
               id="direccion"
@@ -348,6 +362,7 @@ const Checkout = () => {
               type="text"
               onChange={handleDireccion}
               onClick={()=>dispatch({type:"TOGGLE_OPEN"})}
+              error={state.errorReservation?.direccion}
             />
             {suggestions.length>0 && (
               <ul>
@@ -361,10 +376,10 @@ const Checkout = () => {
             <Input
               id="detalles"
               label="Detalles de entrega"
-              placeholder="Casa, apartamento,etc. (Opcional)"
+              placeholder="Casa, apartamento, etc. (Opcional)"
               type="text"
               onChange={handleDetallesEntrega}
-              value={state.infoUserReservation.detalles}
+              value={state.infoUserReservation?.detalles}
             />
             <div className={styleCheckout.ciudadGrid}>
               <Input
@@ -373,8 +388,8 @@ const Checkout = () => {
                 placeholder="Ciudad"
                 type="text"
                 onChange={handleCiudad}
-                value={state.infoUserReservation.ciudad}
-                error={state.errorReservation.ciudad}
+                value={state.infoUserReservation?.ciudad}
+                error={state.errorReservation?.ciudad}
               />
               <MultiSelector
                 label="Provincia"
@@ -382,6 +397,7 @@ const Checkout = () => {
                 placeholder="Provincia/Estado"
                 multiselector={false}
                 onChange={(option)=> handleProvincia (option.value)}
+                error={state.errorReservation?.provincia}
               />
               <Input
                 id="codigo"
@@ -389,8 +405,8 @@ const Checkout = () => {
                 placeholder="Codigo postal(Opcional)"
                 type="text"
                 onChange={handleCodigoPostal}
-                value={state.infoUserReservation.codigoPostal}
-                error={state.errorReservation.codigoPostal}
+                value={state.infoUserReservation?.codigoPostal}
+                error={state.errorReservation?.codigoPostal}
               />
             </div>
           </form>
