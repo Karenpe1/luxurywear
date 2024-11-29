@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "../styles/multiselector.module.css"; // Archivo CSS
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faTag} from "@fortawesome/free-solid-svg-icons";
-import countryData from "world-countries"; // Librería o tu fuente de datos para países y provincias
 
 const MultiSelector = ({ options, placeholder, onChange , multiselector,error,label, preselected}) => {
   const [isOpen, setIsOpen] = useState(false);
