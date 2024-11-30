@@ -99,7 +99,7 @@ const Checkout = () => {
   
       dispatch({
         type: "SET_USER_INFO_RESERVA",
-        payload: { totalCost: formatCurrency(total ,"es-CO", "COP")},
+        payload: { totalCost: total},
       });
     };
   
@@ -549,7 +549,7 @@ const Checkout = () => {
           </div>
           <div className={styleCheckout.resumenFila}>
             <span>Total a pagar</span>
-            <span className={styleCheckout.total}>{state.infoUserReservation.totalCost}</span>
+            <span className={styleCheckout.total}>{formatCurrency(state.infoUserReservation.totalCost ,"es-CO", "COP")}</span>
           </div>
         </div>
         <label className={styleCheckout.condiciones}>
