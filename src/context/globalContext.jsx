@@ -11,6 +11,7 @@ const initialState = {
   reservationsPaginados:[],
   productId:null,
   infoUser:null,
+  searchTerm:([]),
   selectedId:null,
   showActions:[],
   productToEdit: null,
@@ -42,6 +43,8 @@ const reducer = (state, action)=>{
       return{...state, productId: action.payload,} // y obtengo lista de reservaciones
     case "GET_USER_INFO":
       return{...state, infoUser: action.payload,} // y obtengo informacion del usuario actual
+    case "GET_DIRECTIONS":
+      return{...state,searchTerm: action.payload} //obtengo direcciones del usuario antiguas
     case "SET_USER_INFO_RESERVA":
       return {
         ...state,infoUserReservation: {...state.infoUserReservation,...action.payload,}, // Actualiza solo las propiedades enviadas en el payload      

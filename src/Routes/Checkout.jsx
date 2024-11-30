@@ -20,6 +20,7 @@ const Checkout = () => {
   const [suggestions, setSuggestions]=useState([])
   const [paisesTitle, setPaisesTitle] = useState([]);
   const [estadosTitle, setEstadosTitle] = useState([]);
+  const [searchTerm,setSearchTerm] = useState('');
   const location = useLocation();
   const axios=axiosInstance();
   const noNumbersRegex = /^\D*$/;
@@ -64,19 +65,19 @@ const Checkout = () => {
   useEffect(()=>{
     const fetchDireccionInfo=async()=>{
       try{
-        const response= await axios.get(`http://localhost:8080/api/v1/users/user-info`)
+        const response= await axios.get(`http://localhost:8080/api/v1/addresses`)
         const data= response.data
 
-        setSuggestions(data)
-        if(suggestions.length>0){
-          dispatch()
-        }
+        dispatch({type:"GET_DIRECTIONS", payload:data});
+
       }catch(error){
         dispatch({type:"SET_ERROR",payload:"Error al encontrar la informacion del usuario"})
       }
     }
     fetchDireccionInfo()
   },[])
+
+
   const formatDate=({day,month,year})=>{
     return `${year}-${month}-${day}`; // Formatea la fecha como "YYYY-MM-DD"
   };
@@ -130,6 +131,34 @@ const Checkout = () => {
   const handleCheck=()=>{
     dispatch({type:"TOGGLE_CHECK"})
   }
+  const searchTerms = [
+    "calle 54#6a-98", "elegante"
+  ];
+
+  // Función para manejar los cambios en el campo de entrada
+  const handleSearchTermChange = (e) => {
+    const userInput = e.target.value.toLowerCase();
+    setSearchTerm(userInput);
+    setSuggestions([searchTerms])
+
+    if (userInput) {
+      const filtered = searchTerms.filter(term => term.toLowerCase().includes(userInput));
+      setSuggestions(filtered);
+    } else {
+      setSuggestions([]);
+    }
+  };
+
+  // Mostrar todas las sugerencias al hacer clic en el campo
+  const handleInputFocus = () => {
+    setSuggestions(searchTerms); // Muestra todas las sugerencias al enfocar
+  };
+
+   // Función para manejar la selección de una sugerencia
+   const handleSuggestionClick = (suggestion) => {
+    setSearchTerm(suggestion); // Actualizar el valor del campo de entrada
+    setSuggestions([]); // Ocultar sugerencias después de seleccionar una
+  };
 
   const handleNombre=(e)=>{
     dispatch({type:"SET_USER_INFO_RESERVA", payload:{nombre:e.target.value}})
@@ -150,17 +179,6 @@ const Checkout = () => {
     dispatch({type:"SET_USER_INFO_RESERVA", payload:{telefono :e.target.value}})
     dispatch({type:"SET_ERROR_RESERVA", payload:{telefono:""}})
   }
-
-  const handleDireccion=(e)=>{
-    dispatch({type:"SET_USER_INFO_RESERVA", payload:{direccion:e.target.value}})
-    dispatch({type:"SET_ERROR_RESERVA", payload:{direccion:""}})
-  }
-
-  // Función para manejar la selección de una sugerencia
-  const handleSuggestionClick = (suggestion) => {
-    dispatch({type:"SET_USER_INFO_RESERVA", payload:{direccion:suggestion}}); // Actualizar el valor del campo de entrada
-    setSuggestions([]); // Ocultar sugerencias después de seleccionar una
-  };
 
   const handleDetallesEntrega=(e)=>{
     dispatch({type:"SET_USER_INFO_RESERVA", payload:{detalles:e.target.value}})
@@ -476,8 +494,9 @@ const Checkout = () => {
               label="Dirección"
               placeholder="Dirección"
               type="text"
-              onChange={handleDireccion}
-              onClick={()=>dispatch({type:"TOGGLE_OPEN"})}
+              value={searchTerm}
+              onChange={handleSearchTermChange}
+              onFocus={handleInputFocus}
               error={state.errorReservation?.direccion}
             />
             {suggestions.length>0 && (
