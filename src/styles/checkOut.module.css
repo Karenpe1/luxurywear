@@ -5,7 +5,7 @@
 .checkoutLeft{
     width: 60%;
     background-color: #c8bbf4;
-    padding: 6em 4em 3em 4em;
+    padding: 1em 4em 3em 4em;
     display: flex;
     flex-direction: column;
     gap: 2em;
@@ -13,7 +13,7 @@
 .logo{
     background-color: white;
     border-radius: 8px;
-    width: 20%;
+    width: 17%;
 }
 .info{
     background-color: white;
@@ -28,6 +28,13 @@
 .info.disable{
     display: none;
 }
+.check{
+    width: 12px; /* Ajusta el ancho */
+    height: 12px; /* Ajusta la altura */
+    transform: scale(1.4); /* Escala el tamaño del checkbox */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el checkbox */
+    margin: 1.5em .8em 0em 0em;
+}
 .grid{
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -40,7 +47,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 1em;
-    padding-bottom: 1em;
+
 }
 .option{
 
@@ -83,11 +90,19 @@
 
 
 
+
+
 .checkoutRight{
     width: 40%;
     background-color: white;
-    padding: 6em;
+    padding: 7em 5em;
+    position: sticky;
+    top: 0; /* Fija el desplazamiento al inicio de la ventana */
+    align-self: flex-start; /* Asegura que se alinee al inicio en pantallas grandes */
+    height: fit-content; /* Ajusta su tamaño al contenido */
+    overflow-y: auto;
 }
+
 .producto{
     display: flex;
     justify-content: space-between;
@@ -189,6 +204,12 @@
     border-radius: 8px;
     width: 30%;
     background:#C3B2FB;
+}
+.resumenFechas{
+    padding: 1em 0em;
+    display: flex;
+    flex-direction: column;
+    gap:1em;
 }
 .resumenPago{
     padding: 3em 0em;

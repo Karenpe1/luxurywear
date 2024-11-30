@@ -18,6 +18,7 @@ const initialState = {
   error:"",
   infoUserReservation:{
     nombre:"",apellido:"",cedula:"", telefono:"",pais: "",direccion: "",detalles: "",ciudad: "",provincia: "",codigoPostal: "",
+    startDate: "",endDate:"", totalCost:"",addressId:"0", saveData:false,productName:"",envio:true,
   },
   errorReservation:{
     nombre: "",apellido: "",cedula: "",telefono: "", pais: "",direccion: "", ciudad: "",provincia: "",codigoPostal: "",
@@ -76,6 +77,8 @@ const reducer = (state, action)=>{
       return {...state, showModal: false};
     case ("INITIALIZE_SHOWACTIONS"):
       return{...state, showActions:action.payload}
+    case("TOGGLE_CHECK"):
+      return{...state,infoUserReservation:{...state.infoUserReservation, saveData: !state.infoUserReservation.saveData} }
     case "TOGGLE_SHOW_ACTIONS":
       return {...state,
         showActions: state.showActions.map((visible, index) =>

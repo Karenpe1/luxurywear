@@ -9,11 +9,13 @@ import { useLocation } from "react-router-dom";
 import { useContextGlobal } from "../context/globalContext";
 import axiosInstance from "../Utils/axiosInstance";
 import { formatCurrency } from "../Utils/currencyFormatter";
+import { differenceInDays, set } from 'date-fns';
 
 const Checkout = () => {
   const {state,dispatch}=useContextGlobal();
-  const [cupon,setCupon] = useState(false)
+  const [cupon,setCupon] = useState(true)
   const [selectedOption, setSelectedOption] = useState("regular");
+  const [daysDifference,setDaysDifference]=useState(0)
   const [envio, setEnvio]=useState(12000)
   const [suggestions, setSuggestions]=useState([])
   const [paisesTitle, setPaisesTitle] = useState([]);
@@ -22,6 +24,7 @@ const Checkout = () => {
   const axios=axiosInstance();
   const noNumbersRegex = /^\D*$/;
   const numbersRegex = /^\d+$/;
+
 
   // Extract state or use default values
   const { id = "Unknown", startDate = {}, endDate = {} } = location.state || {};
@@ -32,8 +35,8 @@ const Checkout = () => {
       try{
         const response=await axios.get(`http://localhost:8080/api/v1/products/${id}`)
         const data= response.data;
-        console.log(data)
         dispatch({type:"GET_PRODUCT_BY_ID",payload:data})
+        dispatch({type:"SET_USER_INFO_RESERVA", payload:{productName: data.name}})
       }catch(err){
         dispatch({type:"SET_ERROR", payload:"Error al encontrar el producto"})
       }
@@ -49,7 +52,7 @@ const Checkout = () => {
         const response= await axios.get(`http://localhost:8080/api/v1/users/user-info`)
         const data= response.data
 
-        dispatch({type:"GET_USER_INFO", payload:data})
+        dispatch({type:"GET_USER_INFO", payload:data});
       }catch(error){
         dispatch({type:"SET_ERROR",payload:"Error al encontrar la informacion del usuario"})
       }
@@ -74,13 +77,34 @@ const Checkout = () => {
     }
     fetchDireccionInfo()
   },[])
-
+  const formatDate=({day,month,year})=>{
+    return `${year}-${month}-${day}`; // Formatea la fecha como "YYYY-MM-DD"
+  };
   useEffect(() => {
     if (!id || !startDate || !endDate) {
       // Redirect back to detail page if data is missing
       window.history.back();
+    }else{
+      dispatch({type:"SET_USER_INFO_RESERVA",payload:{startDate: formatDate(startDate), endDate:formatDate(endDate)}})
+      const startDateObj = new Date(`${startDate.year}-${startDate.month}-${startDate.day}`);
+      const endDateObj = new Date(`${endDate.year}-${endDate.month}-${endDate.day}`);
+      setDaysDifference(differenceInDays(endDateObj, startDateObj));
     }
   }, [id, startDate, endDate]);
+
+  useEffect(() => {
+    const calculateTotalCost = () => {
+      const productPrice = state.productId?.price || 0;
+      const total = productPrice * daysDifference + envio;
+  
+      dispatch({
+        type: "SET_USER_INFO_RESERVA",
+        payload: { totalCost: formatCurrency(total ,"es-CO", "COP")},
+      });
+    };
+  
+    calculateTotalCost();
+  }, [state.productId, daysDifference, envio]); // Dependencias necesarias
 
   // cargar los paises desde el backend  
   useEffect(() => {
@@ -103,6 +127,9 @@ const Checkout = () => {
   const handleChange = (option) => {
     setSelectedOption(option);
   };
+  const handleCheck=()=>{
+    dispatch({type:"TOGGLE_CHECK"})
+  }
 
   const handleNombre=(e)=>{
     dispatch({type:"SET_USER_INFO_RESERVA", payload:{nombre:e.target.value}})
@@ -193,30 +220,91 @@ const Checkout = () => {
       errors.telefono="El telefono debe ser valido";
       formIsValid=false;
     }
-    if(!state.infoUserReservation.pais){
-      errors.pais="Debes seleccionar un pais";
-      formIsValid=false;
+    if(envio==0){
+      dispatch({type:"SET_USER_INFO_RESERVA", payload:{envio:false}})
     }
-    if(!state.infoUserReservation.provincia){
-      errors.provincia="Debes seleccionar una provincia/ estado";
-      formIsValid=false;
-    }
-
-    if(!state.infoUserReservation.direccion){
-      errors.direccion="La direccion no puede estar vacia";
-      formIsValid=false;
-    }
-
-    if(state.infoUserReservation.codigoPostal && !numbersRegex.test(state.infoUserReservation.codigoPostal)){
-      errors.codigoPostal="El codigo postal no puede contener letras"
-      formIsValid=false
-    }
-
-    if(!noNumbersRegex.test(state.infoUserReservation.ciudad) || !state.infoUserReservation.ciudad){
-      errors.ciudad="La ciudad debe ser valida"
-      formIsValid=false
+    if(envio !=0){
+      if(!state.infoUserReservation.pais){
+        errors.pais="Debes seleccionar un pais";
+        formIsValid=false;
+      }
+      if(!state.infoUserReservation.provincia){
+        errors.provincia="Debes seleccionar una provincia/ estado";
+        formIsValid=false;
+      }
+  
+      if(!state.infoUserReservation.direccion){
+        errors.direccion="La direccion no puede estar vacia";
+        formIsValid=false;
+      }
+  
+      if(state.infoUserReservation.codigoPostal && !numbersRegex.test(state.infoUserReservation.codigoPostal)){
+        errors.codigoPostal="El codigo postal no puede contener letras"
+        formIsValid=false
+      }
+  
+      if(!noNumbersRegex.test(state.infoUserReservation.ciudad) || !state.infoUserReservation.ciudad){
+        errors.ciudad="La ciudad debe ser valida"
+        formIsValid=false
+      }
     }
     dispatch({type:"SET_ERROR_RESERVA", payload:errors})
+    console.log(state.infoUserReservation)
+    if(formIsValid){
+      const body = {
+        productName: state.infoUserReservation.productName,
+        startDate: state.infoUserReservation.startDate,
+        endDate: state.infoUserReservation.endDate,
+        totalCost: state.infoUserReservation.totalCost,
+        nombre: state.infoUserReservation.nombre.trim(),
+        apellido: state.infoUserReservation.apellido.trim(),
+        saveData: state.infoUserReservation.saveData,
+        envio: state.infoUserReservation.envio,
+        cedula:state.infoUserReservation.cedula,
+        telefono: state.infoUserReservation.telefono, 
+        addressId: state.infoUserReservation.addressId, 
+        pais: state.infoUserReservation.pais, 
+        provincia:state.infoUserReservation.provincia, 
+        ciudad: state.infoUserReservation.ciudad, 
+        direccion:state.infoUserReservation.direccion, 
+        detalles: state.infoUserReservation.detalles, 
+        codigoPostal: state.infoUserReservation.codigoPostal, 
+      };
+
+      const method = "POST"
+      const endpoint = "http://localhost:8080/api/v1/reservations";
+
+      try {
+        const response = await axios({
+        method,
+          url: endpoint,
+          data: body,
+        });
+
+        // Handle non-201 status codes
+        if (response.status === 200 || response.status === 201 ) {
+          dispatch({
+            type: "SHOW_MODAL_GLOBAL",
+            payload: {
+              img: "/Estrellas.svg",
+              titulo: "¡Felicidades!",
+              subtitulo: "Tu reserva ha sido exitoso.",
+              mensaje: "A tu correo llegara todos los detalles de la reserva",
+            },
+          });
+        }
+      } catch (err) {
+        console.error("Error during form submission:", err);
+        dispatch({
+          type: "SHOW_MODAL_GLOBAL",
+          payload: {
+            img: "/ohNo.png",
+            titulo: "¡Error de conexión!",
+            subtitulo: "Hubo un problema con la conexión.",
+            mensaje: "Tu reserva no pudo ser completada, por favor vuelve a intentar",
+          }})
+      }
+    }
   }
 
   return (
@@ -355,32 +443,6 @@ const Checkout = () => {
               onChange={(option) => handlePais(option.value)}
               error={state.errorReservation?.pais}
             />
-            <Input
-              id="direccion"
-              label="Dirección"
-              placeholder="Dirección"
-              type="text"
-              onChange={handleDireccion}
-              onClick={()=>dispatch({type:"TOGGLE_OPEN"})}
-              error={state.errorReservation?.direccion}
-            />
-            {suggestions.length>0 && (
-              <ul>
-                {suggestions.map((suggest,index)=>(
-                  <li key={index} onClick={handleSuggestionClick}>
-                    {suggest}
-                  </li>
-                ))}
-              </ul>
-            )}
-            <Input
-              id="detalles"
-              label="Detalles de entrega"
-              placeholder="Casa, apartamento, etc. (Opcional)"
-              type="text"
-              onChange={handleDetallesEntrega}
-              value={state.infoUserReservation?.detalles}
-            />
             <div className={styleCheckout.ciudadGrid}>
               <Input
                 id="ciudad"
@@ -409,13 +471,38 @@ const Checkout = () => {
                 error={state.errorReservation?.codigoPostal}
               />
             </div>
+            <Input
+              id="direccion"
+              label="Dirección"
+              placeholder="Dirección"
+              type="text"
+              onChange={handleDireccion}
+              onClick={()=>dispatch({type:"TOGGLE_OPEN"})}
+              error={state.errorReservation?.direccion}
+            />
+            {suggestions.length>0 && (
+              <ul>
+                {suggestions.map((suggest,index)=>(
+                  <li key={index} onClick={handleSuggestionClick}>
+                    {suggest}
+                  </li>
+                ))}
+              </ul>
+            )}
+            <Input
+              id="detalles"
+              label="Detalles de entrega"
+              placeholder="Casa, apartamento, etc. (Opcional)"
+              type="text"
+              onChange={handleDetallesEntrega}
+              value={state.infoUserReservation?.detalles}
+            />
           </form>
           <label htmlFor="">
-            <input type="checkbox"/> Guardar mi información y consultar más rápidamente la próxima vez
+            <input className={styleCheckout.check} type="checkbox" checked={state.infoUserReservation.saveData} onChange={handleCheck}/> Guardar mi información y consultar más rápidamente la próxima vez
           </label>
         </div>
       </div>
-      
       <div className={styleCheckout.checkoutRight}>
         <div className={styleCheckout.producto}>
           <div className={styleCheckout.detailProduct}>
@@ -427,6 +514,16 @@ const Checkout = () => {
           </div>
           <div className={styleCheckout.precioProduct}>
             <h3>{formatCurrency(state.productId?.price,"es-CO", "COP")}</h3>
+          </div>
+        </div>
+        <div className={styleCheckout.resumenFechas}>
+          <div className={styleCheckout.resumenFila}>
+            <span>Fecha Recogida</span>
+            <span>{state.infoUserReservation.startDate}</span>
+          </div>
+          <div className={styleCheckout.resumenFila}>
+            <span>Fecha Entrega</span>
+            <span>{state.infoUserReservation.endDate}</span>
           </div>
         </div>
         <div className={styleCheckout.cupon}>
@@ -443,8 +540,8 @@ const Checkout = () => {
         </div>
         <div className={styleCheckout.resumenPago}>
           <div className={styleCheckout.resumenFila}>
-            <span>Total Productos</span>
-            <span>{formatCurrency(state.productId?.price ||0 ,"es-CO", "COP")}</span>
+            <span className={styleCheckout.productosDias}>Total Productos <span>{`x ${daysDifference} dias`} </span></span>
+            <span>{formatCurrency(state.productId?.price * daysDifference ||0 ,"es-CO", "COP")}</span>
           </div>
           <div className={styleCheckout.resumenFila}>
             <span>Costo de envío</span>
@@ -452,7 +549,7 @@ const Checkout = () => {
           </div>
           <div className={styleCheckout.resumenFila}>
             <span>Total a pagar</span>
-            <span className={styleCheckout.total}>{formatCurrency(state.productId?.price + envio,"es-CO", "COP")}</span>
+            <span className={styleCheckout.total}>{state.infoUserReservation.totalCost}</span>
           </div>
         </div>
         <label className={styleCheckout.condiciones}>
@@ -461,10 +558,6 @@ const Checkout = () => {
         <div className={styleCheckout.buttonReservar}>
           <Button onClick={handleSubmit}>Reservar</Button>
         </div>
-        <h1>Checkout</h1>
-        <p>Id del producto {id}</p>
-        <p>Fecha de inicio: {`${startDate.day}/${startDate.month + 1}/${startDate.year}`}</p>
-        <p>Fecha final {`${endDate.day}/${endDate.month + 1}/${endDate.year}`}</p>
       </div>
     </div>
   );
