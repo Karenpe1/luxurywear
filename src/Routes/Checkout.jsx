@@ -20,7 +20,6 @@ const Checkout = () => {
   const [suggestions, setSuggestions]=useState([])
   const [paisesTitle, setPaisesTitle] = useState([]);
   const [estadosTitle, setEstadosTitle] = useState([]);
-  const [searchTerm,setSearchTerm] = useState('');
   const location = useLocation();
   const axios=axiosInstance();
   const noNumbersRegex = /^\D*$/;
@@ -52,8 +51,16 @@ const Checkout = () => {
       try{
         const response= await axios.get(`http://localhost:8080/api/v1/users/user-info`)
         const data= response.data
-
+        console.log(data)
         dispatch({type:"GET_USER_INFO", payload:data});
+        if(data.cedula){
+          dispatch({type:"SET_USER_INFO_RESERVA", payload:{
+            nombre:data.first_name,
+            apellido:data.last_name,
+            cedula:data.cedula, 
+            telefono:data.telefono,
+          }})
+        }
       }catch(error){
         dispatch({type:"SET_ERROR",payload:"Error al encontrar la informacion del usuario"})
       }
@@ -61,23 +68,8 @@ const Checkout = () => {
     fetchUserInfo()
   },[])
   
-  //use effect para mostrar las direcciones guardadas anteriormente
-  useEffect(()=>{
-    const fetchDireccionInfo=async()=>{
-      try{
-        const response= await axios.get(`http://localhost:8080/api/v1/addresses`)
-        const data= response.data
-
-        dispatch({type:"GET_DIRECTIONS", payload:data});
-
-      }catch(error){
-        dispatch({type:"SET_ERROR",payload:"Error al encontrar la informacion del usuario"})
-      }
-    }
-    fetchDireccionInfo()
-  },[])
-
-
+  
+  
   const formatDate=({day,month,year})=>{
     return `${year}-${month}-${day}`; // Formatea la fecha como "YYYY-MM-DD"
   };
@@ -92,12 +84,12 @@ const Checkout = () => {
       setDaysDifference(differenceInDays(endDateObj, startDateObj));
     }
   }, [id, startDate, endDate]);
-
+  
   useEffect(() => {
     const calculateTotalCost = () => {
       const productPrice = state.productId?.price || 0;
       const total = productPrice * daysDifference + envio;
-  
+      
       dispatch({
         type: "SET_USER_INFO_RESERVA",
         payload: { totalCost: total},
@@ -106,7 +98,7 @@ const Checkout = () => {
   
     calculateTotalCost();
   }, [state.productId, daysDifference, envio]); // Dependencias necesarias
-
+  
   // cargar los paises desde el backend  
   useEffect(() => {
     const fetchPaises = async () => {
@@ -121,44 +113,88 @@ const Checkout = () => {
     fetchPaises();
   }, []);
   
+  //use effect para mostrar las direcciones guardadas anteriormente
+  useEffect(()=>{
+    const fetchDireccionInfo=async()=>{
+      try{
+        const response= await axios.get(`http://localhost:8080/api/v1/addresses/by-user`)
+        const data= response.data
+        if(data.length>0){
+          dispatch({ type: "GET_DIRECTIONS", payload: data });
+        }
+        else{
+          console.log("no tiene direcciones guardadas")
+        }
+        console.log(data)
+      }catch(error){
+        dispatch({type:"SET_ERROR",payload:"Error al encontrar la informacion del usuario"})
+      }
+    }
+    fetchDireccionInfo()
+  },[])
+   // Manejar selección única de dirección
+  const handleSeleccionCheckDireccion = async(direccionObj) => {
+    if (state.selectedId === direccionObj.id) {
+      // Si ya está seleccionada, deseleccionar
+      dispatch({type:"GET_ID",payload:null})
+      dispatch({
+        type: "SET_USER_INFO_RESERVA",
+        payload: {
+          direccion: "",
+          ciudad: "",
+          provincia: "",
+          pais: "",
+          codigoPostal: "",
+          addressId:0,
+        },
+      });
+    } else {
+      // Si no está seleccionada, seleccionamos y rellenamos campos
+      dispatch({type:"GET_ID",payload:direccionObj.id})
+      dispatch({
+        type: "SET_USER_INFO_RESERVA",
+        payload: {
+          direccion: direccionObj.direccion,
+          ciudad: direccionObj.ciudad,
+          provincia: direccionObj.provincia,
+          pais: direccionObj.pais,
+          codigoPostal: direccionObj.codigoPostal,
+          detalles:direccionObj.detalles,
+          addressId:state.selectedId,
+        },
+      });
+      // Cargar las provincias para el país seleccionado
+    try {
+      const estadosResponse = await axios.get(
+        `http://localhost:8080/api/v1/countries/${direccionObj.pais}/states`
+      );
+      const data = estadosResponse.data;
+
+      // Actualizar las provincias disponibles y seleccionar la provincia de la dirección
+      setEstadosTitle(
+        data.map((estado) => ({
+          value: estado,
+          label: estado,
+          name:estado
+        }))
+      );
+
+      dispatch({ type: "SET_USER_INFO_RESERVA", payload: { provincia: direccionObj.provincia } });
+    } catch (err) {
+      console.error("Error al cargar las provincias:", err);
+    }}
+  };
+
   const handleCupon = () => {
     setCupon(!cupon);
   }
-
+  
   const handleChange = (option) => {
     setSelectedOption(option);
   };
   const handleCheck=()=>{
     dispatch({type:"TOGGLE_CHECK"})
   }
-  const searchTerms = [
-    "calle 54#6a-98", "elegante"
-  ];
-
-  // Función para manejar los cambios en el campo de entrada
-  const handleSearchTermChange = (e) => {
-    const userInput = e.target.value.toLowerCase();
-    setSearchTerm(userInput);
-    setSuggestions([searchTerms])
-
-    if (userInput) {
-      const filtered = searchTerms.filter(term => term.toLowerCase().includes(userInput));
-      setSuggestions(filtered);
-    } else {
-      setSuggestions([]);
-    }
-  };
-
-  // Mostrar todas las sugerencias al hacer clic en el campo
-  const handleInputFocus = () => {
-    setSuggestions(searchTerms); // Muestra todas las sugerencias al enfocar
-  };
-
-   // Función para manejar la selección de una sugerencia
-   const handleSuggestionClick = (suggestion) => {
-    setSearchTerm(suggestion); // Actualizar el valor del campo de entrada
-    setSuggestions([]); // Ocultar sugerencias después de seleccionar una
-  };
 
   const handleNombre=(e)=>{
     dispatch({type:"SET_USER_INFO_RESERVA", payload:{nombre:e.target.value}})
@@ -192,6 +228,11 @@ const Checkout = () => {
   const handleCodigoPostal=(e)=>{
     dispatch({type:"SET_USER_INFO_RESERVA", payload:{codigoPostal:e.target.value}})
     dispatch({type:"SET_ERROR_RESERVA", payload:{codigoPostal:""}})
+  }
+
+  const handleDireccion=(e)=>{
+    dispatch({type:"SET_USER_INFO_RESERVA", payload:{direccion:e.target.value}})
+    dispatch({type:"SET_ERROR_RESERVA", payload:{direccion:""}})
   }
 
   const handlePais= async (pais)=>{
@@ -337,7 +378,7 @@ const Checkout = () => {
               label="Correo electronico"
               placeholder="Ingresa tu email"
               type="text"
-              value={state.infoUser?.email}
+              value={state.infoUser?.email || ""}
             />
             <div className={styleCheckout.grid}>
               <Input
@@ -346,7 +387,7 @@ const Checkout = () => {
                 placeholder="Nombres"
                 type="text"
                 onChange={handleNombre}
-                value={state.infoUserReservation?.nombre}
+                value={state.infoUserReservation?.nombre || ""}
                 error={state.errorReservation?.nombre}
                 className={styleCheckout.inputMedio}
               />
@@ -356,7 +397,7 @@ const Checkout = () => {
                 placeholder="Apellidos"
                 type="text"
                 onChange={handleApellido}
-                value={state.infoUserReservation?.apellido}
+                value={state.infoUserReservation?.apellido || ""}
                 error={state.errorReservation?.apellido}
                 className={styleCheckout.inputMedio}
               />
@@ -366,7 +407,7 @@ const Checkout = () => {
                 placeholder="Cedula o Nit"
                 type="text"
                 onChange={handleCedula}
-                value={state.infoUserReservation?.cedula}
+                value={state.infoUserReservation?.cedula || ""}
                 error={state.errorReservation?.cedula}
                 className={styleCheckout.inputMedio}
               />
@@ -376,7 +417,7 @@ const Checkout = () => {
                 placeholder="Teléfono"
                 type="tel"
                 onChange={handleTelefono}
-                value={state.infoUserReservation?.telefono}
+                value={state.infoUserReservation?.telefono || ""}
                 error={state.errorReservation?.telefono}
                 className={styleCheckout.inputMedio}
               />
@@ -448,9 +489,27 @@ const Checkout = () => {
             </label>
           </div>
         </div>
-      
-        {/*  form para la entrega */}
-        <div className={`${styleCheckout.info} ${envio==0 && styleCheckout.disable}`}>
+
+        {state.directionList.length>0 && (
+          <div className={`${styleCheckout.info} ${envio==0 && styleCheckout.disable}` }>
+          <h2>Direcciones guardadas</h2>
+          {state.directionList.map(direcciones=>(
+            <div key={direcciones.id} className={styleCheckout.condiciones}>
+              <input 
+                type="checkbox" 
+                checked={state.selectedId === direcciones.id} // Sólo un checkbox puede estar marcado 
+                id={`direccion-${direcciones.id}`}
+                onChange={()=>handleSeleccionCheckDireccion(direcciones)} />
+                <label htmlFor={`direccion-${direcciones.id}`}>
+                {direcciones.direccion}, {direcciones.ciudad}
+              </label>
+            </div>
+          ))}
+        </div>
+        )}
+
+        {!envio==0?(
+        <div className={`${styleCheckout.info}`}>
           <h2>Entrega</h2>
           <form >
             <MultiSelector
@@ -460,6 +519,7 @@ const Checkout = () => {
               multiselector={false}
               onChange={(option) => handlePais(option.value)}
               error={state.errorReservation?.pais}
+              value={state.infoUserReservation.pais}
             />
             <div className={styleCheckout.ciudadGrid}>
               <Input
@@ -468,7 +528,7 @@ const Checkout = () => {
                 placeholder="Ciudad"
                 type="text"
                 onChange={handleCiudad}
-                value={state.infoUserReservation?.ciudad}
+                value={state.infoUserReservation?.ciudad || ""}
                 error={state.errorReservation?.ciudad}
               />
               <MultiSelector
@@ -478,6 +538,7 @@ const Checkout = () => {
                 multiselector={false}
                 onChange={(option)=> handleProvincia (option.value)}
                 error={state.errorReservation?.provincia}
+                value={state.infoUserReservation.provincia}
               />
               <Input
                 id="codigo"
@@ -485,7 +546,7 @@ const Checkout = () => {
                 placeholder="Codigo postal(Opcional)"
                 type="text"
                 onChange={handleCodigoPostal}
-                value={state.infoUserReservation?.codigoPostal}
+                value={state.infoUserReservation?.codigoPostal || ""}
                 error={state.errorReservation?.codigoPostal}
               />
             </div>
@@ -494,9 +555,8 @@ const Checkout = () => {
               label="Dirección"
               placeholder="Dirección"
               type="text"
-              value={searchTerm}
-              onChange={handleSearchTermChange}
-              onFocus={handleInputFocus}
+              value={state.infoUserReservation?.direccion || ""}
+              onChange={handleDireccion}
               error={state.errorReservation?.direccion}
             />
             {suggestions.length>0 && (
@@ -514,14 +574,41 @@ const Checkout = () => {
               placeholder="Casa, apartamento, etc. (Opcional)"
               type="text"
               onChange={handleDetallesEntrega}
-              value={state.infoUserReservation?.detalles}
+              value={state.infoUserReservation?.detalles || ""}
             />
           </form>
           <label htmlFor="">
             <input className={styleCheckout.check} type="checkbox" checked={state.infoUserReservation.saveData} onChange={handleCheck}/> Guardar mi información y consultar más rápidamente la próxima vez
           </label>
-        </div>
+        </div>  
+        ):(
+          <div className={`${styleCheckout.info}`}>
+          <h2>Entrega</h2>
+          <form >
+            <MultiSelector
+              label="País"
+              options={paisesTitle}
+              placeholder="País/Región"
+              multiselector={false}
+              onChange={(option) => handlePais(option.value)}
+              error={state.errorReservation?.pais}
+              value={state.infoUserReservation.pais}
+            />
+            <MultiSelector
+              label="Provincia"
+              options={estadosTitle}
+              placeholder="Provincia/Estado"
+              multiselector={false}
+              onChange={(option)=> handleProvincia (option.value)}
+              error={state.errorReservation?.provincia}
+              value={state.infoUserReservation.provincia}
+            />
+           
+          </form>
+        </div>  
+        )}
       </div>
+        {/*  form para la entrega */}
       <div className={styleCheckout.checkoutRight}>
         <div className={styleCheckout.producto}>
           <div className={styleCheckout.detailProduct}>

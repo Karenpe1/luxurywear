@@ -11,7 +11,8 @@ const initialState = {
   reservationsPaginados:[],
   productId:null,
   infoUser:null,
-  searchTerm:([]),
+  directionList:([]),
+  searchTerms:(''),
   selectedId:null,
   showActions:[],
   productToEdit: null,
@@ -19,7 +20,7 @@ const initialState = {
   error:"",
   infoUserReservation:{
     nombre:"",apellido:"",cedula:"", telefono:"",pais: "",direccion: "",detalles: "",ciudad: "",provincia: "",codigoPostal: "",
-    startDate: "",endDate:"", totalCost:"",addressId:"0", saveData:false,productName:"",envio:true,
+    startDate: "",endDate:"", totalCost:"",addressId:0, saveData:false,productName:"",envio:true,
   },
   errorReservation:{
     nombre: "",apellido: "",cedula: "",telefono: "", pais: "",direccion: "", ciudad: "",provincia: "",codigoPostal: "",
@@ -44,7 +45,7 @@ const reducer = (state, action)=>{
     case "GET_USER_INFO":
       return{...state, infoUser: action.payload,} // y obtengo informacion del usuario actual
     case "GET_DIRECTIONS":
-      return{...state,searchTerm: action.payload} //obtengo direcciones del usuario antiguas
+      return{...state,directionList: action.payload} //obtengo direcciones del usuario antiguas
     case "SET_USER_INFO_RESERVA":
       return {
         ...state,infoUserReservation: {...state.infoUserReservation,...action.payload,}, // Actualiza solo las propiedades enviadas en el payload      
