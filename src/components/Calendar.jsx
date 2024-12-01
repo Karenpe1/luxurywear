@@ -133,10 +133,10 @@ const Calendar = ({setStartDate, setEndDate, startDate, endDate, closedDates = [
             if(searchInClosedDates(arr[i])) {
                 setStartDate({day: null, month: null, year: null});
                 setEndDate({day: null, month: null, year: null});
-                Swal.fire({
+                Swal.fire({             
                     title: "¡Fecha no disponible!",
                     text: "El producto no se encuentra disponible para las fechas seleccionadas. Por favor, elige otra fecha o verifica la disponibilidad en el calendario.",
-                    iconHtml: '<img src="ohNo2.png" style="width: 150px;"/>',
+                    iconHtml: '<img src="/ohNo2.png" style="width: 150px;"/>',
                 })
                 return;
             }

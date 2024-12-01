@@ -142,7 +142,7 @@
   background-color: #b5a0f9; /* Slight transparency for a soft effect */
 }
 
-.botonRegistro.disabled:hover {
+.botonReserva.disabled:hover {
   background-color: #cccccc; /* Slight transparency for a soft effect */
 }
 
