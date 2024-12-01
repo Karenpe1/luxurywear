@@ -15,10 +15,12 @@ import NewAdmin from "./Routes/NewAdmin.jsx";
 import FavList from "./Routes/FavList.jsx";
 import { useState } from "react";
 import Checkout from "./Routes/Checkout.jsx";
+import WappButton from "./components/wappButton.jsx";
+
 
 function App() {
   const location = useLocation();
-  const isLocation = ["/register","/checkout"].includes(location.pathname)
+  const isLocation = ["/register","/checkout", "/login"].includes(location.pathname)
   const currentPath = location.pathname;
   const [isSearch, setIsSearch] = useState(false);
 
@@ -28,13 +30,15 @@ function App() {
         {!isLocation && (
           <>
             <NewHeader />
-            {currentPath == "/" && <Search isSearch={isSearch} setIsSearch={setIsSearch}/>}
+            {currentPath === "/" && (
+              <Search isSearch={isSearch} setIsSearch={setIsSearch} />
+            )}
           </>
         )}
         <div className={appStyles.container}>
           <Routes>
             <Route path="/detail/:id" element={<Detail />} />
-            <Route path="/" element={<Home isSearch={isSearch}/>} />
+            <Route path="/" element={<Home isSearch={isSearch} />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/checkout" element={<Checkout />} />
@@ -54,13 +58,18 @@ function App() {
                 </PrivateRoute>
               }
             />
-            <Route path="/:categoryName" element={<PaginatedProductList />}/>
+            <Route
+              path="/:categoryName"
+              element={<PaginatedProductList />}
+            />
           </Routes>
         </div>
         {!isLocation && <NewFooter />}
+        {!isLocation && <WappButton />} {/* Aquí se renderiza el botón */}
       </AuthProvider>
     </ContextProvider>
   );
+  
 }
 
 export default App;
