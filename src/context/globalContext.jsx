@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 
 
 const initialState = {
-  modalData:{isOpen:false, img:"",titulo: "", subtitulo:"", mensaje:"",},
+  modalData:{isOpen:false, img:"",titulo: "", subtitulo:"", mensaje:"",mensaje2:""},
   isVisible:false,
   productsPaginados:[],
   categoriesPaginados:[],
@@ -20,10 +20,10 @@ const initialState = {
   error:"",
   infoUserReservation:{
     nombre:"",apellido:"",cedula:"", telefono:"",pais: "",direccion: "",detalles: "",ciudad: "",provincia: "",codigoPostal: "",
-    startDate: "",endDate:"", totalCost:"",addressId:0, saveData:false,productName:"",envio:true,
+    startDate: "",endDate:"", totalCost:"",addressId:0, saveData:false,productName:"",envio:true,tiendaId:0,
   },
   errorReservation:{
-    nombre: "",apellido: "",cedula: "",telefono: "", pais: "",direccion: "", ciudad: "",provincia: "",codigoPostal: "",
+    nombre: "",apellido: "",cedula: "",telefono: "", pais: "",direccion: "", ciudad: "",provincia: "",codigoPostal: "",terminos:"",
   },
 
 }

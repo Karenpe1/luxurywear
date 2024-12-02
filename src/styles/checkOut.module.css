@@ -16,6 +16,7 @@
     width: 17%;
 }
 .info{
+    width: 100%;
     background-color: white;
     border-radius: 8px;
     padding: 2em;
@@ -53,6 +54,7 @@
 
     display: flex;
     flex-direction: row;
+    width: 100%;
 }
 .label {
     width: 100%;
@@ -241,7 +243,7 @@
     font-weight: 400;
     font-style: normal;
     font-family: "Noto Sans";
-    margin: 2em 0em;
+    margin: 0.2em 0em;
 }
 .condiciones a{
     text-decoration: none;
@@ -250,6 +252,30 @@
 .condiciones a:hover{
     text-decoration: underline;
 }
+
+.checkboxHidden {
+    display: none; /* Oculta el checkbox real */
+}
+  
+.checkboxLabel {
+    width: 100%;
+    cursor: pointer; 
+    padding: 1em 0.3em;
+    border: 1.5px solid gainsboro;
+    border-radius: 8px;
+    display: inline-block;
+    color: #515050;
+}
+.checkboxLabel:hover{
+    background-color:#dbc7f68a;
+}
+.checkboxLabel.checked {
+    background-color: #C3B2FB; /* Color cuando está seleccionado */
+    color: black;
+}
 .buttonReservar{
     padding-top: 2em;
+}
+.error{
+    color: red;
 }

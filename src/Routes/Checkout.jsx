@@ -5,11 +5,12 @@ import { faTag } from "@fortawesome/free-solid-svg-icons";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import MultiSelector from "../components/Multiselector";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useContextGlobal } from "../context/globalContext";
 import axiosInstance from "../Utils/axiosInstance";
 import { formatCurrency } from "../Utils/currencyFormatter";
 import { differenceInDays, set } from 'date-fns';
+import ModalGlobal from "../components/ModalGlobal";
 
 const Checkout = () => {
   const {state,dispatch}=useContextGlobal();
@@ -17,13 +18,14 @@ const Checkout = () => {
   const [selectedOption, setSelectedOption] = useState("regular");
   const [daysDifference,setDaysDifference]=useState(0)
   const [envio, setEnvio]=useState(12000)
-  const [suggestions, setSuggestions]=useState([])
   const [paisesTitle, setPaisesTitle] = useState([]);
   const [estadosTitle, setEstadosTitle] = useState([]);
+  const [terminos,setTerminos]=useState(false);
   const location = useLocation();
   const axios=axiosInstance();
   const noNumbersRegex = /^\D*$/;
   const numbersRegex = /^\d+$/;
+  const navigate= useNavigate()
 
 
   // Extract state or use default values
@@ -143,6 +145,7 @@ const Checkout = () => {
           provincia: "",
           pais: "",
           codigoPostal: "",
+          detalles:"",
           addressId:0,
         },
       });
@@ -158,7 +161,7 @@ const Checkout = () => {
           pais: direccionObj.pais,
           codigoPostal: direccionObj.codigoPostal,
           detalles:direccionObj.detalles,
-          addressId:state.selectedId,
+          addressId:direccionObj.id,
         },
       });
       // Cargar las provincias para el país seleccionado
@@ -183,15 +186,52 @@ const Checkout = () => {
     }}
   };
 
+  const handleSeleccionRecogerTienda= async (tiendaObj)=>{
+    if (state.selectedId === tiendaObj.id) {
+      // Si ya está seleccionada, deseleccionar
+      dispatch({type:"GET_ID",payload:null})
+      dispatch({
+        type: "SET_USER_INFO_RESERVA",
+        payload: {
+          tiendaId:0,
+        },
+      });
+    } else {
+      // Si no está seleccionada, seleccionamos y rellenamos campos
+      dispatch({type:"GET_ID",payload:tiendaObj.id})
+      dispatch({
+        type: "SET_USER_INFO_RESERVA",
+        payload: {
+          tiendaId:tiendaObj.id,
+        },
+      });}
+    try{
+     // Cargar las provincias para el país seleccionado
+     const response=await axios.get(`http://localhost:8080/api/v1/addresses/${tiendaObj.pais}/pickup-sites`)
+     const data = response.data;
+     setEstadosTitle(data)
+     console.log("geolocalizacion", data)
+
+    }catch(error){
+      console.error("Error al cargar las direccion de tiendas:", err);
+    }
+  }
+
   const handleCupon = () => {
     setCupon(!cupon);
   }
   
   const handleChange = (option) => {
     setSelectedOption(option);
+    if(option==="tienda"){
+      dispatch({type:"SET_USER_INFO_RESERVA", payload:{envio:false}})
+    }
   };
   const handleCheck=()=>{
     dispatch({type:"TOGGLE_CHECK"})
+  }
+  const handleTerminos=()=>{
+    setTerminos(!terminos)
   }
 
   const handleNombre=(e)=>{
@@ -249,12 +289,7 @@ const Checkout = () => {
         })));
       }else{
         const response=await axios.get(`http://localhost:8080/api/v1/addresses/${pais}/pickup-sites`)
-        console.log("karen",response.data)
-        setEstadosTitle(response.data.map(tiendas=>({
-          value: tiendas.provincia,
-          label: tiendas.provincia,
-          name: tiendas.provincia,
-        })))
+        setEstadosTitle(response.data)
       }
     }catch(err){
       dispatch({type:"SET_ERROR",payload:{err}})
@@ -287,9 +322,6 @@ const Checkout = () => {
       errors.telefono="El telefono debe ser valido";
       formIsValid=false;
     }
-    if(envio==0){
-      dispatch({type:"SET_USER_INFO_RESERVA", payload:{envio:false}})
-    }
     if(envio !=0){
       if(!state.infoUserReservation.pais){
         errors.pais="Debes seleccionar un pais";
@@ -312,6 +344,10 @@ const Checkout = () => {
   
       if(!noNumbersRegex.test(state.infoUserReservation.ciudad) || !state.infoUserReservation.ciudad){
         errors.ciudad="La ciudad debe ser valida"
+        formIsValid=false
+      }
+      if(terminos===false){
+        errors.terminos="Debes aceptar los terminos y condiciones"
         formIsValid=false
       }
     }
@@ -357,6 +393,10 @@ const Checkout = () => {
               titulo: "¡Felicidades!",
               subtitulo: "Tu reserva ha sido exitoso.",
               mensaje: "A tu correo llegara todos los detalles de la reserva",
+              mensaje2:"Mis pedidos",
+              label:" Seguir explorando",
+              onClose: ()=>navigate("/"),
+              onClose2:()=>navigate("/login"),
             },
           });
         }
@@ -369,6 +409,7 @@ const Checkout = () => {
             titulo: "¡Error de conexión!",
             subtitulo: "Hubo un problema con la conexión.",
             mensaje: "Tu reserva no pudo ser completada, por favor vuelve a intentar",
+            onClose: ()=>navigate("/"),
           }})
       }
     }
@@ -435,8 +476,6 @@ const Checkout = () => {
 
         <div className={styleCheckout.info}>
           <h2>Metodos de envio</h2>
-          <p>Envío Exprés: (Solo Bogotá - Costo adicional) Si pides antes de las 3pm te llega HOY mismo, si pides
-            después de las 3pm llega mañana</p>
           <div className={styleCheckout.option}>
             <label className={`${styleCheckout.label} ${selectedOption === "regular" ? styleCheckout.active : ""}`}>
               <div className={styleCheckout.labelRadio}>
@@ -488,7 +527,8 @@ const Checkout = () => {
                 />
                 <span className={styleCheckout.labelOptions}>
                   <span>Envío Exprés</span>
-                  <span>(Llega HOY mismo si lo pides antes de la 12 m)</span>
+                  <span>(Llega HOY mismo si lo pides antes de las 3pm, si <br /> pides
+                  después de las 3pm llega mañana)</span>
                 </span>
               </div>
               <div className={styleCheckout.options}>
@@ -507,8 +547,11 @@ const Checkout = () => {
                 type="checkbox" 
                 checked={state.selectedId === direcciones.id} // Sólo un checkbox puede estar marcado 
                 id={`direccion-${direcciones.id}`}
+                className={styleCheckout.checkboxHidden} // Clase para ocultar el checkbox
                 onChange={()=>handleSeleccionCheckDireccion(direcciones)} />
-                <label htmlFor={`direccion-${direcciones.id}`}>
+                <label htmlFor={`direccion-${direcciones.id}`} 
+                className={`${styleCheckout.checkboxLabel} ${state.selectedId === direcciones.id ? styleCheckout.checked : ""}`}>
+
                 {direcciones.direccion}, {direcciones.ciudad}
               </label>
             </div>
@@ -567,15 +610,6 @@ const Checkout = () => {
               onChange={handleDireccion}
               error={state.errorReservation?.direccion}
             />
-            {suggestions.length>0 && (
-              <ul>
-                {suggestions.map((suggest,index)=>(
-                  <li key={index} onClick={handleSuggestionClick}>
-                    {suggest}
-                  </li>
-                ))}
-              </ul>
-            )}
             <Input
               id="detalles"
               label="Detalles de entrega"
@@ -602,17 +636,31 @@ const Checkout = () => {
               error={state.errorReservation?.pais}
               value={state.infoUserReservation.pais}
             />
-            <MultiSelector
-              label="Provincia"
-              options={estadosTitle}
-              placeholder="Provincia/Estado"
-              multiselector={false}
-              onChange={(option)=> handleProvincia (option.value)}
-              error={state.errorReservation?.provincia}
-              value={state.infoUserReservation.provincia}
-            />
-           
           </form>
+          <div className={styleCheckout}>
+            {estadosTitle.length > 0 && (
+              estadosTitle.map((direccionTienda)=>(
+                <div key={direccionTienda.id} className={styleCheckout.option}>
+                  <label className={`${styleCheckout.checkboxLabel} ${state.selectedId === direccionTienda.id ? styleCheckout.checked : ""}`}>
+                    <div className={styleCheckout.labelRadio}>
+                      <input
+                        type="checkbox" 
+                        checked={state.selectedId === direccionTienda.id} // Sólo un checkbox puede estar marcado 
+                        id={`direccion-${direccionTienda.id}`}
+                        className={styleCheckout.checkboxHidden} 
+                        onChange={()=>handleSeleccionRecogerTienda(direccionTienda)} 
+                      />
+                      <div className={styleCheckout.labelOptions}>
+                        <span>{`${direccionTienda.provincia},${direccionTienda.ciudad}`}</span>
+                        <span>{`${direccionTienda.direccion}`}</span>
+                        <span>{`${direccionTienda.detalles}`}</span>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+              ))
+            )}
+          </div>
         </div>  
         )}
       </div>
@@ -667,12 +715,16 @@ const Checkout = () => {
           </div>
         </div>
         <label className={styleCheckout.condiciones}>
-          <input type="checkbox"/> He leído y acepto los <a href="#">Términos y Condiciones</a>
+          <input type="checkbox" onChange={handleTerminos}/> He leído y acepto los <a href="#">Términos y Condiciones</a>
+          {!terminos &&(
+            <div className={styleCheckout.error}>{state.errorReservation.terminos}</div>
+          )}
         </label>
         <div className={styleCheckout.buttonReservar}>
           <Button onClick={handleSubmit}>Reservar</Button>
         </div>
       </div>
+        <ModalGlobal/>
     </div>
   );
 };
