@@ -1,14 +1,46 @@
 .contenedor{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+}
+@media(min-width:800px){
+    .contenedor{
+        display: flex;
+        flex-direction: row;
+    }
+}
+@media(min-width:1024px){
+    .contenedor{
+        display: flex;
+        flex-direction: row;
+    }
 }
 .checkoutLeft{
-    width: 60%;
+    width: 100%;
     background-color: #c8bbf4;
     padding: 1em 4em 3em 4em;
     display: flex;
     flex-direction: column;
     gap: 2em;
+}
+@media(min-width:800px){
+    .checkoutLeft{
+        width: 55%;
+        background-color: #c8bbf4;
+        padding: 1em 1.5em 3em 1.5  em;
+        display: flex;
+        flex-direction: column;
+        gap: 2em;
+    }
+}
+@media(min-width:1024px){
+    .checkoutLeft{
+        width: 60%;
+        background-color: #c8bbf4;
+        padding: 1em 4em 3em 4em;
+        display: flex;
+        flex-direction: column;
+        gap: 2em;
+    }
 }
 .logo{
     background-color: white;
@@ -95,15 +127,28 @@
 
 
 .checkoutRight{
-    width: 40%;
+    width: 100%;
     background-color: white;
-    padding: 7em 5em;
+    padding: 2em 5em;
     position: sticky;
     top: 0; /* Fija el desplazamiento al inicio de la ventana */
     align-self: flex-start; /* Asegura que se alinee al inicio en pantallas grandes */
     height: fit-content; /* Ajusta su tamaño al contenido */
     overflow-y: auto;
 }
+@media(min-width:800px){
+    .checkoutRight{
+        width: 45%;
+        padding: 7em 2em;
+    }
+}
+@media(min-width:1024px){
+    .checkoutRight{
+        width: 40%;
+        padding: 7em 4em;
+    }
+}
+
 
 .producto{
     display: flex;

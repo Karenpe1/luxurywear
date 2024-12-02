@@ -377,7 +377,6 @@ const Checkout = () => {
 
       const method = "POST"
       const endpoint = "http://localhost:8080/api/v1/reservations";
-
       try {
         const response = await axios({
         method,
