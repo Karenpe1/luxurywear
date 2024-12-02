@@ -122,9 +122,6 @@ const Checkout = () => {
         if(data.length>0){
           dispatch({ type: "GET_DIRECTIONS", payload: data });
         }
-        else{
-          console.log("no tiene direcciones guardadas")
-        }
         console.log(data)
       }catch(error){
         dispatch({type:"SET_ERROR",payload:"Error al encontrar la informacion del usuario"})
@@ -240,14 +237,24 @@ const Checkout = () => {
     console.log(state.pais)
     setEstadosTitle([])
     try{
-      const estadosResponse= await axios.get(`http://localhost:8080/api/v1/countries/${pais}/states`);
-      const data = estadosResponse.data
-      console.log("paises",data)
-      setEstadosTitle(data.map(estados => ({
-        value: estados,
-        label: estados,
-        name: estados,
-      })));
+      if(envio!==0){
+        const estadosResponse= await axios.get(`http://localhost:8080/api/v1/countries/${pais}/states`);
+        const data = estadosResponse.data
+        console.log("paises",data)
+        setEstadosTitle(data.map(estados => ({
+          value: estados,
+          label: estados,
+          name: estados,
+        })));
+      }else{
+        const response=await axios.get(`http://localhost:8080/api/v1/addresses/${pais}/pickup-sites`)
+        console.log("karen",response.data)
+        setEstadosTitle(response.data.map(tiendas=>({
+          value: tiendas.provincia,
+          label: tiendas.provincia,
+          name: tiendas.provincia,
+        })))
+      }
     }catch(err){
       dispatch({type:"SET_ERROR",payload:{err}})
     }
