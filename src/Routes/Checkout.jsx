@@ -372,6 +372,7 @@ const Checkout = () => {
         direccion:state.infoUserReservation.direccion, 
         detalles: state.infoUserReservation.detalles, 
         codigoPostal: state.infoUserReservation.codigoPostal, 
+        tiendaId:state.infoUserReservation.tiendaId,
       };
 
       const method = "POST"
