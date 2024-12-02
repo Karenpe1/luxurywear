@@ -2,12 +2,10 @@ import React from 'react'
 import { useContextGlobal } from "../context/globalContext"
 import stylesHeart from "../styles/heart.module.css";
 import Modal from './Modal';
-import { useNavigate } from 'react-router-dom';
 
 
 const ModalGlobal = () => {
     const {state, dispatch}= useContextGlobal();
-    const navigate= useNavigate();
 
     if(!state.modalData.isOpen){
         return null;
@@ -17,7 +15,11 @@ const ModalGlobal = () => {
       if(state.modalData.onClose){
         state.modalData.onClose();
         dispatch({type: "HIDE_MODAL_GLOBAL"});
-      }else{
+      }else if(state.modalData.onClose){
+        state.modalData.onClose2();
+        dispatch({type: "HIDE_MODAL_GLOBAL"});
+      }
+      else{
         dispatch({type: "HIDE_MODAL_GLOBAL"})
       }   
     }
@@ -30,6 +32,9 @@ const ModalGlobal = () => {
         subtitulo={state.modalData.subtitulo}
         mensaje={state.modalData.mensaje}
         onClose={handleClose}
+        onClose2={handleClose}
+        boton2={state.modalData.mensaje2}
+        label={state.modalData.label}
         />
   </div>
   )

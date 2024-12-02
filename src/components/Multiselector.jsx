@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "../styles/multiselector.module.css"; // Archivo CSS
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faTag} from "@fortawesome/free-solid-svg-icons";
 
-const MultiSelector = ({ options, placeholder, onChange , multiselector,error,label, preselected}) => {
+const MultiSelector = ({ options, placeholder, onChange , multiselector,error,label, preselected, value}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [selectedValue, setSelectedValue] = useState("");
@@ -27,6 +27,18 @@ const MultiSelector = ({ options, placeholder, onChange , multiselector,error,la
   const handleToggleDropdown = () => {
     setIsOpen(!isOpen);
   };
+  
+  // Sincronizar con la prop "value"
+  useEffect(() => {
+    if (value !== undefined) {
+      if (multiselector) {
+        setSelectedOptions(value); // Actualizar para selección múltiple
+      } else {
+        const selectedOption = options.find((opt) => opt.value === value);
+        setSelectedValue(selectedOption ? selectedOption.label : "");
+      }
+    }
+  }, [value, options, multiselector]);
 
   const handleOptionChange = (value) => {
     // Manejo de selección múltiple
@@ -108,7 +120,7 @@ const MultiSelector = ({ options, placeholder, onChange , multiselector,error,la
                 key={index}
                 className={styles.option}
                 onClick={() => handleOptionClick(option)}
-              ><FontAwesomeIcon icon={faTag} style={{color:"#C3B2FB"}} />
+              > {label== "Categorías" && <FontAwesomeIcon icon={faTag} style={{color:"#C3B2FB"}} />}
                 {option.label}
               </li>
             ))}

@@ -3,17 +3,28 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 
 
 const initialState = {
-  modalData:{isOpen:false, img:"",titulo: "", subtitulo:"", mensaje:"",},
+  modalData:{isOpen:false, img:"",titulo: "", subtitulo:"", mensaje:"",mensaje2:""},
+  isVisible:false,
   productsPaginados:[],
   categoriesPaginados:[],
   usersPaginados:[],
   reservationsPaginados:[],
   productId:null,
+  infoUser:null,
+  directionList:([]),
+  searchTerms:(''),
   selectedId:null,
   showActions:[],
   productToEdit: null,
   showModal: false,
   error:"",
+  infoUserReservation:{
+    nombre:"",apellido:"",cedula:"", telefono:"",pais: "",direccion: "",detalles: "",ciudad: "",provincia: "",codigoPostal: "",
+    startDate: "",endDate:"", totalCost:"",addressId:0, saveData:false,productName:"",envio:true,tiendaId:0,
+  },
+  errorReservation:{
+    nombre: "",apellido: "",cedula: "",telefono: "", pais: "",direccion: "", ciudad: "",provincia: "",codigoPostal: "",terminos:"",
+  },
 
 }
 const ContextGlobal = createContext();
@@ -31,6 +42,16 @@ const reducer = (state, action)=>{
       return{...state, reservationsPaginados: action.payload,} // y obtengo lista de reservaciones
     case "GET_PRODUCT_BY_ID":
       return{...state, productId: action.payload,} // y obtengo lista de reservaciones
+    case "GET_USER_INFO":
+      return{...state, infoUser: action.payload,} // y obtengo informacion del usuario actual
+    case "GET_DIRECTIONS":
+      return{...state,directionList: action.payload} //obtengo direcciones del usuario antiguas
+    case "SET_USER_INFO_RESERVA":
+      return {
+        ...state,infoUserReservation: {...state.infoUserReservation,...action.payload,}, // Actualiza solo las propiedades enviadas en el payload      
+      };
+    case "SET_ERROR_RESERVA":
+      return{...state, errorReservation: action.payload,} // obtengo la informacion de los inputs 
     case "DELETE_PRODUCT":
       return {
         ...state,
@@ -60,6 +81,8 @@ const reducer = (state, action)=>{
       return {...state, showModal: false};
     case ("INITIALIZE_SHOWACTIONS"):
       return{...state, showActions:action.payload}
+    case("TOGGLE_CHECK"):
+      return{...state,infoUserReservation:{...state.infoUserReservation, saveData: !state.infoUserReservation.saveData} }
     case "TOGGLE_SHOW_ACTIONS":
       return {...state,
         showActions: state.showActions.map((visible, index) =>
@@ -71,6 +94,8 @@ const reducer = (state, action)=>{
         ...state,
         showActions: state.showActions.map(() => false), // Resetea todos los menús de acciones
       };
+    case"TOGGLE_OPEN":
+      return{...state,isVisible:!isVisible};
     case "SET_ERROR":
       return {...state,error:action.payload}
     case "SHOW_MODAL_GLOBAL":

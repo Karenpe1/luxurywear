@@ -87,7 +87,7 @@ const PaginatedSearchList = ({ pageSize = 6, searchTerm, startDate, endDate, sea
       </p>
 
       {products.length == 0 && <div style={{textAlign: 'center'}}>
-        <img src="ohNo2.png" style={{width: '300px'}}/>
+        <img src="/ohNo2.png" alt={"Cero resultados"} style={{width: '300px'}}/>
         <h2>No hay resultados para tu búsqueda.</h2>
       </div>}
 
