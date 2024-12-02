@@ -67,20 +67,21 @@ const Checkout = () => {
     }
     fetchUserInfo()
   },[])
-  
-  
-  
-  const formatDate=({day,month,year})=>{
-    return `${year}-${month}-${day}`; // Formatea la fecha como "YYYY-MM-DD"
+
+  const formatDate=({ day, month, year })=>{
+    return year + '-' + ('0' + (month + 1)).slice(-2) + '-' + ('0' + day).slice(-2); // Formatea la fecha como "YYYY-MM-DD"
   };
+
   useEffect(() => {
     if (!id || !startDate || !endDate) {
       // Redirect back to detail page if data is missing
       window.history.back();
-    }else{
-      dispatch({type:"SET_USER_INFO_RESERVA",payload:{startDate: formatDate(startDate), endDate:formatDate(endDate)}})
-      const startDateObj = new Date(`${startDate.year}-${startDate.month}-${startDate.day}`);
-      const endDateObj = new Date(`${endDate.year}-${endDate.month}-${endDate.day}`);
+    } else {
+      const formatedStartDate = formatDate(startDate);
+      const formatedEndDate = formatDate(endDate);
+      dispatch({type:"SET_USER_INFO_RESERVA", payload:{startDate: formatedStartDate, endDate: formatedEndDate}})
+      const startDateObj = new Date(formatedStartDate);
+      const endDateObj = new Date(formatedEndDate);
       setDaysDifference(differenceInDays(endDateObj, startDateObj));
     }
   }, [id, startDate, endDate]);
