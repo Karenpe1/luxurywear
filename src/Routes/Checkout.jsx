@@ -396,7 +396,7 @@ const Checkout = () => {
               mensaje2:"Mis pedidos",
               label:" Seguir explorando",
               onClose: ()=>navigate("/"),
-              onClose2:()=>navigate("/login"),
+              onClose2:()=>navigate("/pedidos"),
             },
           });
         }

@@ -167,13 +167,14 @@
     position: sticky;
     top: 0; /* Fija el desplazamiento al inicio de la ventana */
     align-self: flex-start; /* Asegura que se alinee al inicio en pantallas grandes */
-    height:100%; /* Ajusta su tamaño al contenido */
+    height:max-content; /* Ajusta su tamaño al contenido */
     overflow-y: auto;
 }
 @media(min-width:800px){
     .checkoutRight{
         width: 45%;
         padding: 7em 2em;
+        height:100vh;
     }
 }
 @media(min-width:1024px){
