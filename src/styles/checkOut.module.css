@@ -17,7 +17,7 @@
 .checkoutLeft{
     width: 100%;
     background-color: #c8bbf4;
-    padding: 1em 4em 3em 4em;
+    padding: 1em 1em 3em 1em;
     display: flex;
     flex-direction: column;
     gap: 2em;
@@ -25,33 +25,35 @@
 @media(min-width:800px){
     .checkoutLeft{
         width: 55%;
-        background-color: #c8bbf4;
         padding: 1em 1.5em 3em 1.5  em;
-        display: flex;
-        flex-direction: column;
-        gap: 2em;
     }
 }
 @media(min-width:1024px){
     .checkoutLeft{
         width: 60%;
-        background-color: #c8bbf4;
         padding: 1em 4em 3em 4em;
-        display: flex;
-        flex-direction: column;
-        gap: 2em;
     }
 }
 .logo{
     background-color: white;
     border-radius: 8px;
-    width: 17%;
+    width: 30%;
+}
+@media(min-width:800px){
+    .logo{
+        width: 17%;
+    }
 }
 .info{
     width: 100%;
     background-color: white;
     border-radius: 8px;
-    padding: 2em;
+    padding: 1em;
+}
+@media(min-width:800px){
+    .info{
+        padding: 2em;
+    }
 }
 .info h2{
     text-align: start;
@@ -64,9 +66,22 @@
 .check{
     width: 12px; /* Ajusta el ancho */
     height: 12px; /* Ajusta la altura */
-    transform: scale(1.4); /* Escala el tamaño del checkbox */
+    transform: scale(1.2); /* Escala el tamaño del checkbox */
     cursor: pointer; /* Cambia el cursor al pasar sobre el checkbox */
     margin: 1.5em .8em 0em 0em;
+    
+}
+.checkGuardar{
+    font-size: 14px;
+}
+@media(min-width:800px){
+    .check{
+        width: 12px; /* Ajusta el ancho */
+        height: 12px; /* Ajusta la altura */
+        transform: scale(1.4); /* Escala el tamaño del checkbox */
+        cursor: pointer; /* Cambia el cursor al pasar sobre el checkbox */
+        margin: 1.5em .8em 0em 0em;
+    }
 }
 .grid{
     display: grid;
@@ -77,11 +92,18 @@
     max-width: 100%;
 }
 .ciudadGrid{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1em;
-
+    display: flex;
+   flex-direction: column;
+    gap: .1em;
 }
+@media(min-width:800px){
+    .ciudadGrid{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1em;
+    }
+}
+
 .option{
 
     display: flex;
@@ -112,11 +134,23 @@
     display: flex;
     flex-direction: row;
     justify-content: end;
+    font-size: 13px;
+}
+@media(min-width:800px){
+    .options{
+        font-size: 1em;
+    }
 }
 .labelOptions{
     display: flex;
     flex-direction: column;
     gap: 1px;
+    font-size: 14px;
+}
+@media (min-width:800px) {
+    .labelOptions{
+        font-size: 1em;
+    }
 }
 
 
@@ -129,11 +163,11 @@
 .checkoutRight{
     width: 100%;
     background-color: white;
-    padding: 2em 5em;
+    padding: 2em 1em;
     position: sticky;
     top: 0; /* Fija el desplazamiento al inicio de la ventana */
     align-self: flex-start; /* Asegura que se alinee al inicio en pantallas grandes */
-    height: fit-content; /* Ajusta su tamaño al contenido */
+    height:100%; /* Ajusta su tamaño al contenido */
     overflow-y: auto;
 }
 @media(min-width:800px){
@@ -229,6 +263,7 @@
 }
 .inputCupon{
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -242,15 +277,49 @@
 }
 .input{
     padding: 17px 55px 17px 25px;
-    width: 70%;
+    width: 60%;
+    height: 100%;
     border-radius: 8px;
     border: 1.5px solid gainsboro;
 }
+@media(min-width:800px){
+    .input{
+        padding: 17px 55px 17px 25px;
+        width: 70%;
+        border-radius: 8px;
+        border: 1.5px solid gainsboro;
+    }
+}
+@media(min-width:1024px){
+    .input{
+        padding: 17px 55px 17px 25px;
+        width: 70%;
+        border-radius: 8px;
+        border: 1.5px solid gainsboro;
+    }
+}
 .inputButton{
     padding: 10px;
+    height: 100%;
     border-radius: 8px;
-    width: 30%;
+    width: 40%;
     background:#C3B2FB;
+}
+@media(min-width:800px){
+    .inputButton{
+        padding: 10px;
+        border-radius: 8px;
+        width: 30%;
+        background:#C3B2FB;
+    }
+}
+@media(min-width:1024px){
+    .inputButton{
+        padding: 10px;
+        border-radius: 8px;
+        width: 30%;
+        background:#C3B2FB;
+    }
 }
 .resumenFechas{
     padding: 1em 0em;
@@ -310,6 +379,12 @@
     border-radius: 8px;
     display: inline-block;
     color: #515050;
+    font-size: 15px;
+}
+@media (min-width:800px) {
+    .checkboxLabel{
+        font-size: 1.1em;
+    }
 }
 .checkboxLabel:hover{
     background-color:#dbc7f68a;

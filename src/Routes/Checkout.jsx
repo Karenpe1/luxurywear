@@ -508,7 +508,7 @@ const Checkout = () => {
                   checked={selectedOption === "tienda"}
                   onChange={() => {handleChange("tienda"),setEnvio(0)}}
                 />
-                <span>Recoger en tienda</span>
+                <span className={styleCheckout.labelOptions}>Recoger en tienda</span>
               </div>
               <div className={styleCheckout.options}>
                 <h4><strong className={styleCheckout.price}>GRATIS</strong></h4>
@@ -618,10 +618,11 @@ const Checkout = () => {
               onChange={handleDetallesEntrega}
               value={state.infoUserReservation?.detalles || ""}
             />
-          </form>
           <label htmlFor="">
-            <input className={styleCheckout.check} type="checkbox" checked={state.infoUserReservation.saveData} onChange={handleCheck}/> Guardar mi información y consultar más rápidamente la próxima vez
+            <input className={styleCheckout.check} style={{fontSize:"10px"}} type="checkbox" checked={state.infoUserReservation.saveData} onChange={handleCheck}/> 
+            <span className={styleCheckout.checkGuardar}>Guardar mi información y consultar más rápidamente la próxima vez</span>
           </label>
+          </form>
         </div>  
         ):(
           <div className={`${styleCheckout.info}`}>
