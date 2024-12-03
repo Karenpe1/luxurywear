@@ -16,6 +16,7 @@ import FavList from "./Routes/FavList.jsx";
 import { useState } from "react";
 import Checkout from "./Routes/Checkout.jsx";
 import WappButton from "./components/wappButton.jsx";
+import Pedidos from "./Routes/Pedidos.jsx";
 
 
 function App() {
@@ -42,7 +43,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/checkout" element={<Checkout />} />
-            <Route path="/pedidos" element={<Pedidos />} />
+            <Route path="/pedidos" element={<Pedidos/>} />
             <Route
               path="/favList"
               element={
