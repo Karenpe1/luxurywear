@@ -54,14 +54,14 @@ function DetailReservation() {
       <div className={styles.content}>
         {/* Imagen principal */}
         <img
-          src={`http://localhost:8080${mainImage}`}
+          src={urlAPI + mainImage}
           alt={product.name}
           className={styles.productImage}
           onError={(e) => {
-            const fallback1 = `http://localhost:8080/${mainImage}`;
-            const fallback2 = `http://localhost:8080/public${mainImage}`;
+            const fallback1 = `${urlAPI}/${mainImage}`;
+            const fallback2 = `${urlAPI}/public${mainImage}`;
             const fallback3 = "placeholder.svg";
-            if (e.target.src === `http://localhost:8080${mainImage}`) {
+            if (e.target.src === `${urlAPI}${mainImage}`) {
               e.target.src = fallback1;
             } else if (e.target.src === fallback1) {
               e.target.src = fallback2;
@@ -77,15 +77,15 @@ function DetailReservation() {
           {product.images.map((img, index) => (
             <img
               key={index}
-              src={`http://localhost:8080${img.url}`}
+              src={urlAPI + img.url}
               alt={`${product.name} thumbnail ${index + 1}`}
               className={styles.thumbnail}
               onClick={() => setMainImage(img.url)}
               onError={(e) => {
-                const fallback1 = `http://localhost:8080/${img.url}`;
-                const fallback2 = `http://localhost:8080/public${img.url}`;
+                const fallback1 = `${urlAPI}/${img.url}`;
+                const fallback2 = `${urlAPI}/public${img.url}`;
                 const fallback3 = "placeholder.svg";
-                if (e.target.src === `http://localhost:8080${img.url}`) {
+                if (e.target.src === `${urlAPI}${img.url}`) {
                   e.target.src = fallback1;
                 } else if (e.target.src === fallback1) {
                   e.target.src = fallback2;
