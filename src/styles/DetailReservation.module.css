@@ -59,3 +59,24 @@
 .titleHidden {
   display: none;
 }
+
+@media (min-width: 600px) and (max-width: 1024px) {
+  .titleReservation {
+    width: 560px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  .container {
+    margin-top: 0;
+    padding: 16px;
+    max-width: 600px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  .row {
+    grid-template-columns: 1fr 1.62fr;
+    gap: 80px;
+  }
+}
