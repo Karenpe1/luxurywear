@@ -15,7 +15,7 @@ import NewAdmin from "./Routes/NewAdmin.jsx";
 import FavList from "./Routes/FavList.jsx";
 import { useState } from "react";
 import Checkout from "./Routes/Checkout.jsx";
-import WappButton from "./components/wappButton.jsx";
+import WappButton from "./components/WappButton.jsx";
 import Pedidos from "./Routes/Pedidos.jsx";
 
 
