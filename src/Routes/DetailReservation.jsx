@@ -51,7 +51,7 @@ function DetailReservation() {
         </Link>
       </header>
 
-      <div className={styles.content}>
+      <div className={styleReservation.content}>
         {/* Imagen principal */}
         <img
           src={urlAPI + mainImage}
