@@ -21,8 +21,14 @@ const User = () => {
     const handleShowMenu = () => {
         setShowMenu(!showMenu);
     }
+
     const goToFavorites = () => {
         navigate('/favList'); // Redirige a la ruta de favoritos
+        setShowMenu(false); // Oculta el menú
+    };
+
+    const goToReservations = () => {
+        navigate('/reservations'); // Redirige a la ruta de favoritos
         setShowMenu(false); // Oculta el menú
     };
 
@@ -46,7 +52,7 @@ const User = () => {
                 <div className={styles.dropdownContainer} onClick={handleShowMenu}>
                     <div className={styles.dropdown}>
                         <img src="/arrowMenu.svg" className={styles.arrowMenu} />
-                        <span className={styles.option}><img src="/misPedidos.png" />Mis pedidos</span>
+                        <span className={styles.option} onClick={goToReservations}><img src="/misPedidos.png" />Mis pedidos</span>
                         <span className={styles.option}><img src="/usuario.png" />Mi cuenta</span>
                         <span className={styles.option} onClick={goToFavorites}><i className="fas fa-heart" style={{ color: "#9C62B1", fontSize: "24px" }} ></i>Mis favoritos</span>
                         <span className={styles.option} onClick={logoutUser}>Cerrar sesión</span>

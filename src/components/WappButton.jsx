@@ -1,4 +1,3 @@
-import React from 'react'
 import styles from "../styles/wappButton.module.css"
 
 const WappButton = () => {
@@ -11,7 +10,7 @@ const WappButton = () => {
         rel="noopener noreferrer"
       >
         <img
-          src="/public/whastapp.png" 
+          src="whastapp.png" 
           alt="WhatsApp"
         />
       </a>
