@@ -17,7 +17,7 @@ import { useState } from "react";
 import Checkout from "./Routes/Checkout.jsx";
 import WappButton from "./components/WappButton.jsx";
 import Pedidos from "./Routes/Pedidos.jsx";
-
+import DetailReservation from "./Routes/DetailReservation.jsx";
 
 function App() {
   const location = useLocation();
@@ -43,7 +43,15 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/checkout" element={<Checkout />} />
-            <Route path="/pedidos" element={<Pedidos/>} />
+            <Route path="/pedidos" element={<Pedidos />} />
+            <Route 
+              path="/reservation-detail/:id" 
+              element={
+                <PrivateRoute>
+                  <DetailReservation />
+                </PrivateRoute>
+              } 
+            />
             <Route
               path="/favList"
               element={
