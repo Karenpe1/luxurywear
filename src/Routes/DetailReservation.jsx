@@ -45,7 +45,7 @@ function DetailReservation() {
     <div className={styleReservation.detailContainer}>
       <header className={styles.header}>
         <h1 className={styles.title}>{product.name}</h1>
-        <Link to="/" className={styles.backButton}>
+        <Link to="/reservations" className={styles.backButton}>
           {" "}
           <img src={backButton} alt="Back" />
         </Link>

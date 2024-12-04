@@ -61,6 +61,14 @@ function App() {
               }
             />
             <Route
+              path="/reservations"
+              element={
+                <PrivateRoute>
+                  <Pedidos />
+                </PrivateRoute>
+              }
+            />
+            <Route
               path="/admin"
               element={
                 <PrivateRoute requiredRole="ADMIN">

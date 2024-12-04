@@ -1,6 +1,10 @@
+import PaginatedReservationList from "../components/PaginatedReservationList"
+
 const Pedidos = () => {
   return (
-    <div>Pedidos</div>
+    <div>
+      <PaginatedReservationList/>
+    </div>
   )
 }
 
