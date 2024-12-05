@@ -447,7 +447,7 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
               <MultiSelector
                   label="Categorías"
                   options={categoriesTitle}
-                  placeholder="Seleccione una categoría"
+                  placeholder="Seleccione la categoría"
                   onChange={handleCategories}
                   multiselector={false}
                   error={error.category}
@@ -457,7 +457,7 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
                 <Input
                   id="Referencia"
                   label="Referencia"
-                  placeholder="Ingresa la referencia del producto"
+                  placeholder="Ingresa la referencia"
                   type="text"
                   value={product.reference}
                   onChange={handleReferencia}
@@ -467,7 +467,7 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
                 <Input
                   label="Material"
                   id="material"
-                  placeholder="Ingrese su material"
+                  placeholder="Ingrese el material"
                   type="text"
                   value={product.material}
                   onChange={handleMaterial}
@@ -477,7 +477,7 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
                 <Input
                   label="Color"
                   id="color"
-                  placeholder="Ingresa el color del producto"
+                  placeholder="Ingresa el color"
                   type="text"
                   value={product.color}
                   onChange={handleColor}
