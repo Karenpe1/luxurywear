@@ -47,7 +47,8 @@
   transition: all 0.3s ease;
   
 }
-
+ /* Tamaño del icono */
+ 
 header img {
   width: 12px;
   height: 18px;
