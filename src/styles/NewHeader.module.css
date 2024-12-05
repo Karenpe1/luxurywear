@@ -140,7 +140,7 @@
     .links {
         display: none;
     }
-    .button {
+    .button, .buttonAdmin {
         display: none;
     }
    
@@ -166,7 +166,7 @@
     .links {
         display: none;
     }
-    .button {
+    .button, .buttonAdmin {
         display: none;
     }
     
@@ -197,7 +197,7 @@
         gap: 40px;
     }
 
-    .button {
+    .button, .buttonAdmin {
         width: 140px;
         height: 48px;
         color: black;
@@ -219,4 +219,17 @@
         gap: 10px;
         left: -20px;
     }
+
+    .buttonAdmin{
+      width: 120px;
+      padding: 4px;
+      font-size: 12px;
+    }
+}
+
+@media (min-width: 1200px) {
+  .buttonAdmin {
+    width: 160px;
+    font-size: 14px;
+  }
 }

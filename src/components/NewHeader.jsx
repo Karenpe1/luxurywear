@@ -63,7 +63,7 @@ const NewHeader = () => {
           <div className={styles.user}>
             {user.role === "ADMIN" && currentPath !== "/admin" && (
               <Link to="/admin">
-                <button className={styles.button}>Panel Administrador</button>
+                <button className={styles.buttonAdmin}>Panel Administrador</button>
               </Link>
             )}
             {/* Avatar solo en la vista principal, no en el menú hamburguesa */}
