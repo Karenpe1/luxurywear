@@ -6,6 +6,7 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 import Modal from "../components/Modal";
 import AuthContext from "../context/AuthContext";
+import Swal from "sweetalert2";
 
 function Login() {
   const { loginUser } = useContext(AuthContext);
@@ -72,11 +73,17 @@ function Login() {
           setError({ general: " El correo o contraseña ingresados es incorrecto. Vuelve a intentarlo." });
         }
       } catch (error) {
-        setModalInfo({
-          show: true,
-          mensaje: "Por favor, verifica tu conexión a Internet e intenta nuevamente.",
-          img: "./ohNo.png"
-        });
+        Swal.fire({
+          title: '¡No se puede iniciar sesión!',
+          text: 'Hubo un problema con el inicio de sesión. Por favor, vuelve a intentarlo más tarde.',
+          iconHtml: '<img src="ohNo2.png" style="width: 253px;"/>',
+          customClass: {
+            icon: loginStyles.noBorder,
+            confirmButton: loginStyles.confirmButton,
+          },
+          buttonsStyling: false,
+          confirmButtonText: 'Aceptar'
+        })
         console.error("Error al iniciar sesión:", error);
       }
     }
@@ -92,7 +99,7 @@ function Login() {
         <div className={loginStyles.loginContainer}>
           <h2>Iniciar Sesión</h2>
           <form onSubmit={handleLogin}>
-            <label>
+            <label style={{textAlign: 'left'}}>
               Correo electrónico
               <Input
                 placeholder="Por favor, ingresa tu correo electrónico."
@@ -106,7 +113,7 @@ function Login() {
             </label>
 
 
-            <label>
+            <label style={{textAlign: 'left'}}>
               Contraseña
               <Input
                 placeholder="Por favor, ingresa tu contraseña."
