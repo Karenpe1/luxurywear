@@ -391,8 +391,8 @@ const Checkout = () => {
             payload: {
               img: "/Estrellas.svg",
               titulo: "¡Felicidades!",
-              subtitulo: "Tu reserva ha sido exitoso.",
-              mensaje: "A tu correo llegara todos los detalles de la reserva",
+              subtitulo: "Tu reserva ha sido exitosa.",
+              mensaje: "A tu correo llegarán todos los detalles de la reserva",
               mensaje2:"Mis pedidos",
               label:" Seguir explorando",
               onClose: ()=>navigate("/"),

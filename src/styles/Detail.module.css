@@ -35,6 +35,9 @@
   margin: 0;
   line-height: 1.2;
 }
+.back{
+  cursor: pointer;
+}
 
 .backButton {
   font-size: 1rem;
