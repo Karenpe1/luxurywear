@@ -45,7 +45,7 @@ function App() {
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/pedidos" element={<Pedidos />} />
             <Route 
-              path="/reservation-detail/:id" 
+              path="/reservation-detail" 
               element={
                 <PrivateRoute>
                   <DetailReservation />

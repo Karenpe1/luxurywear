@@ -51,7 +51,7 @@ const PaginatedReservationList = ({ pageSize = 6, searchToggle }) => {
   }, [categoryName, currentPage, searchToggle]);
 
   const handleCardClick = (productId) => {
-    navigate(`/reservation-detail/${productId}`); // Navigate to the detail page with productId
+    navigate(`/reservation-detail`, {state: {productId}}); // Navigate to the detail page with productId
   };
 
   const handlePageChange = (page) => {

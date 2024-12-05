@@ -1,6 +1,6 @@
 import { formatCurrency } from "../Utils/currencyFormatter";
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styles from "../styles/Detail.module.css";
 import styleReservation from "../styles/DetailReservation.module.css";
 import backButton from "../Images/backArrow.png";
@@ -8,9 +8,10 @@ import ModalGlobal from "../components/ModalGlobal";
 import useAxios from "../Utils/axiosInstance";
 
 function DetailReservation() {
+  const location = useLocation();
+  const { productId } = location.state || undefined;
   const urlAPI = "http://localhost:8080";
   const axios = useAxios();
-  const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [reservation, setReservation] = useState(null);
   const [mainImage, setMainImage] = useState("");
@@ -20,7 +21,7 @@ function DetailReservation() {
     const fetchProductDetail = async () => {
       try {
         const responseReservation = await axios.get(
-          urlAPI + `/api/v1/reservations/${id}`
+          urlAPI + `/api/v1/reservations/${productId}`
         );
         const dataReservation = await responseReservation.data;
         setReservation(dataReservation);
@@ -37,7 +38,7 @@ function DetailReservation() {
     };
 
     fetchProductDetail();
-  }, [id, axios]);
+  }, [productId, axios]);
 
   if (!product) return <p>Cargando...</p>;
 
