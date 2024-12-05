@@ -80,7 +80,7 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
   const [sizesOptions, setSizesOptions] = useState([]);
   const axios= useAxios();
 
-  // Load categories and sizes from the backend
+  // cargar las categorias y tallas desde el backend
   useEffect(() => {
     const fetchCategoriesAndSizes = async () => {
       const [categoriesResponse, sizesResponse] = await Promise.all([

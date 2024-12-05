@@ -2,7 +2,7 @@ import React from 'react'
 import Button from './Button'
 import StyleModal from "../styles/modal.module.css";
 
-const Modal = ({titulo, subtitulo, mensaje,img,onClose}) => {
+const Modal = ({titulo, subtitulo, mensaje,img,onClose,boton2,onClose2,label}) => {
   
   return (
     <div className={StyleModal.contenedor}>
@@ -12,7 +12,12 @@ const Modal = ({titulo, subtitulo, mensaje,img,onClose}) => {
         <p className={StyleModal.mensaje}>{mensaje}</p>
         <Button onClick={(e) => {
             e.stopPropagation(); // Detiene la propagación del clic hacia el fondo
-            onClose();}}>Continuar</Button>
+            onClose();}}>{label || "Continuar"}</Button>
+        {boton2 && (
+          <Button onClick={(e)=>{
+            e.stopPropagation();
+            onClose2();}}> {boton2} </Button>
+        )}
     </div>
   )
 }

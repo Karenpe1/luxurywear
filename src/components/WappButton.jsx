@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "../styles/WappButton.module.css";
+import styles from "../styles/wappButton.module.css"
 
 const WappButton = () => {
   const [success, setSuccess] = useState(false);
@@ -24,7 +24,7 @@ const WappButton = () => {
     <div>
       <div className={styles.whatsappFloating} onClick={handleClick}>
         <img
-          src="/public/whastapp.png" 
+          src="whastapp.png" 
           alt="WhatsApp"
         />
       </div>
