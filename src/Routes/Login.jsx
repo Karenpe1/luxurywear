@@ -63,7 +63,7 @@ function Login() {
 
         if (response.ok) {
           loginUser(data);
-          navigate("/"); // Redirige al inicio después de iniciar sesión
+          navigate(-1);
         } else if (response.status === 404) {
           setError({ email: "No encontramos una cuenta asociada a este correo electrónico." });
         } else if (response.status === 401) {

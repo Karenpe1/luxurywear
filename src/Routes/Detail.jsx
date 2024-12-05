@@ -106,7 +106,7 @@ const Detail = () => {
       <header className={styles.header}>
         <h1 className={styles.title}>{product.name}</h1>
         <span className={styles.back} onClick={handleGoBack}>
-          <img src={backButton} alt="Back" />
+          <img src={backButton} alt="Ir atras" />
         </span>
       </header>
 
