@@ -532,7 +532,7 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
                 error={error.images}
                 archivos={2}
               />
-              <Button>{isEdit? "Actualizar":"Registrar"}</Button>
+              <Button>{isEdit? "Actualizar":"Crear Producto"}</Button>
               <button onClick={onClose} className={clase}>Cancelar</button>
             </form>
           </div>
