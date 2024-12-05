@@ -91,7 +91,7 @@ function Login() {
       <div className={loginStyles.rightSide}>
         <div className={loginStyles.loginContainer}>
           <h2>Iniciar Sesión</h2>
-          <form onSubmit={handleLogin}>
+          <form onSubmit={handleLogin} noValidate>
             <label>
               Correo electrónico
               <Input
