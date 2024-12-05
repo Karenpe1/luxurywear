@@ -74,8 +74,8 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-") // Replace non-alphanumeric characters with dashes
       .replace(/^-+|-+$/g, ""); // Trim leading and trailing dashes
-
-  const url = "http://localhost:8080/api/v1/products";
+  const baseUrl= import.meta.env.VITE_API_BASE_URL;
+  const url = `${baseUrl}/api/v1/products`;
   const [categoriesTitle, setCategoriesTitle] = useState([]);
   const [sizesOptions, setSizesOptions] = useState([]);
   const axios= useAxios();
@@ -84,8 +84,8 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
   useEffect(() => {
     const fetchCategoriesAndSizes = async () => {
       const [categoriesResponse, sizesResponse] = await Promise.all([
-        fetch("http://localhost:8080/api/v1/categories"),
-        fetch("http://localhost:8080/api/v1/sizes"), // Assuming endpoint exists
+        fetch(`${baseUrl}/api/v1/categories`),
+        fetch(`${baseUrl}/api/v1/sizes`), // Assuming endpoint exists
       ]);
       const categoriesData = await categoriesResponse.json();
       const sizesData = await sizesResponse.json();

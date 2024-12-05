@@ -20,6 +20,7 @@ function Login() {
     img: ""
   });
   const navigate = useNavigate();
+  const baseUrl=import.meta.env.VITE_API_BASE_URL;
 
   // eslint-disable-next-line no-useless-escape
   const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -54,7 +55,7 @@ function Login() {
 
     if (formIsValid) {
       try {
-        const response = await fetch("http://localhost:8080/auth/login", {
+        const response = await fetch(`${baseUrl}/auth/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password }),

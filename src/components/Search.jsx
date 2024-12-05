@@ -23,7 +23,7 @@ const Search = ({isSearch, setIsSearch}) => {
   useEffect(() => {
     const fetchSuggestions = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/v1/products/keywords"); // Update to your actual endpoint URL
+        const response = await axios.get("/api/v1/products/keywords"); // Update to your actual endpoint URL
         setSearchTerms(response.data); // Save fetched suggestions
       } catch (error) {
         console.error("Error fetching suggestions:", error);

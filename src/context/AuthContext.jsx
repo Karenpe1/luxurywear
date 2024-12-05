@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
 
   const logoutUser = async () => {
     try {
-      await axios.post('http://localhost:8080/auth/logout', {
+      await axios.post('/auth/logout', {
         refreshToken: authTokens?.refreshToken,
       });
     } catch (error) {
@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
 
   const refreshToken = async () => {
     try {
-      const response = await axios.post('http://localhost:8080/auth/token-refresh', {
+      const response = await axios.post('/auth/token-refresh', {
         refreshToken: authTokens.refreshToken,
       });
       const newTokens = response.data;

@@ -26,6 +26,7 @@ const Checkout = () => {
   const noNumbersRegex = /^\D*$/;
   const numbersRegex = /^\d+$/;
   const navigate= useNavigate()
+  const baseUrl=import.meta.env.VITE_API_BASE_URL;
 
 
   // Extract state or use default values
@@ -35,7 +36,7 @@ const Checkout = () => {
   useEffect(()=>{
     const fetchById = async()=> {
       try{
-        const response=await axios.get(`http://localhost:8080/api/v1/products/${id}`)
+        const response=await axios.get(`/api/v1/products/${id}`)
         const data= response.data;
         dispatch({type:"GET_PRODUCT_BY_ID",payload:data})
         dispatch({type:"SET_USER_INFO_RESERVA", payload:{productName: data.name}})
@@ -51,7 +52,7 @@ const Checkout = () => {
   useEffect(()=>{
     const fetchUserInfo=async()=>{
       try{
-        const response= await axios.get(`http://localhost:8080/api/v1/users/user-info`)
+        const response= await axios.get(`/api/v1/users/user-info`)
         const data= response.data
         console.log(data)
         dispatch({type:"GET_USER_INFO", payload:data});
@@ -105,7 +106,7 @@ const Checkout = () => {
   // cargar los paises desde el backend  
   useEffect(() => {
     const fetchPaises = async () => {
-      const paisesResponse= await axios.get("http://localhost:8080/api/v1/countries");
+      const paisesResponse= await axios.get("/api/v1/countries");
       const data = paisesResponse.data
       setPaisesTitle(data.map(countries => ({
         value: countries,
@@ -120,7 +121,7 @@ const Checkout = () => {
   useEffect(()=>{
     const fetchDireccionInfo=async()=>{
       try{
-        const response= await axios.get(`http://localhost:8080/api/v1/addresses/by-user`)
+        const response= await axios.get(`/api/v1/addresses/by-user`)
         const data= response.data
         if(data.length>0){
           dispatch({ type: "GET_DIRECTIONS", payload: data });
@@ -167,7 +168,7 @@ const Checkout = () => {
       // Cargar las provincias para el país seleccionado
     try {
       const estadosResponse = await axios.get(
-        `http://localhost:8080/api/v1/countries/${direccionObj.pais}/states`
+        `/api/v1/countries/${direccionObj.pais}/states`
       );
       const data = estadosResponse.data;
 
@@ -207,7 +208,7 @@ const Checkout = () => {
       });}
     try{
      // Cargar las provincias para el país seleccionado
-     const response=await axios.get(`http://localhost:8080/api/v1/addresses/${tiendaObj.pais}/pickup-sites`)
+     const response=await axios.get(`/api/v1/addresses/${tiendaObj.pais}/pickup-sites`)
      const data = response.data;
      setEstadosTitle(data)
      console.log("geolocalizacion", data)
@@ -279,7 +280,7 @@ const Checkout = () => {
     setEstadosTitle([])
     try{
       if(envio!==0){
-        const estadosResponse= await axios.get(`http://localhost:8080/api/v1/countries/${pais}/states`);
+        const estadosResponse= await axios.get(`/api/v1/countries/${pais}/states`);
         const data = estadosResponse.data
         console.log("paises",data)
         setEstadosTitle(data.map(estados => ({
@@ -288,7 +289,7 @@ const Checkout = () => {
           name: estados,
         })));
       }else{
-        const response=await axios.get(`http://localhost:8080/api/v1/addresses/${pais}/pickup-sites`)
+        const response=await axios.get(`/api/v1/addresses/${pais}/pickup-sites`)
         setEstadosTitle(response.data)
       }
     }catch(err){
@@ -376,7 +377,7 @@ const Checkout = () => {
       };
 
       const method = "POST"
-      const endpoint = "http://localhost:8080/api/v1/reservations";
+      const endpoint = "/api/v1/reservations";
       try {
         const response = await axios({
         method,
@@ -669,7 +670,7 @@ const Checkout = () => {
       <div className={styleCheckout.checkoutRight}>
         <div className={styleCheckout.producto}>
           <div className={styleCheckout.detailProduct}>
-            <img src={`http://localhost:8080${state.productId?.images[0].url}`} alt=""/>
+            <img src={`${baseUrl}${state.productId?.images[0].url}`} alt=""/>
             <div className={styleCheckout.descriptionProduct}>
               <span>{state.productId?.name}</span>
               <span>XS</span>

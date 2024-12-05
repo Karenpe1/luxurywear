@@ -18,6 +18,7 @@ const PaginatedReservationList = ({ pageSize = 6, searchToggle }) => {
   const [totalElements, setTotalElements] = useState(0);
   const [numElements, setNumElements] = useState(0);
   const axios = useAxios();
+  const baseUrl=import.meta.env.VITE_API_BASE_URL;
 
   // Fetch products for the current page
   useEffect(() => {
@@ -112,7 +113,7 @@ const PaginatedReservationList = ({ pageSize = 6, searchToggle }) => {
                 justifyContent: 'center', borderRadius: '12px', objectFit: 'cover'
               }}>
                 <img style={{flexShrink: '0', minWidth: '100%', minHeight: '100%'}} 
-                  src={`http://localhost:8080` + reservation.productImageUrl}
+                  src={`${baseUrl}` + reservation.productImageUrl}
                   alt={reservation.productName}
                   className={styles.productImage}
                   onError={(e) => {
