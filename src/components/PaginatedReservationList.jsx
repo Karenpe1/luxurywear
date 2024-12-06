@@ -63,7 +63,7 @@ const PaginatedReservationList = ({ pageSize = 6, searchToggle }) => {
   const endRange = Math.min(startRange + numElements - 1, totalElements);
 
   return (
-    <div className={styles.productListContainer}>
+    <div className={styles.productListContainer2}>
       {categoryName ? (
         <DetailHeader title={categoryName}/>
       ) : (
