@@ -339,7 +339,36 @@ const ProductsForm = ({ onClose, clase, isEdit = false, initialData = {} }) => {
 
     if (formIsValid) {
       const uploadedImages = isEdit
-        ? product.images
+        ? await Promise.all(
+            product.images.map(async (file) => {
+              if (file instanceof File) {
+                const formData = new FormData();
+                const uniqueIdentifier = uuidv4();
+                const fileExtension = file.name.split(".").pop();
+                const fileName = `${toUrlFriendlyString(
+                  product.name
+                )}__${uniqueIdentifier}.${fileExtension}`;
+
+                formData.append("file", file);
+                formData.append("name", fileName);
+                formData.append(
+                  "category",
+                  toUrlFriendlyString(product.category.name)
+                );
+
+                const response = await axios.post(
+                  "/api/v1/products/upload",
+                  formData,
+                  {
+                    headers: { "Content-Type": "multipart/form-data" },
+                  }
+                );
+
+                return { url: `/public${response.data.response}` };
+              }
+              return file;
+            })
+          )
         : await Promise.all(
             product.images.map(async (file) => {
               const formData = new FormData();
