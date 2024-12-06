@@ -9,7 +9,7 @@ COPY package*.json ./
 RUN npm install
 
 # Copy the rest of the application code
-COPY . ./
+COPY . .
 
 # Build the application
 RUN npm run build
@@ -17,21 +17,14 @@ RUN npm run build
 # Use a lightweight web server to serve the production build
 FROM nginx:alpine
 
-# Set environment variables dynamically at runtime
-ENV API_BASE_URL="http://localhost:8080"
-
-# Copy the built application to the NGINX html folder
+# Copy the production build from the build stage
 COPY --from=build /app/dist /usr/share/nginx/html
 
 # Copy the NGINX configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Add a startup script to inject environment variables dynamically
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
-
-# Expose the container's port
+# Expose port 80 for the frontend service
 EXPOSE 80
 
-# Set the entrypoint to the startup script
-CMD ["/start.sh"]
+# Start Nginx in the foreground
+CMD ["nginx", "-g", "daemon off;"]
