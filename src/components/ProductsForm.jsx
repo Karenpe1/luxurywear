@@ -3,6 +3,7 @@ import stylesProduct from "../styles/productForm.module.css";
 import TextArea from "./TextArea";
 import Input from "./Input";
 import Button from "./Button";
+import CarouselImageUpdate from "./CarouselImageUpdate.jsx";
 import FilePicker from "./FilePicker";
 import MultiSelector from "./Multiselector";
 import useAxios from "../Utils/axiosInstance";
@@ -202,6 +203,11 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
     );
     setProduct({ ...product, sizes: selectedSizes }); // Assign objects
     setError({ ...error, sizes: "" });
+  };
+
+  const handleDeleteImage = (index) => {
+    setProduct({ ...product, images: product.images.filter((_, i) => i !== index) });
+    setError({ ...error, images: "" });
   };
 
   const validateReference = async (reference) => {
@@ -532,6 +538,9 @@ const ProductsForm = ({ onClose, clase, isEdit=false, initialData={} }) => {
                 error={error.images}
                 archivos={2}
               />
+
+              {isEdit && <CarouselImageUpdate images={product.images} onDelete={handleDeleteImage}/>}
+              
               <Button>{isEdit? "Actualizar":"Crear Producto"}</Button>
               <button onClick={onClose} className={clase}>Cancelar</button>
             </form>
