@@ -1,12 +1,11 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import styles from "../styles/Detail.module.css";
 import backButton from "../Images/backArrow.png";
 import { formatCurrency } from "../Utils/currencyFormatter";
 import Calendar from "../components/Calendar";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
-import { faL } from "@fortawesome/free-solid-svg-icons";
 import { useContextGlobal } from "../context/globalContext";
 import ModalGlobal from "../components/ModalGlobal";
 
@@ -72,6 +71,9 @@ const Detail = () => {
   };
   if (!product) return <p>Cargando...</p>;
 
+  const handleGoBack=()=>{
+    navigate(-1); //va a la pagina directamente anterior
+  }
 
   //verificar si esta logueado para hacer la reserva 
   const handleReservation=()=>{
@@ -103,10 +105,9 @@ const Detail = () => {
     <div className={styles.detailContainer}>
       <header className={styles.header}>
         <h1 className={styles.title}>{product.name}</h1>
-        <Link to="/" className={styles.backButton}>
-          {" "}
-          <img src={backButton} alt="Back" />
-        </Link>
+        <span className={styles.back} onClick={handleGoBack}>
+          <img src={backButton} alt="Ir atras" />
+        </span>
       </header>
 
       <div className={styles.content}>

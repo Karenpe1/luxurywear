@@ -64,7 +64,7 @@ function Login() {
 
         if (response.ok) {
           loginUser(data);
-          navigate("/"); // Redirige al inicio después de iniciar sesión
+          navigate(-1);
         } else if (response.status === 404) {
           setError({ email: "No encontramos una cuenta asociada a este correo electrónico." });
         } else if (response.status === 401) {
@@ -98,7 +98,7 @@ function Login() {
       <div className={loginStyles.rightSide}>
         <div className={loginStyles.loginContainer}>
           <h2>Iniciar Sesión</h2>
-          <form onSubmit={handleLogin}>
+          <form onSubmit={handleLogin} noValidate>
             <label style={{textAlign: 'left'}}>
               Correo electrónico
               <Input

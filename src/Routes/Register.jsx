@@ -32,7 +32,7 @@ const Register = () => {
   const navigate = useNavigate();
   // eslint-disable-next-line no-useless-escape
   const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-  const noNumbersRegex = /^[^\d]*$/;
+  const noNumbersRegex = /^[a-zA-Z\s]+$/;
   const url = "http://localhost:8080/auth/register";
 
   const handleNombre = (e) => {
@@ -60,29 +60,57 @@ const Register = () => {
     e.preventDefault();
     let errors = {};
     let formIsValid = true;
+     // Validaciones para el nombre
+     if (!user.nombre.trim()) {
+      errors.nombre = "El campo de nombre no puede estar vacío.";
+      formIsValid = false;
+    } else if (user.nombre.trim().length < 3) {
+      errors.nombre = "El nombre debe tener al menos 3 caracteres.";
+      formIsValid = false;
+    } else if (!noNumbersRegex.test(user.nombre)) {
+      errors.nombre = "El nombre no puede contener caracteres especiales o números.";
+      formIsValid = false;
+    }
+    // Validaciones para el apellido
+    if (!user.apellido.trim()) {
+      errors.apellido = "El campo de apellido no puede estar vacío.";
+      formIsValid = false;
+    } else if (user.apellido.trim().length < 3) {
+      errors.apellido = "El apellido debe tener al menos 3 caracteres.";
+      formIsValid = false;
+    } else if (!noNumbersRegex.test(user.apellido)) {
+      errors.apellido = "El apellido no puede contener caracteres especiales o números.";
+      formIsValid = false;
+    }
 
-    if (!noNumbersRegex.test(user.nombre) || user.nombre.trim().length < 3) {
-      errors.nombre = "El nombre debe ser válido y tener al menos 3 caracteres";
+    // Validaciones para el correo
+    if (!user.correo.trim()) {
+      errors.correo = "El campo de correo electrónico no puede estar vacío.";
+      formIsValid = false;
+    } else if (!emailRegex.test(user.correo)) {
+      errors.correo = "Ingresa un correo electrónico válido.";
+      formIsValid = false;
+    } else if (user.correo.includes("..")) {
+      errors.correo = "El correo electrónico parece incorrecto. Revisa el formato.";
       formIsValid = false;
     }
-    if (
-      !noNumbersRegex.test(user.apellido) ||
-      user.apellido.trim().length < 3
-    ) {
-      errors.apellido =
-        "El apellido debe ser válido y tener al menos 3 caracteres";
+    // Validaciones para la contraseña
+    if (!user.contraseña.trim()) {
+      errors.contraseña = "El campo de contraseña no puede estar vacío.";
+      formIsValid = false;
+    } else if (user.contraseña.includes(" ")) {
+      errors.contraseña = "La contraseña no puede contener espacios.";
+      formIsValid = false;
+    } else if (user.contraseña.length < 6) {
+      errors.contraseña = "La contraseña debe tener mínimo 6 caracteres.";
       formIsValid = false;
     }
-    if (!emailRegex.test(user.correo)) {
-      errors.correo = "El correo debe ser válido";
+    // Validaciones para repetir la contraseña
+    if (!user.contraseñaRepetida.trim()) {
+      errors.contraseñaRepetida = "El campo de repetir contraseña no puede estar vacío.";
       formIsValid = false;
-    }
-    if (user.contraseña.length < 6) {
-      errors.contraseña = "La contraseña debe tener más de 6 caracteres";
-      formIsValid = false;
-    }
-    if (user.contraseñaRepetida !== user.contraseña) {
-      errors.contraseñaRepetida = "Las contraseñas no coinciden";
+    } else if (user.contraseñaRepetida !== user.contraseña) {
+      errors.contraseñaRepetida = "Las contraseñas no coinciden. Verifícalas y vuelve a intentarlo.";
       formIsValid = false;
     }
     setError(errors);
