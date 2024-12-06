@@ -212,10 +212,10 @@ const ProductsForm = ({ onClose, clase, isEdit = false, initialData = {} }) => {
     setError({ ...error, sizes: "" });
   };
 
-  const handleDeleteImage = (index) => {
+  const handleDeleteImage = (imageId) => {
     setProduct({
       ...product,
-      images: product.images.filter((_, i) => i !== index),
+      images: product.images.filter((image) => image.imageId !== imageId),
     });
     setError({ ...error, images: "" });
   };

@@ -8,13 +8,13 @@ const CarouselImageUpdate = ({ images, onDelete }) => {
       {images.map((image, index) => (
         <li key={index} className={styles.carouselItem}>
           <img
-            src={urlAPI + image.url}
-            alt={`Imagen ${index + 1}`}
+            src={image.url ? urlAPI + image.url : "../../public/loading.gif"}
+            alt={`Imagen ${image.imageId || index + 1}`}
             className={styles.image}
           />
           <button
             className={styles.deleteButton}
-            onClick={() => onDelete(index)}
+            onClick={() => onDelete(image.imageId)}
             aria-label={`Eliminar imagen ${index + 1}`}
           >
             ✖
