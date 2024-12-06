@@ -64,7 +64,7 @@ const PaginatedReservationList = ({ pageSize = 6, searchToggle }) => {
   const endRange = Math.min(startRange + numElements - 1, totalElements);
 
   return (
-    <div className={styles.productListContainer}>
+    <div className={styles.productListContainer2}>
       {categoryName ? (
         <DetailHeader title={categoryName}/>
       ) : (
@@ -110,12 +110,12 @@ const PaginatedReservationList = ({ pageSize = 6, searchToggle }) => {
               <div style={{
                 width: '158px', height: '194px', 
                 overflow: 'hidden', display: 'flex', 
-                justifyContent: 'center', borderRadius: '12px', objectFit: 'cover'
+                justifyContent: 'center', borderRadius: '12px'
               }}>
-                <img style={{flexShrink: '0', minWidth: '100%', minHeight: '100%'}} 
+                <img style={{flexShrink: '0', minWidth: '100%', minHeight: '100%', objectFit: 'cover'}} 
                   src={`${baseUrl}` + reservation.productImageUrl}
                   alt={reservation.productName}
-                  className={styles.productImage}
+                  className={styles.productImage2}
                   onError={(e) => {
                     const fallback1 = `${urlAPI}/${mainImage}`;
                     const fallback2 = `${urlAPI}/public${mainImage}`;

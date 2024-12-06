@@ -24,7 +24,7 @@ const WappButton = () => {
     <div>
       <div className={styles.whatsappFloating} onClick={handleClick}>
         <img
-          src="/public/WA.png" 
+          src="/WA.png"
           alt="WhatsApp"
         />
       </div>

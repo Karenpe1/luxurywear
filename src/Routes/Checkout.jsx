@@ -56,12 +56,19 @@ const Checkout = () => {
         const data= response.data
         console.log(data)
         dispatch({type:"GET_USER_INFO", payload:data});
+
         if(data.cedula){
           dispatch({type:"SET_USER_INFO_RESERVA", payload:{
             nombre:data.first_name,
             apellido:data.last_name,
             cedula:data.cedula, 
             telefono:data.telefono,
+          }})
+        }
+        else{
+          dispatch({type:"SET_USER_INFO_RESERVA", payload:{
+            nombre:data.first_name,
+            apellido:data.last_name,
           }})
         }
       }catch(error){
@@ -82,7 +89,11 @@ const Checkout = () => {
     } else {
       const formatedStartDate = formatDate(startDate);
       const formatedEndDate = formatDate(endDate);
-      dispatch({type:"SET_USER_INFO_RESERVA", payload:{startDate: formatedStartDate, endDate: formatedEndDate}})
+      if(
+        state.infoUserReservation.startDate !== formatedStartDate || state.infoUserReservation.endDate !== formatedEndDate
+      ){
+        dispatch({type:"SET_USER_INFO_RESERVA", payload:{startDate: formatedStartDate, endDate: formatedEndDate}})
+      }
       const startDateObj = new Date(formatedStartDate);
       const endDateObj = new Date(formatedEndDate);
       setDaysDifference(differenceInDays(endDateObj, startDateObj));
@@ -116,6 +127,29 @@ const Checkout = () => {
     };
     fetchPaises();
   }, []);
+
+  //verificar si hay un pais seleccionado y cargar provincias
+  useEffect(()=>{
+    const loadProvincias = async()=>{
+      const pais= state.infoUserReservation?.pais;
+      if(pais){
+        try{
+          setEstadosTitle([]) //limpiar estados y provincias
+          const response= await axios.get(`/api/v1/countries/${pais}/states`)
+          const data= response.data
+          setEstadosTitle(data.map((estado) => ({
+            value: estado,
+            label: estado,
+            name: estado,
+          })));
+        }
+        catch(err){
+          dispatch({ type: "SET_ERROR", payload: "Error al cargar provincias." });
+        }
+      }
+    }
+    loadProvincias()
+  },[state.infoUserReservation.pais])
   
   //use effect para mostrar las direcciones guardadas anteriormente
   useEffect(()=>{
@@ -133,6 +167,7 @@ const Checkout = () => {
     }
     fetchDireccionInfo()
   },[])
+
    // Manejar selección única de dirección
   const handleSeleccionCheckDireccion = async(direccionObj) => {
     if (state.selectedId === direccionObj.id) {
@@ -224,6 +259,7 @@ const Checkout = () => {
   
   const handleChange = (option) => {
     setSelectedOption(option);
+    dispatch({type:"SET_USER_INFO_RESERVA", payload:{pais: ""}})
     if(option==="tienda"){
       dispatch({type:"SET_USER_INFO_RESERVA", payload:{envio:false}})
     }
@@ -282,7 +318,6 @@ const Checkout = () => {
       if(envio!==0){
         const estadosResponse= await axios.get(`/api/v1/countries/${pais}/states`);
         const data = estadosResponse.data
-        console.log("paises",data)
         setEstadosTitle(data.map(estados => ({
           value: estados,
           label: estados,
@@ -392,12 +427,12 @@ const Checkout = () => {
             payload: {
               img: "/Estrellas.svg",
               titulo: "¡Felicidades!",
-              subtitulo: "Tu reserva ha sido exitoso.",
-              mensaje: "A tu correo llegara todos los detalles de la reserva",
+              subtitulo: "Tu reserva ha sido exitosa.",
+              mensaje: "A tu correo llegarán todos los detalles de la reserva",
               mensaje2:"Mis pedidos",
               label:" Seguir explorando",
               onClose: ()=>navigate("/"),
-              onClose2:()=>navigate("/pedidos"),
+              onClose2:()=>navigate("/reservations"),
             },
           });
         }
@@ -437,7 +472,7 @@ const Checkout = () => {
                 placeholder="Nombres"
                 type="text"
                 onChange={handleNombre}
-                value={state.infoUserReservation?.nombre || ""}
+                value={state.infoUserReservation?.nombre || state.infoUser?.first_name || ""}
                 error={state.errorReservation?.nombre}
                 className={styleCheckout.inputMedio}
               />
@@ -447,7 +482,7 @@ const Checkout = () => {
                 placeholder="Apellidos"
                 type="text"
                 onChange={handleApellido}
-                value={state.infoUserReservation?.apellido || ""}
+                value={state.infoUserReservation?.apellido || state.infoUser?.last_name || ""}
                 error={state.errorReservation?.apellido}
                 className={styleCheckout.inputMedio}
               />
@@ -639,30 +674,32 @@ const Checkout = () => {
               value={state.infoUserReservation.pais}
             />
           </form>
-          <div className={styleCheckout}>
-            {estadosTitle.length > 0 && (
-              estadosTitle.map((direccionTienda)=>(
-                <div key={direccionTienda.id} className={styleCheckout.option}>
-                  <label className={`${styleCheckout.checkboxLabel} ${state.selectedId === direccionTienda.id ? styleCheckout.checked : ""}`}>
-                    <div className={styleCheckout.labelRadio}>
-                      <input
-                        type="checkbox" 
-                        checked={state.selectedId === direccionTienda.id} // Sólo un checkbox puede estar marcado 
-                        id={`direccion-${direccionTienda.id}`}
-                        className={styleCheckout.checkboxHidden} 
-                        onChange={()=>handleSeleccionRecogerTienda(direccionTienda)} 
-                      />
-                      <div className={styleCheckout.labelOptions}>
-                        <span>{`${direccionTienda.provincia},${direccionTienda.ciudad}`}</span>
-                        <span>{`${direccionTienda.direccion}`}</span>
-                        <span>{`${direccionTienda.detalles}`}</span>
+          {state.infoUserReservation.pais !== "" && (
+            <div className={styleCheckout}>
+              {estadosTitle.length > 0 && (
+                estadosTitle.map((direccionTienda)=>(
+                  <div key={direccionTienda.id} className={styleCheckout.option}>
+                    <label className={`${styleCheckout.checkboxLabel} ${state.selectedId === direccionTienda.id ? styleCheckout.checked : ""}`}>
+                      <div className={styleCheckout.labelRadio}>
+                        <input
+                          type="checkbox" 
+                          checked={state.selectedId === direccionTienda.id} // Sólo un checkbox puede estar marcado 
+                          id={`direccion-${direccionTienda.id}`}
+                          className={styleCheckout.checkboxHidden} 
+                          onChange={()=>handleSeleccionRecogerTienda(direccionTienda)} 
+                        />
+                        <div className={styleCheckout.labelOptions}>
+                          <span>{`${direccionTienda.provincia},${direccionTienda.ciudad}`}</span>
+                          <span>{`${direccionTienda.direccion}`}</span>
+                          <span>{`${direccionTienda.detalles}`}</span>
+                        </div>
                       </div>
-                    </div>
-                  </label>
-                </div>
-              ))
-            )}
-          </div>
+                    </label>
+                  </div>
+                ))
+              )}
+            </div>           
+          )}
         </div>  
         )}
       </div>
@@ -717,7 +754,7 @@ const Checkout = () => {
           </div>
         </div>
         <label className={styleCheckout.condiciones}>
-          <input type="checkbox" onChange={handleTerminos}/> He leído y acepto los <a href="#">Términos y Condiciones</a>
+          <input type="checkbox" onChange={handleTerminos}/> He leído y acepto los <a>Términos y Condiciones</a>
           {!terminos &&(
             <div className={styleCheckout.error}>{state.errorReservation.terminos}</div>
           )}

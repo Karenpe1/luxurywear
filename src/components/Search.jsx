@@ -123,7 +123,7 @@ const Search = ({isSearch, setIsSearch}) => {
               <p className={styles.title}>Descubre el vestido perfecto para cada ocasión.</p>
               <div className={styles.search} ref={inputRef}>
                   <input className={styles.input} type="text" placeholder="Escribe el tipo de vestido ideal." value={searchTerm} onChange={handleSearchTermChange} onClick={(e) => {setIsOpen(false); setStartDateToggle(false);e.stopPropagation() }} 
-                  onKeyDown={(e) => {
+                  onKeyUp={(e) => {
                     if (filteredSuggestions.length > 0 && e.key === "Enter") {
                       // Si hay sugerencias activas y Enter se presiona, selecciona la sugerencia activa
                       if (activeSuggestionIndex >= 0) {
@@ -136,13 +136,14 @@ const Search = ({isSearch, setIsSearch}) => {
                         else {
                           Swal.fire({
                             title: '¡Búsqueda incompleta!',
-                            text: 'Por favor, complete todos los campos.',
-                            iconHtml: '<img src="busquedaIncompleta.png" style="width: 150px;"/>',
+                            text: 'Por favor, ingresa todos los datos de búsqueda y vuelve a intentarlo.',
+                            iconHtml: '<img src="busquedaIncompleta.png" style="width: 253px;"/>',
                             customClass: {
                               icon: styles.noBorder,
                               confirmButton: styles.confirmButton,
                             },
                             buttonsStyling: false,
+                            confirmButtonText: 'Volver'
                           })
                         };
                     }}}/>
@@ -186,13 +187,14 @@ const Search = ({isSearch, setIsSearch}) => {
                     else {
                       Swal.fire({
                         title: '¡Búsqueda incompleta!',
-                        text: 'Por favor, complete todos los campos.',
-                        iconHtml: '<img src="busquedaIncompleta.png" style="width: 150px;"/>',
+                        text: 'Por favor, ingresa todos los datos de búsqueda y vuelve a intentarlo.',
+                        iconHtml: '<img src="busquedaIncompleta.png" style="width: 253px;"/>',
                         customClass: {
                           icon: styles.noBorder,
                           confirmButton: styles.confirmButton,
                         },
                         buttonsStyling: false,
+                        confirmButtonText: 'Volver'
                       })
                     };
                   }}>
