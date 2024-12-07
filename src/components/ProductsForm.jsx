@@ -391,7 +391,7 @@ const ProductsForm = ({ onClose, clase, isEdit = false, initialData = {} }) => {
                   headers: { "Content-Type": "multipart/form-data" },
                 }
               );
-              return { url: response.data.response };
+              return { url: `/public${response.data.response}` };
             })
           );
 
