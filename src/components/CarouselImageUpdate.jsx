@@ -13,6 +13,7 @@ const CarouselImageUpdate = ({ images, onDelete }) => {
             className={styles.image}
           />
           <button
+            type="button"
             className={styles.deleteButton}
             onClick={(e) => {e.stopPropagation(); 
               onDelete(image.imageId)}}
