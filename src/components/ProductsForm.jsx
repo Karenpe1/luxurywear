@@ -364,7 +364,7 @@ const ProductsForm = ({ onClose, clase, isEdit = false, initialData = {} }) => {
                   }
                 );
 
-                return { url: `/public${response.data.response}` };
+                return { url: `${response.data.response}` };
               }
               return file;
             })
