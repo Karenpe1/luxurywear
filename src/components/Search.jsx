@@ -3,7 +3,7 @@ import styles from "../styles/Search.module.css";
 import Calendar from "./Calendar";
 import PaginatedSearchList from "./PaginatedSearchList";
 import Swal from 'sweetalert2';
-import axios from "axios";
+import useAxios from "../Utils/axiosInstance.js";
 
 const Search = ({isSearch, setIsSearch}) => {
 
@@ -18,12 +18,13 @@ const Search = ({isSearch, setIsSearch}) => {
   const [searchTerms, setSearchTerms] = useState([]); // Store dynamic suggestions
   const inputRef = useRef(null);
   const suggestionsRef = useRef([]); // Array de referencias para las sugerencias
+  const axios = useAxios();
 
   // Fetch suggestions from the backend on component mount
   useEffect(() => {
     const fetchSuggestions = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/v1/products/keywords"); // Update to your actual endpoint URL
+        const response = await axios.get("/api/v1/products/keywords");
         setSearchTerms(response.data); // Save fetched suggestions
       } catch (error) {
         console.error("Error fetching suggestions:", error);

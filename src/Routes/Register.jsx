@@ -32,8 +32,9 @@ const Register = () => {
   const navigate = useNavigate();
   // eslint-disable-next-line no-useless-escape
   const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-  const noNumbersRegex = /^[a-zA-Z\s]+$/;
-  const url = "http://localhost:8080/auth/register";
+  const noNumbersRegex = /^[^\d]*$/;
+  const baseUrl=import.meta.env.VITE_API_BASE_URL;
+  const url = `${baseUrl}/auth/register`;
 
   const handleNombre = (e) => {
     setUser({ ...user, nombre: e.target.value });

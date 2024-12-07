@@ -12,6 +12,7 @@ const FavList = ({ pageSize = 6 }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [reload,setReload]= useState(false);
+    const baseUrl= import.meta.env.VITE_API_BASE_URL
 
     // Fetch favorite products
     const fetchFavorites = async () => {
@@ -20,7 +21,7 @@ const FavList = ({ pageSize = 6 }) => {
 
         try {
             const response = await axios.get(
-                `http://localhost:8080/api/v1/users/favorites`,
+                `/api/v1/users/favorites`,
                 { params: { page: currentPage, size: pageSize } }
             );
             const data = response.data;
@@ -68,15 +69,15 @@ const FavList = ({ pageSize = 6 }) => {
 
                         />
                         <img
-                            src={`http://localhost:8080${product.images[0].url}`}
+                            src={`${baseUrl}${product.images[0].url}`}
                             alt={product.name}
                             className={styles.productImage}
                             onError={(e) => {
-                                const fallback1 = `http://localhost:8080/${product.images[0].url}`; // First fallback image
-                                const fallback2 = `http://localhost:8080/public${product.images[0].url}`; // Second fallback image
+                                const fallback1 = `${baseUrl}/${product.images[0].url}`; // First fallback image
+                                const fallback2 = `${baseUrl}/public${product.images[0].url}`; // Second fallback image
                                 const fallback3 = "placeholder.svg"; // Second fallback image
 
-                                if (e.target.src === `http://localhost:8080${product.images[0].url}`) {
+                                if (e.target.src === `${baseUrl}${product.images[0].url}`) {
                                     e.target.src = fallback1; // Switch to the first fallback
                                 } else if (e.target.src === fallback1) {
                                     e.target.src = fallback2; // Switch to the second fallback
