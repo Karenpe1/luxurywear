@@ -14,7 +14,8 @@ const CarouselImageUpdate = ({ images, onDelete }) => {
           />
           <button
             className={styles.deleteButton}
-            onClick={() => onDelete(image.imageId)}
+            onClick={(e) => {e.stopPropagation(); 
+              onDelete(image.imageId)}}
             aria-label={`Eliminar imagen ${index + 1}`}
           >
             ✖
