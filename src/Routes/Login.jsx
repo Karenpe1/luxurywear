@@ -62,10 +62,15 @@ function Login() {
           body: JSON.stringify({ email, password }),
         });
         const data = await response.json();
-
+        
+        const previousPage = location.state?.from || document.referrer;
         if (response.ok) {
           loginUser(data);
-          navigate(-1);
+          if (previousPage.includes("/register")) {
+            navigate('/');
+          } else {
+            navigate(-1);
+          }
         } else if (response.status === 404) {
           setError({ email: "No encontramos una cuenta asociada a este correo electrónico." });
         } else if (response.status === 401) {
