@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import useAxios from "../Utils/axiosInstance"; // Custom Axios instance
-import HeartButton from "../components/HeartButton";
 import Pagination from "../components/Pagination";
 import styles from "../styles/FavList.module.css";
+import CardProduct from "../components/CardProduct";
 
 const FavList = ({ pageSize = 6 }) => {
     const axios = useAxios();
@@ -54,48 +54,7 @@ const FavList = ({ pageSize = 6 }) => {
             {!loading && favorites.length === 0 && (
                 <p className={styles.noFavorites}>No tienes productos favoritos.</p>
             )}
-
-            <div className={styles.products}>
-                {favorites.map((product) => (
-                    <div
-                        key={product.productId}
-                        className={styles.productCard}
-                        onClick={() => console.log(`Navigating to product ${product.productId}`)} // Aquí puedes agregar navegación
-                    >
-                        <HeartButton
-                            className={styles.heart}
-                            id={product.productId}
-                            onToggle={() => setReload((prev) => !prev)}
-
-                        />
-                        <img
-                            src={`${baseUrl}${product.images[0].url}`}
-                            alt={product.name}
-                            className={styles.productImage}
-                            onError={(e) => {
-                                const fallback1 = `${baseUrl}/${product.images[0].url}`; // First fallback image
-                                const fallback2 = `${baseUrl}/public${product.images[0].url}`; // Second fallback image
-                                const fallback3 = "placeholder.svg"; // Second fallback image
-
-                                if (e.target.src === `${baseUrl}${product.images[0].url}`) {
-                                    e.target.src = fallback1; // Switch to the first fallback
-                                } else if (e.target.src === fallback1) {
-                                    e.target.src = fallback2; // Switch to the second fallback
-                                } else if (e.target.src === fallback2) {
-                                    e.target.src = fallback3; // Switch to the third fallback
-                                } else {
-                                    e.target.onerror = null; // Prevent infinite fallback loop
-                                }
-                            }}
-                        />
-                        <div className={styles.contenedor}>
-                            <h2>{product.name}</h2>
-                            <p>Precio: ${product.price}</p>
-                        </div>
-                    </div>
-                ))}
-            </div>
-
+            <CardProduct products={favorites} onToggle={() => setReload((prev) => !prev)}/>
 
             <div className={styles.paginationContainer}>
                 <Pagination

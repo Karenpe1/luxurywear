@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import loginStyles from "../styles/Login.module.css";
 import logo from '../Images/Logo.png';
 import Button from "../components/Button";
@@ -21,6 +21,7 @@ function Login() {
     img: ""
   });
   const navigate = useNavigate();
+  const location = useLocation();
   const baseUrl=import.meta.env.VITE_API_BASE_URL;
 
   // eslint-disable-next-line no-useless-escape
@@ -66,7 +67,12 @@ function Login() {
         const previousPage = location.state?.from || document.referrer;
         if (response.ok) {
           loginUser(data);
-          navigate(-1);
+          const previousPage = location.state?.from || document.referrer; // Obtener página anterior
+          if(previousPage?.includes("/register")){
+            navigate("/")
+          }else{
+            navigate(-1);
+          }
         } else if (response.status === 404) {
           setError({ email: "No encontramos una cuenta asociada a este correo electrónico." });
         } else if (response.status === 401) {
