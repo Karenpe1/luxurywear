@@ -188,3 +188,8 @@
         font-size: 16px;
     }
 }
+.error{
+    color: red;
+    font-size: 1em;
+    text-align: start;
+}

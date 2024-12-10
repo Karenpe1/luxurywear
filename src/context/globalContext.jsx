@@ -28,7 +28,8 @@ const initialState = {
   userRegister:{ 
     nombre: "", apellido: "",correo: "",contraseña: "",contraseñaRepetida: "",
   },
-  errorRegister:{nombre: "",apellido: "",correo: "",contraseña: "",contraseñaRepetida: "",
+  errorRegister:{
+    nombre: "",apellido: "",correo: "",contraseña: "",contraseñaRepetida: "",
   },
   userLogin:{ 
     email: "",password: ""
@@ -71,10 +72,16 @@ const reducer = (state, action)=>{
         }
     case "SET_USER_INFO_LOGIN":
       return {
-        ...state,userLogin: {...state.userLogin,...action.payload,}, // Actualiza solo las propiedades enviadas en el payload      
+        ...state,userLogin: {...state.userLogin,...action.payload,}, // Actualiza solo las propiedades enviadas en el payload del login   
       };
     case "SET_ERROR_LOGIN":
-      return{...state, errorLogin: action.payload,} // obtengo la informacion de los inputs 
+      return{...state, errorLogin: action.payload,} // obtengo la informacion de los inputs de errores del login
+    case "SET_USER_INFO_REGISTER":
+      return {
+        ...state,userLogin: {...state.userRegister,...action.payload,}, // Actualiza solo las propiedades enviadas en el payload      
+      };
+    case "SET_ERROR_REGISTER":
+      return{...state, errorRegister: action.payload,} // obtengo la informacion de los inputs 
     case "DELETE_PRODUCT":
       return {
         ...state,

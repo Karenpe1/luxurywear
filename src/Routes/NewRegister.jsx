@@ -66,7 +66,7 @@ const NewRegister = () => {
       formIsValid = false;
     }
 
-    dispatch({type:"SET_ERROR_LOGIN", payload:{errors}})
+    dispatch({type:"SET_ERROR_LOGIN", payload:errors})
 
     if (formIsValid) {
       try {
@@ -117,97 +117,93 @@ const NewRegister = () => {
 
   //register
   const handleNombre = (e) => {
-    setUser({ ...user, nombre: e.target.value });
-    setError({ ...error, nombre: "" }); // Limpiar el error al cambiar el valor
+    dispatch({type:"SET_USER_INFO_REGISTER", payload:{nombre:e.target.value}})
+    dispatch({type:"SET_ERROR_REGISTER", payload:{nombre:""}})
   };
   const handleApellido = (e) => {
-    setUser({ ...user, apellido: e.target.value });
-    setError({ ...error, apellido: "" });
+    dispatch({type:"SET_USER_INFO_REGISTER", payload:{apellido:e.target.value}})
+    dispatch({type:"SET_ERROR_REGISTER", payload:{apellido:""}})
   };
   const handleCorreo = (e) => {
-    setUser({ ...user, correo: e.target.value });
-    setError({ ...error, correo: "" });
+    dispatch({type:"SET_USER_INFO_REGISTER", payload:{correo:e.target.value}})
+    dispatch({type:"SET_ERROR_REGISTER", payload:{correo:""}})
   };
   const handleContraseña = (e) => {
-    setUser({ ...user, contraseña: e.target.value });
-    setError({ ...error, contraseña: "" });
+    dispatch({type:"SET_USER_INFO_REGISTER", payload:{contraseña:e.target.value}})
+    dispatch({type:"SET_ERROR_REGISTER", payload:{contraseña:""}})
   };
   const handleRepetida = (e) => {
-    setUser({ ...user, contraseñaRepetida: e.target.value });
-    setError({ ...error, contraseñaRepetida: "" });
+    dispatch({type:"SET_USER_INFO_REGISTER", payload:{contraseñaRepetida:e.target.value}})
+    dispatch({type:"SET_ERROR_REGISTER", payload:{contraseñaRepetida:""}})
   };
 
 
-  const handdleSubmit = async (e) => {
+  const handdleRegister = async (e) => {
+
     e.preventDefault();
     let errors = {};
     let formIsValid = true;
     // Validaciones para el nombre
-    if (!user.nombre.trim()) {
+    if (!state.userRegister.nombre.trim()) {
       errors.nombre = "El campo de nombre no puede estar vacío.";
       formIsValid = false;
-    } else if (user.nombre.trim().length < 3) {
+    } else if (state.userRegister.nombre.trim().length < 3) {
       errors.nombre = "El nombre debe tener al menos 3 caracteres.";
       formIsValid = false;
-    } else if (!noNumbersRegex.test(user.nombre)) {
-      errors.nombre =
-        "El nombre no puede contener caracteres especiales o números.";
+    } else if (!noNumbersRegex.test(state.userRegister.nombre)) {
+      errors.nombre ="El nombre no puede contener caracteres especiales o números.";
       formIsValid = false;
     }
     // Validaciones para el apellido
-    if (!user.apellido.trim()) {
+    if (!state.userRegister.apellido.trim()) {
       errors.apellido = "El campo de apellido no puede estar vacío.";
       formIsValid = false;
-    } else if (user.apellido.trim().length < 3) {
+    } else if (state.userRegister.apellido.trim().length < 3) {
       errors.apellido = "El apellido debe tener al menos 3 caracteres.";
       formIsValid = false;
-    } else if (!noNumbersRegex.test(user.apellido)) {
-      errors.apellido =
-        "El apellido no puede contener caracteres especiales o números.";
+    } else if (!noNumbersRegex.test(state.userRegister.apellido)) {
+      errors.apellido ="El apellido no puede contener caracteres especiales o números.";
       formIsValid = false;
     }
 
     // Validaciones para el correo
-    if (!user.correo.trim()) {
+    if (!state.userRegister.correo.trim()) {
       errors.correo = "El campo de correo electrónico no puede estar vacío.";
       formIsValid = false;
-    } else if (!emailRegex.test(user.correo)) {
+    } else if (!emailRegex.test(state.userRegister.correo)) {
       errors.correo = "Ingresa un correo electrónico válido.";
       formIsValid = false;
-    } else if (user.correo.includes("..")) {
-      errors.correo =
-        "El correo electrónico parece incorrecto. Revisa el formato.";
+    } else if (!state.userRegister.correo.includes("@") || !state.userRegister.correo.includes(".")) {
+      errors.correo ="El correo electrónico parece incorrecto. Revisa el formato.";
       formIsValid = false;
     }
     // Validaciones para la contraseña
-    if (!user.contraseña.trim()) {
+    if (!state.userRegister.contraseña.trim()) {
       errors.contraseña = "El campo de contraseña no puede estar vacío.";
       formIsValid = false;
-    } else if (user.contraseña.includes(" ")) {
+    } else if (state.userRegister.contraseña.includes(" ")) {
       errors.contraseña = "La contraseña no puede contener espacios.";
       formIsValid = false;
-    } else if (user.contraseña.length < 6) {
+    } else if (state.userRegister.contraseña.length < 6) {
       errors.contraseña = "La contraseña debe tener mínimo 6 caracteres.";
       formIsValid = false;
     }
     // Validaciones para repetir la contraseña
-    if (!user.contraseñaRepetida.trim()) {
-      errors.contraseñaRepetida =
-        "El campo de repetir contraseña no puede estar vacío.";
+    if (!state.userRegister.contraseñaRepetida.trim()) {
+      errors.contraseñaRepetida ="El campo de repetir contraseña no puede estar vacío.";
       formIsValid = false;
-    } else if (user.contraseñaRepetida !== user.contraseña) {
-      errors.contraseñaRepetida =
-        "Las contraseñas no coinciden. Verifícalas y vuelve a intentarlo.";
+    } else if (state.userRegister.contraseñaRepetida !== state.userRegister.contraseña) {
+      errors.contraseñaRepetida ="Las contraseñas no coinciden. Verifícalas y vuelve a intentarlo.";
       formIsValid = false;
     }
-    setError(errors);
+    dispatch({type:"SET_ERROR_REGISTER", payload:errors})
 
     if (formIsValid) {
       const body = {
-        first_name: user.nombre.trim(),
-        last_name: user.apellido.trim(),
-        email: user.correo,
-        password: user.contraseña,
+        first_name: state.userRegister.nombre.trim(),
+        last_name: state.userRegister.apellido.trim(),
+        email: state.userRegister.correo,
+        password: state.userRegister.contraseña,
       };
 
       const settings = {
@@ -310,15 +306,15 @@ const NewRegister = () => {
         ) : isRegister ? (
           <div className={StyleRegistro.formulario}>
             <h2>Registro de cuenta</h2>
-            <form onSubmit={handdleSubmit} className={StyleRegistro.registro}>
+            <form onSubmit={handdleRegister} className={StyleRegistro.registro}>
               <Input
                 id="nombre"
                 label="Nombre"
                 placeholder="Ingresa tu nombre"
                 type="text"
-                value={user.nombre}
+                value={state.userRegister.nombre}
                 onChange={handleNombre}
-                error={error.nombre}
+                error={state.errorRegister.nombre}
               />
 
               <Input
@@ -326,9 +322,9 @@ const NewRegister = () => {
                 label="Apellido"
                 placeholder="Ingresa tu Apellido"
                 type="text"
-                value={user.apellido}
+                value={state.userRegister.apellido}
                 onChange={handleApellido}
-                error={error.apellido}
+                error={state.errorRegister.apellido}
               />
 
               <Input
@@ -336,9 +332,9 @@ const NewRegister = () => {
                 id="correo"
                 placeholder="Ingresa tu correo electronico"
                 type="text"
-                value={user.correo}
+                value={state.userRegister.correo}
                 onChange={handleCorreo}
-                error={error.correo}
+                error={state.errorRegister.correo}
               />
 
               <Input
@@ -346,9 +342,9 @@ const NewRegister = () => {
                 id="contraseña"
                 placeholder="Ingresa tu contraseña"
                 type="password"
-                value={user.contraseña}
+                value={state.userRegister.contraseña}
                 onChange={handleContraseña}
-                error={error.contraseña}
+                error={state.errorRegister.contraseña}
               />
 
               <Input
@@ -356,9 +352,9 @@ const NewRegister = () => {
                 id="repetir"
                 placeholder="Ingresa nuevamente tu contraseña"
                 type="password"
-                value={user.contraseñaRepetida}
+                value={state.userRegister.contraseñaRepetida}
                 onChange={handleRepetida}
-                error={error.contraseñaRepetida}
+                error={state.errorRegister.contraseñaRepetida}
               />
               <Button>Registrar</Button>
               <p className={StyleRegistro.cuenta}>
@@ -377,7 +373,7 @@ const NewRegister = () => {
                 label="Correo Eléctronico"
                 id="correo"
                 placeholder="Ingresa tu correo electronico"
-                type="email"
+                type="text"
                 value={state.userLogin.email}
                 onChange={handleCorreoLogin}
                 error={state.errorLogin.email}
@@ -392,7 +388,7 @@ const NewRegister = () => {
                 error={state.errorLogin.password}
               />
               {state.errorLogin.general && (
-              <p className={loginStyles.errorMessage}>{error.general}</p>
+              <p className={StyleRegistro.error}>{state.errorLogin.general}</p>
             )}
               <Button>Iniciar sesión</Button>
               <p className={StyleRegistro.cuenta}>

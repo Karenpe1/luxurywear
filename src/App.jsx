@@ -41,8 +41,8 @@ function App() {
           <Routes>
             <Route path="/detail/:id" element={<Detail />} />
             <Route path="/" element={<Home isSearch={isSearch} />} />
-            <Route path="/login" element={<Login/>} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<NewRegister/>} />
+            <Route path="/register" element={<NewRegister />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route 
               path="/reservation-detail" 
