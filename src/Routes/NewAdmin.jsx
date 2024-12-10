@@ -7,14 +7,14 @@ import ProductsForm from "../components/ProductsForm";
 import ProductTable from "../components/ProductTable";
 import CategoryTable from "../components/CategoryTable";
 import UserTable from "../components/UserTable";
-import CardInfo from "../components/CardInfo";
 import AdminTable from "../components/AdminTable";
 
 const NewAdmin = () => {
-  const [tab, setTab] = useState("Productos");
+  const [tab, setTab] = useState("Admin");
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [showProductModal, setShowProductModal] = useState(false);
   const [reload, setReload]= useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
 
   const handleSelectTab = (tab) => {
     setTab(tab);
@@ -35,7 +35,7 @@ const NewAdmin = () => {
 
   const handleCloseProductModal=()=>{
     setShowProductModal(false);
-    setReload((prev)=> !prev)
+    setReload((prev)=> !prev);
   };
 
   const getPlaceholder = (tab) => {
@@ -53,35 +53,52 @@ const NewAdmin = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.menu}>
+      <div
+        className={`${styles.menu} ${
+          isSidebarCollapsed ? styles.collapsed : ""
+        }`}
+        onMouseEnter={() => setIsSidebarCollapsed(false)}
+        onMouseLeave={() => setIsSidebarCollapsed(true)}
+      >
         <h2 className={styles.titlePanel}>
           <FontAwesomeIcon icon={faInbox} />
-          Panel Admin
+          {!isSidebarCollapsed && "Dashboard"}
         </h2>
-        <span className={styles.tab} onClick={() => handleSelectTab("Admin")}>
-          {" "}
-          <FontAwesomeIcon icon={faUserTie} /> Admin
+        <span
+          className={`${styles.tab} ${
+            tab === "Admin" ? styles.activeTab : ""
+          }`}
+          onClick={() => handleSelectTab("Admin")}
+        >
+          <FontAwesomeIcon icon={faUserTie} />
+          {!isSidebarCollapsed && "Admin"}
         </span>
         <span
-          className={styles.tab}
+          className={`${styles.tab} ${
+            tab === "Productos" ? styles.activeTab : ""
+          }`}
           onClick={() => handleSelectTab("Productos")}
         >
-          {" "}
           <FontAwesomeIcon icon={faList} />
-          Productos
+          {!isSidebarCollapsed && "Productos"}
         </span>
         <span
-          className={styles.tab}
+          className={`${styles.tab} ${
+            tab === "Usuarios" ? styles.activeTab : ""
+          }`}
           onClick={() => handleSelectTab("Usuarios")}
         >
-          {" "}
-          <FontAwesomeIcon icon={faUsers} /> Usuarios
+          <FontAwesomeIcon icon={faUsers} />
+          {!isSidebarCollapsed && "Usuarios"}
         </span>
         <span
-          className={styles.tab}
+          className={`${styles.tab} ${
+            tab === "Categoria" ? styles.activeTab : ""
+          }`}
           onClick={() => handleSelectTab("Categoria")}
         >
-          <FontAwesomeIcon icon={faLayerGroup} /> Categorías
+          <FontAwesomeIcon icon={faLayerGroup} />
+          {!isSidebarCollapsed && "Categorías"}
         </span>
       </div>
       <div className={styles.notAvailable}>
@@ -120,20 +137,22 @@ const NewAdmin = () => {
         <div className={styles.containerTitles}>
           <div className={styles.titles}>
             <div className={styles.title}>{tab}</div>
-              {tab == "Categoria" && 
-              (<button
+              {tab === "Categoria" && (
+                <button
                   className={styles.addCategoryButton}
                   onClick={handleOpenCategoryModal}
               >
                   Agregar Categoría
-              </button>)}
-              {tab == "Productos" && 
-              (<button 
+              </button>
+              )}
+              {tab === "Productos" && (
+                <button
                   className={styles.addCategoryButton} 
-                  onClick={handleOpenProductModal}>
+                  onClick={handleOpenProductModal}
+                >
                     Agregar Producto
-                </button>)}
-              
+                </button>
+              )}
           </div>
           <div className={styles.buscar}>
             <input
@@ -143,21 +162,10 @@ const NewAdmin = () => {
             />
           </div>
         </div>
-
-        {tab === "Productos" && (
-          <ProductTable reload={reload} setReload={setReload}/>
-        )}
-        {tab === "Categoria" && (
-          <CategoryTable reload={reload} setReload={setReload}/>
-        )}
-        {tab === "Usuarios" && (
-          <UserTable reload={reload} setReload={setReload}/>
-        )}
-        {
-          tab === "Admin" && (
-            <AdminTable reload={reload} setReload={setReload}/>
-        )}
-        
+        {tab === "Productos" && <ProductTable reload={reload} setReload={setReload}/>}
+        {tab === "Categoria" && <CategoryTable reload={reload} setReload={setReload}/>}
+        {tab === "Usuarios" && <UserTable reload={reload} setReload={setReload}/>}
+        {tab === "Admin" && <AdminTable reload={reload} setReload={setReload}/>}
       </div>
     </div>
   );
