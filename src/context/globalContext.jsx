@@ -25,6 +25,18 @@ const initialState = {
   errorReservation:{
     nombre: "",apellido: "",cedula: "",telefono: "", pais: "",direccion: "", ciudad: "",provincia: "",codigoPostal: "",terminos:"",
   },
+  userRegister:{ 
+    nombre: "", apellido: "",correo: "",contraseña: "",contraseñaRepetida: "",
+  },
+  errorRegister:{nombre: "",apellido: "",correo: "",contraseña: "",contraseñaRepetida: "",
+  },
+  userLogin:{ 
+    email: "",password: ""
+  },
+  errorLogin:{
+    email: "",password: "",general: "",
+  },
+
 
 }
 const ContextGlobal = createContext();
@@ -57,6 +69,12 @@ const reducer = (state, action)=>{
         startDate: "",endDate:"", totalCost:"",addressId:0, saveData:false,productName:"",envio:true,tiendaId:0}, 
         errorReservation:{nombre: "",apellido: "",cedula: "",telefono: "", pais: "",direccion: "", ciudad: "",provincia: "",codigoPostal: "",terminos:""}
         }
+    case "SET_USER_INFO_LOGIN":
+      return {
+        ...state,userLogin: {...state.userLogin,...action.payload,}, // Actualiza solo las propiedades enviadas en el payload      
+      };
+    case "SET_ERROR_LOGIN":
+      return{...state, errorLogin: action.payload,} // obtengo la informacion de los inputs 
     case "DELETE_PRODUCT":
       return {
         ...state,

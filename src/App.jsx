@@ -18,6 +18,7 @@ import Checkout from "./Routes/Checkout.jsx";
 import WappButton from "./components/WappButton.jsx";
 import Pedidos from "./Routes/Pedidos.jsx";
 import DetailReservation from "./Routes/DetailReservation.jsx";
+import NewRegister from "./Routes/newRegister.jsx";
 
 function App() {
   const location = useLocation();
@@ -40,7 +41,7 @@ function App() {
           <Routes>
             <Route path="/detail/:id" element={<Detail />} />
             <Route path="/" element={<Home isSearch={isSearch} />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<Login/>} />
             <Route path="/register" element={<Register />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route 

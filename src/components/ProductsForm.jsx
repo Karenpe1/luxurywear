@@ -500,6 +500,7 @@ const ProductsForm = ({ onClose, clase, isEdit = false, initialData = {} }) => {
             subtitulo={modalInfo.subtitulo}
             mensaje={modalInfo.mensaje}
             onClose={handleSuccessClose}
+            label="Continuar"
           />
         ) : (
           <div className={stylesProduct.formularioProduct}>

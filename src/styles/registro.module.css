@@ -1,14 +1,11 @@
 .container{
-    width: 100%;
-    height: 852px;
-    position: relative;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
 }
 
-@media(min-width:700px){
-    .container{
-        max-height:1300px;
-    }
-}
 @media(min-width:1024px){
     .container{
         display: flex;
@@ -25,20 +22,18 @@
 }
 @media(min-width:1024px){
     .containerFoto{
-        width: 50%;
+        width: 100%;
     }
 }
 
 .containerFiltro{
     position: relative;
-    height: 852px;
-    padding: 2em 0em;
+    height: 100vh;
     background: linear-gradient(90deg, rgba(97, 80, 175, 0.70) 46.28%, rgba(243, 239, 255, 0.30) 96%);
 }
 @media(min-width:700px){
     .containerFiltro{
         height:1300px;
-        padding: 5em 0em;
     }
 }
 @media(min-width:1024px){
@@ -66,6 +61,13 @@
     margin:auto ;
 }
 @media(min-width:700px){
+    .img{
+        width: 290px;
+        height: 160px;
+        padding: 5px 19px;
+    }
+}
+@media(min-width:1024px){
     .img{
         width: 426px;
         height: 277px;
@@ -101,8 +103,8 @@
 @media(min-width:1024px){
     .contenedorForm{
         background-color:  #E9E4F7;
-        width: 50%;
-        height:1000px; /* Deja que el contenido defina la altura */
+        width: 100%;
+        height:100vh; /* Deja que el contenido defina la altura */
         padding: 7em 0em;
         border-radius: 0;
         position: static; /* Elimina position absolute */
@@ -120,25 +122,39 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    gap: 30px;
     margin: auto;
 }
 @media(min-width:700px){
     .formulario{
         width: 420px;
-        height: 582px;
-        gap: 50px;
+    }
+}
+.formularioLogin{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    margin: auto;
+    gap: 20px;
+}
+@media(min-width:700px){
+    .formularioLogin{
+        width: 420px;
+        height: auto;
     }
 }
 
 .registro{
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 4px;
     margin: auto;
 }
-.formulario h2{
+.formulario h2, .formularioLogin h2{
     color: #231942;
     font-family: "Encode Sans";
     font-size: 20px;
@@ -148,7 +164,7 @@
     margin: auto;
 }
 @media(min-width:700px){
-    .formulario h2{
+    .formulario h2,.formularioLogin h2{
         font-size: 32px;
         margin: auto;
     }

@@ -45,7 +45,7 @@ const HeartButton = ({id,onToggle }) => {
           subtitulo: "Hubo un problema.",
           mensaje: "Por favor, inicia sesión para añadir este producto a tu lista de favoritos.",
           onClose: ()=>{},
-          label: "continuar"
+          label: "Continuar"
         },
       });
       return;

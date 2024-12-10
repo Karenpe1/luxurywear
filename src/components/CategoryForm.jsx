@@ -179,6 +179,7 @@ const CategoryForm = ({ onClose, clase }) => {
             titulo={modalInfo.titulo}
             subtitulo={modalInfo.subtitulo}
             mensaje={modalInfo.mensaje}
+            label="Continuar"
             onClose={handleSuccessClose}
           />
         ) : (
