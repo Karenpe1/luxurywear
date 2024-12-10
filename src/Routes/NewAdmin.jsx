@@ -40,7 +40,7 @@ const NewAdmin = () => {
 
   const getPlaceholder = (tab) => {
     switch (tab) {
-      case "Categoria":
+      case "Categorías":
         return "Buscar Categorías";
       case "Productos":
         return "Buscar Productos";
@@ -93,9 +93,9 @@ const NewAdmin = () => {
         </span>
         <span
           className={`${styles.tab} ${
-            tab === "Categoria" ? styles.activeTab : ""
+            tab === "Categorías" ? styles.activeTab : ""
           }`}
-          onClick={() => handleSelectTab("Categoria")}
+          onClick={() => handleSelectTab("Categorías")}
         >
           <FontAwesomeIcon icon={faLayerGroup} />
           {!isSidebarCollapsed && "Categorías"}
@@ -122,10 +122,14 @@ const NewAdmin = () => {
         </div>
       )}
       {showProductModal && (
-        <div className={styles.categoryModalOverlayProducts}
-        onClick={handleCloseProductModal}>
-          <div className={styles.categoryModalContentProduct}
-          onClick={(e)=>e.stopPropagation()}>
+        <div
+          className={styles.productModalOverlay}
+          onClick={handleCloseProductModal}
+        >
+          <div
+            className={styles.productModalContent}
+            onClick={(e) => e.stopPropagation()}
+          >
             <ProductsForm
               onClose={handleCloseProductModal}
               clase={styles.categoryModalCancelButton}
@@ -137,7 +141,7 @@ const NewAdmin = () => {
         <div className={styles.containerTitles}>
           <div className={styles.titles}>
             <div className={styles.title}>{tab}</div>
-              {tab === "Categoria" && (
+              {tab === "Categorías" && (
                 <button
                   className={styles.addCategoryButton}
                   onClick={handleOpenCategoryModal}
@@ -163,7 +167,7 @@ const NewAdmin = () => {
           </div>
         </div>
         {tab === "Productos" && <ProductTable reload={reload} setReload={setReload}/>}
-        {tab === "Categoria" && <CategoryTable reload={reload} setReload={setReload}/>}
+        {tab === "Categorías" && <CategoryTable reload={reload} setReload={setReload}/>}
         {tab === "Usuarios" && <UserTable reload={reload} setReload={setReload}/>}
         {tab === "Admin" && <AdminTable reload={reload} setReload={setReload}/>}
       </div>

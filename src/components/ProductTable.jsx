@@ -34,7 +34,7 @@ const ProductTable = ({ pageSize = 6, reload, setReload }) => {
 
         const data = response.data;
         dispatch({type:"GET_PRODUCTS", payload:data.content}) //obtener la lista de productos
-        dispatch({type:"INITIALIZE_SHOWACTIONS", payload:data.content.map(()=>false)}) //inizializar los menu de accion
+        dispatch({type:"INITIALIZE_SHOWACTIONS", payload:data.content.map(()=>false)}) // Inicializar los menús de acción
         setTotalPages(data.totalPages); // Set total pages from response
         setTotalElements(data.totalElements);
         setNumElements(data.numberOfElements);
@@ -123,11 +123,11 @@ const ProductTable = ({ pageSize = 6, reload, setReload }) => {
     <>
       {state.showModal && productToEdit && (
         <div
-          className={styles.categoryModalOverlayProducts}
+          className={styles.productModalOverlay}
           onClick={handleCloseEditProduct}
         >
           <div
-            className={styles.categoryModalContentProduct}
+            className={styles.productModalContent}
             onClick={(e) => e.stopPropagation()}
           >
             <ProductsForm
@@ -199,8 +199,9 @@ const ProductTable = ({ pageSize = 6, reload, setReload }) => {
               <img
                 className={styles.dots}
                 src="/dots.png"
+                alt={"Botón acciones"}
                 onClick={(e) => {
-                  e.stopPropagation(); // Detiene la propagación del evento click
+                  e.stopPropagation(); // Detiene la propagación del evento clic
                   handleShowActions(idx); // Llama a tu función de manejo
                 }}
               />
