@@ -52,6 +52,11 @@ const reducer = (state, action)=>{
       };
     case "SET_ERROR_RESERVA":
       return{...state, errorReservation: action.payload,} // obtengo la informacion de los inputs 
+    case "RESET_USER_INFO_RESERVA":
+      return{...state, infoUserReservation:{nombre:"",apellido:"",cedula:"", telefono:"",pais: "",direccion: "",detalles: "",ciudad: "",provincia: "",codigoPostal: "",
+        startDate: "",endDate:"", totalCost:"",addressId:0, saveData:false,productName:"",envio:true,tiendaId:0}, 
+        errorReservation:{nombre: "",apellido: "",cedula: "",telefono: "", pais: "",direccion: "", ciudad: "",provincia: "",codigoPostal: "",terminos:""}
+        }
     case "DELETE_PRODUCT":
       return {
         ...state,

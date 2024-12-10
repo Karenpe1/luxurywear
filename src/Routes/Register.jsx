@@ -28,6 +28,7 @@ const Register = () => {
     subtitulo: "",
     mensaje: "",
     img: "",
+    label:"",
   });
   const navigate = useNavigate();
   // eslint-disable-next-line no-useless-escape
@@ -154,6 +155,7 @@ const Register = () => {
           mensaje:
             "Te hemos registrado correctamente en nuestra web. Ahora puedes acceder a todas las funciones y beneficios que ofrecemos.",
           img: "./Estrellas.svg",
+          label:"continuar"
         }); //mostrar el mensaje de exito
       } else {
         const errorMessages = {
@@ -171,6 +173,7 @@ const Register = () => {
           titulo: "Error",
           subtitulo: "Ha ocurrido un problema.",
           mensaje: message,
+          label: "continuar"
         });
       }
 
@@ -186,6 +189,7 @@ const Register = () => {
         mensaje:
           "Por favor, verifica tu conexión a Internet e intenta nuevamente.",
         img: "./ohNo.png",
+        label:"continuar"
       });
       console.error("Error al realizar el registro:", err);
     }
@@ -210,6 +214,7 @@ const Register = () => {
             titulo={modalInfo.titulo}
             subtitulo={modalInfo.subtitulo}
             mensaje={modalInfo.mensaje}
+            label={modalInfo.label}
             onClose={() => {
               setModalInfo({ ...modalInfo, show: false });
               if (modalInfo.titulo === "¡Felicidades!") {

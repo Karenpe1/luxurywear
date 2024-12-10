@@ -10,9 +10,11 @@ const Modal = ({titulo, subtitulo, mensaje,img,onClose,boton2,onClose2,label}) =
         <h2 className={StyleModal.titulo}>{titulo}</h2>
         <h2 className={StyleModal.subtitulo}>{subtitulo}</h2>
         <p className={StyleModal.mensaje}>{mensaje}</p>
-        <Button onClick={(e) => {
-            e.stopPropagation(); // Detiene la propagación del clic hacia el fondo
-            onClose();}}>{label || "Continuar"}</Button>
+        {label &&(
+          <Button onClick={(e) => {
+              e.stopPropagation(); // Detiene la propagación del clic hacia el fondo
+              onClose();}}>{label}</Button>
+        )}
         {boton2 && (
           <Button onClick={(e)=>{
             e.stopPropagation();

@@ -3,9 +3,11 @@ import { useState, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import User from "./User";
+import { useContextGlobal } from "../context/globalContext";
 
 const NewHeader = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const {dispatch}=useContextGlobal();
   const { user, logoutUser } = useContext(AuthContext);
   const location = useLocation();
 
@@ -13,6 +15,7 @@ const NewHeader = () => {
 
   const handleHamburger = () => {
     setIsOpen(false);
+    dispatch({type:"RESET_USER_INFO_RESERVA"})
   };
 
   return (

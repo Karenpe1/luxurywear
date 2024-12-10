@@ -86,6 +86,7 @@ const Detail = () => {
           titulo: "Error",
           subtitulo: "Hubo un problema.",
           mensaje: "Por favor, inicia sesión para poder realizar tu reserva",
+          label:"continuar",
           onClose: ()=>navigate("/login"),
         },
       });

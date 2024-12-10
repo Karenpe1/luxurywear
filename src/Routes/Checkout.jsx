@@ -11,6 +11,7 @@ import axiosInstance from "../Utils/axiosInstance";
 import { formatCurrency } from "../Utils/currencyFormatter";
 import { differenceInDays, set } from 'date-fns';
 import ModalGlobal from "../components/ModalGlobal";
+import AuthContext from "../context/AuthContext";
 
 const Checkout = () => {
   const {state,dispatch}=useContextGlobal();
@@ -21,6 +22,7 @@ const Checkout = () => {
   const [paisesTitle, setPaisesTitle] = useState([]);
   const [estadosTitle, setEstadosTitle] = useState([]);
   const [terminos,setTerminos]=useState(false);
+  const [isDisabled,setIsDisabled]= useState(false)
   const location = useLocation();
   const axios=axiosInstance();
   const noNumbersRegex = /^\D*$/;
@@ -390,6 +392,15 @@ const Checkout = () => {
     dispatch({type:"SET_ERROR_RESERVA", payload:errors})
     console.log(state.infoUserReservation)
     if(formIsValid){
+      setIsDisabled(true);
+      dispatch({
+        type: "SHOW_MODAL_GLOBAL",
+        payload: {
+          img: "/loading.gif",
+          titulo: "Cargando...",
+          subtitulo: "Estamos procesando tu reserva.",
+          mensaje: "Por favor, espera mientras confirmamos tu pedido.",
+        }})
       const body = {
         productName: state.infoUserReservation.productName,
         startDate: state.infoUserReservation.startDate,
@@ -422,6 +433,9 @@ const Checkout = () => {
 
         // Handle non-201 status codes
         if (response.status === 200 || response.status === 201 ) {
+          setIsDisabled(false)
+          dispatch({type:"RESET_USER_INFO_RESERVA"})
+          dispatch({type:"GET_ID",payload:null})
           dispatch({
             type: "SHOW_MODAL_GLOBAL",
             payload: {
@@ -445,11 +459,13 @@ const Checkout = () => {
             titulo: "¡Error de conexión!",
             subtitulo: "Hubo un problema con la conexión.",
             mensaje: "Tu reserva no pudo ser completada, por favor vuelve a intentar",
+            label:"continuar",
             onClose: ()=>navigate("/"),
           }})
       }
     }
   }
+  
 
   return (
     <div className={styleCheckout.contenedor}>
@@ -760,7 +776,7 @@ const Checkout = () => {
           )}
         </label>
         <div className={styleCheckout.buttonReservar}>
-          <Button onClick={handleSubmit}>Reservar</Button>
+          <Button onClick={handleSubmit} disabled={isDisabled}>Reservar</Button>
         </div>
       </div>
         <ModalGlobal/>
