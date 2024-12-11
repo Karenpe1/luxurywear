@@ -105,8 +105,8 @@ const NewRegister = () => {
           text: 'Hubo un problema con el inicio de sesión. Por favor, vuelve a intentarlo más tarde.',
           iconHtml: '<img src="ohNo2.png" style="width: 253px;"/>',
           customClass: {
-            icon: loginStyles.noBorder,
-            confirmButton: loginStyles.confirmButton,
+            icon: StyleRegistro.noBorder,
+            confirmButton: StyleRegistro.confirmButton,
           },
           buttonsStyling: false,
           confirmButtonText: 'Aceptar'

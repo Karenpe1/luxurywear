@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from "../styles/Calendar.module.css";
 import Swal from "sweetalert2";
 
 const Calendar = ({setStartDate, setEndDate, startDate, endDate, closedDates = [], startDateToggle = false, setStartDateToggle, setIsOpen}) => {
+  const calendarRef = useRef(null);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [currentDate2, setCurrentDate2] = useState(new Date(new Date(currentDate).setMonth(currentDate.getMonth() + 1)));
 
@@ -144,9 +145,23 @@ const Calendar = ({setStartDate, setEndDate, startDate, endDate, closedDates = [
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startDate, endDate])
+  
+   //cerrar las sugerencias si hace click fuera del input
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+        if (calendarRef.current && !calendarRef.current.contains(e.target)) {
+            setIsOpen(false);
+        }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+  
 
   return (
-      <div className={styles.container}>
+      <div className={styles.container} ref={calendarRef}>
         <span style={{position: 'absolute', top: '10px', right: '15px', fontWeight: 'bold', cursor: 'pointer'}} onClick={() => {setIsOpen(false); setStartDateToggle(false);}}>X</span>
         <h1 className={styles.calendarTitle}>¿Cuándo es tu evento?</h1>
     <div className={styles.calendars}>
