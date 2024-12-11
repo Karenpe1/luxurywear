@@ -731,7 +731,7 @@ const Checkout = () => {
       <div className={styleCheckout.checkoutRight}>
         <div className={styleCheckout.producto}>
           <div className={styleCheckout.detailProduct}>
-            <img src={`${baseUrl}${state.productId?.images[0].url}`} alt=""/>
+            <img src={`${baseUrl}/${state.productId?.images[0].url}`} alt=""/>
             <div className={styleCheckout.descriptionProduct}>
               <span>{state.productId?.name}</span>
               <span>XS</span>
@@ -790,7 +790,7 @@ const Checkout = () => {
       </div>
         <ModalGlobal/>
         {isOpen && (
-            <TerminosCondiciones isOpen={setIsOpen} onAccept={handleAccept}/>
+            <TerminosCondiciones onAccept={handleAccept}/>
           )}
     </div>
   );
