@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Importa useNavigate
+import { useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import styles from "../styles/User.module.css";
 import axiosInstance from "../Utils/axiosInstance";
@@ -47,12 +47,16 @@ const User = () => {
                 {userInfo?.first_name[0].toUpperCase()}
                 {userInfo?.last_name[0].toUpperCase()}
             </div>
-            <img src="/downArrow.svg" onClick={handleShowMenu} />
+            <img
+              src="/downArrow.svg"
+              onClick={handleShowMenu}
+              alt={"Flecha abajo"}
+            />
             {showMenu &&
                 <div className={styles.dropdownContainer} onClick={handleShowMenu}>
                     <div className={styles.dropdown}>
                         <img src="/arrowMenu.svg" className={styles.arrowMenu} />
-                        <span className={styles.option} onClick={goToReservations}><img src="/misPedidos.png" />Mis pedidos</span>
+                        <span className={styles.option} onClick={goToReservations}><img src="/misPedidos.png" />Mis reservas</span>
                         <span className={styles.option}><img src="/usuario.png" />Mi cuenta</span>
                         <span className={styles.option} onClick={goToFavorites}><i className="fas fa-heart" style={{ color: "#9C62B1", fontSize: "24px" }} ></i>Mis favoritos</span>
                         <button className={styles.button} onClick={logoutUser}>Cerrar sesión</button>

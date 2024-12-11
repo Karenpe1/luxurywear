@@ -9,9 +9,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useContextGlobal } from "../context/globalContext";
 import axiosInstance from "../Utils/axiosInstance";
 import { formatCurrency } from "../Utils/currencyFormatter";
-import { differenceInDays, set } from 'date-fns';
+import { differenceInDays } from 'date-fns';
 import ModalGlobal from "../components/ModalGlobal";
-import AuthContext from "../context/AuthContext";
 
 const Checkout = () => {
   const {state,dispatch}=useContextGlobal();
@@ -443,7 +442,7 @@ const Checkout = () => {
               titulo: "¡Felicidades!",
               subtitulo: "Tu reserva ha sido exitosa.",
               mensaje: "A tu correo llegarán todos los detalles de la reserva",
-              mensaje2:"Mis pedidos",
+              mensaje2:"Mis reservas",
               label:" Seguir explorando",
               onClose: ()=>navigate("/"),
               onClose2:()=>navigate("/reservations"),
