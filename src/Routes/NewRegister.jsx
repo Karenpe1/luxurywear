@@ -85,6 +85,7 @@ const NewRegister = () => {
         const previousPage = location.state?.from || document.referrer;
         if (response.ok) {
           loginUser(data);
+          dispatch({type:"RESET_USER_INFO_LOGIN"})
           const previousPage = location.state?.from || document.referrer; // Obtener página anterior
           if(previousPage?.includes("/register")){
             navigate("/")
@@ -230,6 +231,7 @@ const NewRegister = () => {
 
       // Handle non-201 status codes
       if (response.status == 201) {
+        dispatch({type:"RESET_USER_INFO_REGISTER"})
         setModalInfo({
           show: true,
           titulo: "¡Felicidades!",
