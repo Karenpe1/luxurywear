@@ -3,8 +3,6 @@ import Detail from "./Routes/Detail.jsx";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "./Routes/Home.jsx";
 import appStyles from "./styles/App.module.css";
-import Login from "./Routes/Login";
-import Register from "./Routes/Register.jsx";
 import Search from "./components/Search.jsx";
 import { AuthProvider } from "./context/AuthContext";
 import ContextProvider from "./context/globalContext.jsx";
@@ -18,7 +16,7 @@ import Checkout from "./Routes/Checkout.jsx";
 import WappButton from "./components/WappButton.jsx";
 import Pedidos from "./Routes/Pedidos.jsx";
 import DetailReservation from "./Routes/DetailReservation.jsx";
-import NewRegister from "./Routes/newRegister.jsx";
+import NewRegister from "./Routes/NewRegister.jsx";
 
 function App() {
   const location = useLocation();
