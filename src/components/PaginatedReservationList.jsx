@@ -64,11 +64,7 @@ const PaginatedReservationList = ({ pageSize = 6, searchToggle }) => {
 
   return (
     <div className={styles.reservationListContainer}>
-      {categoryName  ? (
-        <DetailHeader title={"Tus reservas"}/>
-      ) : (
-        <h2 className={styles.titulo}>{"Tus reservas"}</h2>
-      )}
+      <DetailHeader title={"Tus reservas"}/>
 
       <h3 className={styles.subTitle}>{"Esta es la lista completa de tus reservas; puedes consultar del detalle de cada una."}</h3>
 
