@@ -1,15 +1,20 @@
 import styles from "../styles/PaginatedProductList.module.css";
+import React, { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import HeartButton from "./HeartButton";
 import { formatCurrency } from "../Utils/currencyFormatter";
-import { useNavigate } from "react-router-dom";
 import ProductImage from "./ProductImage.jsx";
 
-const CardProduct = ({ products,onToggle }) => {
+const CardProduct = React.memo(({ products, onToggle }) => {
   const navigate = useNavigate();
 
-  const handleCardClick = (productId) => {
-    navigate(`/detail/${productId}`); // Navigate to the detail page with productId
-  };
+  const handleCardClick = useCallback(
+    (productId) => {
+      navigate(`/detail/${productId}`);
+    },
+    [navigate] // Navigate to the detail page with productId
+  );
+
   return (
     <div className={styles.products}>
       {products.map((product) => (
@@ -32,6 +37,6 @@ const CardProduct = ({ products,onToggle }) => {
       ))}
     </div>
   );
-};
+});
 
 export default CardProduct;
