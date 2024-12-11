@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import styles from "../styles/PaginatedProductList.module.css";
+import styles from "../styles/PaginatedReservationList.module.css";
 import Pagination from "./Pagination";
 import useAxios from "../Utils/axiosInstance";
 import DetailHeader from "./DetailHeader";
@@ -18,7 +18,7 @@ const PaginatedReservationList = ({ pageSize = 6, searchToggle }) => {
   const [totalElements, setTotalElements] = useState(0);
   const [numElements, setNumElements] = useState(0);
   const axios = useAxios();
-  const baseUrl=import.meta.env.VITE_API_BASE_URL;
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
   // Fetch products for the current page
   useEffect(() => {
@@ -33,7 +33,6 @@ const PaginatedReservationList = ({ pageSize = 6, searchToggle }) => {
             size: pageSize,
           },
         });
-        console.log("response",response.data);
         const data = response.data;
         setProducts(data.content); // Set product data
         setTotalPages(data.totalPages); // Set total pages from response
@@ -64,14 +63,14 @@ const PaginatedReservationList = ({ pageSize = 6, searchToggle }) => {
   const endRange = Math.min(startRange + numElements - 1, totalElements);
 
   return (
-    <div className={styles.productListContainer2}>
-      {categoryName ? (
-        <DetailHeader title={categoryName}/>
+    <div className={styles.reservationListContainer}>
+      {categoryName  ? (
+        <DetailHeader title={"Tus reservas"}/>
       ) : (
         <h2 className={styles.titulo}>{"Tus reservas"}</h2>
       )}
 
-      {<h3 style={{fontWeight: 'normal'}}>{"Esta es la lista completa de tus reservas; puedes consultar del detalle de cada una."}</h3>} {/* Show subtitle only if provided */}
+      <h3 className={styles.subTitle}>{"Esta es la lista completa de tus reservas; puedes consultar del detalle de cada una."}</h3>
 
       {/* Display total and current product count */}
       <p className={styles.paginationInfo}>
@@ -85,42 +84,29 @@ const PaginatedReservationList = ({ pageSize = 6, searchToggle }) => {
       {/* Display Products */}
       <div className={styles.reservations}>
         {products.map((reservation) => (
-          <div key={reservation.id} style={{height: '362px', width: '331px', display: 'flex', flexDirection: 'column', backgroundColor: 'white', alignItems: 'center', borderRadius: '12px'}}>
-            <div style={{
-              backgroundColor: '#5E548E', 
-              color: 'white', fontSize: '20px', 
-              fontWeight: 'bold', height: '52px', 
-              display: 'flex', justifyContent: 'center',
-              alignItems: 'center', borderRadius: '12px 12px 0 0',
-              width: '100%'
-            }}>
-              {reservation.productName}
-            </div>
-            <div style={{display: 'flex', padding: '10px', backgroundColor: 'white', justifyContent: 'space-between', width: '100%', marginTop: '10px'}}>
-              <div style={{display: 'flex', flexDirection: 'column', alignItems: 'left'}}>
-                <p style={{fontWeight: 'bold'}}>Número de orden:</p>
+          <div key={reservation.id} className={styles.reservationCard}>
+            <div className={styles.cardHeader}>{reservation.productName}</div>
+            <div className={styles.cardBody}>
+              <div className={styles.cardDetails}>
+                <p className={styles.bold}>Número de orden:</p>
                 <p>{reservation.reservationCode}</p>
-                <p style={{fontWeight: 'bold'}}>Fecha de entrega:</p>
+                <p className={styles.bold}>Fecha de entrega:</p>
                 <p>{reservation.startDate}</p>
-                <p style={{fontWeight: 'bold'}}>Fecha de devolución:</p>
+                <p className={styles.bold}>Fecha de devolución:</p>
                 <p>{reservation.endDate}</p>
-                <p style={{fontWeight: 'bold'}}>Método de entrega:</p>
+                <p className={styles.bold}>Método de entrega:</p>
                 <p>{reservation.shippingMethod}</p>
               </div>
-              <div style={{
-                width: '158px', height: '194px', 
-                overflow: 'hidden', display: 'flex', 
-                justifyContent: 'center', borderRadius: '12px'
-              }}>
-                <img style={{flexShrink: '0', minWidth: '100%', minHeight: '100%', objectFit: 'cover'}} 
-                  src={`${baseUrl}` + reservation.productImageUrl}
+              <div className={styles.cardImageContainer}>
+                <img
+                  className={styles.cardImage}
+                  src={`${baseUrl}${reservation.productImageUrl}`}
                   alt={reservation.productName}
-                  className={styles.productImage2}
                   onError={(e) => {
-                    const fallback1 = `${urlAPI}/${mainImage}`;
-                    const fallback2 = `${urlAPI}/public${mainImage}`;
+                    const fallback1 = `${baseUrl}/${reservation.productImageUrl}`;
+                    const fallback2 = `${baseUrl}/public${reservation.productImageUrl}`;
                     const fallback3 = "placeholder.svg";
-                    if (e.target.src === `${urlAPI}${mainImage}`) {
+                    if (e.target.src === `${baseUrl}${reservation.productImageUrl}`) {
                       e.target.src = fallback1;
                     } else if (e.target.src === fallback1) {
                       e.target.src = fallback2;
@@ -129,19 +115,13 @@ const PaginatedReservationList = ({ pageSize = 6, searchToggle }) => {
                     } else {
                       e.target.onerror = null;
                     }
-                  }}/>
+                  }}
+                />
               </div>
             </div>
-            <button 
-              style={{
-                backgroundColor: '#C3B2FB', 
-                padding: '10px', width: '304px', 
-                height: '36px', borderRadius: '12px', 
-                marginTop: '10px', display: 'flex', 
-                alignItems: 'center', justifyContent: 'center'
-              }}
-              onClick={() => handleCardClick(reservation.id)}
-            >Ver detalle</button>
+            <button className={styles.cardButton} onClick={() => handleCardClick(reservation.id)}>
+              Ver detalle
+            </button>
           </div>
         ))}
       </div>
