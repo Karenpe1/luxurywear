@@ -1,8 +1,6 @@
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import styles from "../styles/PaginatedProductList.module.css";
-import { formatCurrency } from "../Utils/currencyFormatter";
-import HeartButton from "./HeartButton";
 import Pagination from "./Pagination";
 import useAxios from "../Utils/axiosInstance";
 import DetailHeader from "./DetailHeader";
@@ -12,8 +10,6 @@ import CardProduct from "./CardProduct";
 const PaginatedProductList = ({ pageSize = 6 }) => {
   const { categoryName } = useParams(); // Get categoryName from URL
   const { state } = useLocation(); // Get state from navigation
-
-  const navigate = useNavigate();
 
   const categoryDescription = state?.categoryDescription || ""; // Get categoryDescription from state
 
@@ -25,9 +21,7 @@ const PaginatedProductList = ({ pageSize = 6 }) => {
   const [totalElements, setTotalElements] = useState(0);
   const [numElements, setNumElements] = useState(0);
   const axios = useAxios();
-  const baseUrl=import.meta.env.VITE_API_BASE_URL
 
-  // Fetch products for the current page
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true); // Start loading

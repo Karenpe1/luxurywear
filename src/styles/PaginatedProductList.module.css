@@ -7,16 +7,6 @@
     align-items: center;
 }
 
-.productListContainer2 {
-    max-width: 3000px; /* Max width for the container */
-    margin: 0 auto;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 100px;
-}
-
 h1 {
     font-size: 2em;
     margin-bottom: 20px; /* Add space between heading and product cards */
@@ -35,7 +25,7 @@ h3 {
   margin-top: 25px;
   padding-left: 20px;
   padding-right: 20px;
-    margin-bottom: 25px; /* Add space between heading and product cards */
+  margin-bottom: 25px; /* Add space between heading and product cards */
 }
 @media (min-width: 600px) and (max-width: 1024px) {
     h3 {
@@ -106,7 +96,6 @@ h3 {
     }
 }
 
-
 /* Uniform card size */
 .productCard {
     height: 100%;
@@ -143,8 +132,8 @@ h3 {
 }
 
 .titulo {
-    font-family: "Noto Sans";
-    font-size: 24px; /* Default for mobile */
+    font-family: "Noto Sans", sans-serif;
+    font-size: 24px;
     font-style: normal;
     font-weight: 800;
     line-height: 59px;
@@ -153,14 +142,12 @@ h3 {
     text-align: center;
 }
 
-/* Tablet: min-width 600px */
 @media (min-width: 600px) and (max-width: 1024px) {
     .titulo {
         font-size: 36px;
     }
 }
 
-/* Desktop: min-width 900px */
 @media (min-width: 1025px) {
     .titulo {
         font-size: 40px;
@@ -175,14 +162,14 @@ h3 {
 }
 @media(min-width:1024px){
     .contenedor{
-        padding: 0em 2em;
+        padding: 0 2em;
     }
 }
 
-h2{
+h2 {
     color: #000;
     text-align: center;
-    font-family: "Noto Sans";
+    font-family: "Noto Sans", sans-serif;
     font-size: 14px;
     font-style: normal;
     font-weight: 700;
@@ -201,7 +188,7 @@ h2{
 
 p {
     color: #000;
-    font-family: "Encode Sans";
+    font-family: "Encode Sans", sans-serif;
     font-size: 13px;
     font-style: normal;
     font-weight: 400;
@@ -218,15 +205,3 @@ p {
        font-size: 16px;
     }
 }
-
-.reservations {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px;
-    gap: 20px;
-    max-width: 800px;
-}
-
-
