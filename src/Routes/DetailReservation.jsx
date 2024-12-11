@@ -6,6 +6,7 @@ import styleReservation from "../styles/DetailReservation.module.css";
 import backButton from "../Images/backArrow.png";
 import ModalGlobal from "../components/ModalGlobal";
 import useAxios from "../Utils/axiosInstance";
+import ProductImage from "../components/ProductImage.jsx";
 
 function DetailReservation() {
   const location = useLocation();
@@ -54,48 +55,20 @@ function DetailReservation() {
 
       <div className={styleReservation.content}>
         {/* Imagen principal */}
-        <img
-          src={baseUrl + mainImage}
+        <ProductImage
+          src={`${mainImage}`}
           alt={product.name}
           className={styles.productImage}
-          onError={(e) => {
-            const fallback1 = `${baseUrl}/${mainImage}`;
-            const fallback2 = `${baseUrl}/public${mainImage}`;
-            const fallback3 = "placeholder.svg";
-            if (e.target.src === `${baseUrl}${mainImage}`) {
-              e.target.src = fallback1;
-            } else if (e.target.src === fallback1) {
-              e.target.src = fallback2;
-            } else if (e.target.src === fallback2) {
-              e.target.src = fallback3;
-            } else {
-              e.target.onerror = null;
-            }
-          }}
         />
         <div className={styles.gallery}>
           {/* Galería de miniaturas */}
           {product.images.map((img, index) => (
-            <img
+            <ProductImage
               key={index}
-              src={baseUrl + img.url}
+              src={`${img.url}`}
               alt={`${product.name} thumbnail ${index + 1}`}
               className={styles.thumbnail}
               onClick={() => setMainImage(img.url)}
-              onError={(e) => {
-                const fallback1 = `${baseUrl}/${img.url}`;
-                const fallback2 = `${baseUrl}/public${img.url}`;
-                const fallback3 = "placeholder.svg";
-                if (e.target.src === `${baseUrl}${img.url}`) {
-                  e.target.src = fallback1;
-                } else if (e.target.src === fallback1) {
-                  e.target.src = fallback2;
-                } else if (e.target.src === fallback2) {
-                  e.target.src = fallback3;
-                } else {
-                  e.target.onerror = null;
-                }
-              }}
             />
           ))}
         </div>

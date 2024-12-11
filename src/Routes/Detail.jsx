@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import { useContextGlobal } from "../context/globalContext";
 import ModalGlobal from "../components/ModalGlobal";
+import ProductImage from "../components/ProductImage.jsx";
 
 const Detail = () => {
   const { id } = useParams();
@@ -23,11 +24,11 @@ const Detail = () => {
   
   const [politicas, setPoliticas] = useState(false); // Nuevo estado para políticas
   const [startDateToggle, setStartDateToggle] = useState(false);
-  const {dispatch}=useContextGlobal();
-  const {user}=useContext(AuthContext);
+  const {dispatch} = useContextGlobal();
+  const {user} = useContext(AuthContext);
 
   const navigate = useNavigate();
-  const baseUrl=import.meta.env.VITE_API_BASE_URL;
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
   document.addEventListener('scroll', () => { if (window.screen.width > 500) { setIsOpen(false); setStartDateToggle(false); } });
 
@@ -114,48 +115,20 @@ const Detail = () => {
 
       <div className={styles.content}>
         {/* Imagen principal */}
-        <img
-          src={`${baseUrl}${mainImage}`}
+        <ProductImage
+          src={`${mainImage}`}
           alt={product.name}
           className={styles.productImage}
-          onError={(e) => {
-            const fallback1 = `${baseUrl}/${mainImage}`; // First fallback image
-            const fallback2 = `${baseUrl}/public${mainImage}`; // Second fallback image
-            const fallback3 = "placeholder.svg"; // Third fallback image
-            if (e.target.src === `${baseUrl}${mainImage}`) {
-              e.target.src = fallback1; // Switch to the first fallback
-            } else if (e.target.src === fallback1) {
-              e.target.src = fallback2; // Switch to the second fallback
-            } else if (e.target.src === fallback2) {
-              e.target.src = fallback3; // Switch to the third fallback
-            } else {
-              e.target.onerror = null; // Prevent infinite fallback loop
-            }
-          }}
         />
         <div className={styles.gallery}>
           {/* Galería de miniaturas */}
           {product.images.map((img, index) => (
-            <img
+            <ProductImage
               key={index}
-              src={`${baseUrl}${img.url}`}
+              src={`${img.url}`}
               alt={`${product.name} thumbnail ${index + 1}`}
               className={styles.thumbnail}
-              onClick={() => setMainImage(img.url)} // Cambia la imagen principal
-              onError={(e) => {
-                const fallback1 = `${baseUrl}/${img.url}`; // First fallback image
-                const fallback2 = `${baseUrl}/public${img.url}`; // Second fallback image
-                const fallback3 = "placeholder.svg"; // Third fallback image
-                if (e.target.src === `${baseUrl}${img.url}`) {
-                  e.target.src = fallback1; // Switch to the first fallback
-                } else if (e.target.src === fallback1) {
-                  e.target.src = fallback2; // Switch to the second fallback
-                } else if (e.target.src === fallback2) {
-                  e.target.src = fallback3; // Switch to the third fallback
-                } else {
-                  e.target.onerror = null; // Prevent infinite fallback loop
-                }
-              }}
+              onClick={() => setMainImage(img.url)}
             />
           ))}
         </div>

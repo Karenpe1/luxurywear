@@ -4,6 +4,7 @@ import styles from "../styles/PaginatedReservationList.module.css";
 import Pagination from "./Pagination";
 import useAxios from "../Utils/axiosInstance";
 import DetailHeader from "./DetailHeader";
+import ProductImage from "./ProductImage.jsx";
 
 const PaginatedReservationList = ({ pageSize = 6, searchToggle }) => {
   const { categoryName } = useParams(); // Get categoryName from URL
@@ -18,7 +19,6 @@ const PaginatedReservationList = ({ pageSize = 6, searchToggle }) => {
   const [totalElements, setTotalElements] = useState(0);
   const [numElements, setNumElements] = useState(0);
   const axios = useAxios();
-  const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
   // Fetch products for the current page
   useEffect(() => {
@@ -98,24 +98,10 @@ const PaginatedReservationList = ({ pageSize = 6, searchToggle }) => {
                 <p>{reservation.shippingMethod}</p>
               </div>
               <div className={styles.cardImageContainer}>
-                <img
-                  className={styles.cardImage}
-                  src={`${baseUrl}${reservation.productImageUrl}`}
+                <ProductImage
+                  src={`${reservation.productImageUrl}`}
                   alt={reservation.productName}
-                  onError={(e) => {
-                    const fallback1 = `${baseUrl}/${reservation.productImageUrl}`;
-                    const fallback2 = `${baseUrl}/public${reservation.productImageUrl}`;
-                    const fallback3 = "placeholder.svg";
-                    if (e.target.src === `${baseUrl}${reservation.productImageUrl}`) {
-                      e.target.src = fallback1;
-                    } else if (e.target.src === fallback1) {
-                      e.target.src = fallback2;
-                    } else if (e.target.src === fallback2) {
-                      e.target.src = fallback3;
-                    } else {
-                      e.target.onerror = null;
-                    }
-                  }}
+                  className={styles.cardImage}
                 />
               </div>
             </div>
