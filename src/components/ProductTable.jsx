@@ -7,6 +7,7 @@ import styles from "../styles/NewAdmin.module.css";
 import ProductsForm from "../components/ProductsForm";
 import { useContextGlobal } from "../context/globalContext";
 import ModalConfirm from "./ModalConfirm";
+import ProductImage from "./ProductImage.jsx";
 
 const ProductTable = ({ pageSize = 6, reload, setReload }) => {
   //cosas que se deben tener por cada table
@@ -18,7 +19,6 @@ const ProductTable = ({ pageSize = 6, reload, setReload }) => {
   const [numElements, setNumElements] = useState(0);
   const { categoryName } = useParams(); // Get categoryName from URL
   const axios = axiosInstance();
-  const baseUrl=import.meta.env.VITE_API_BASE_URL
   
   // Fetch de los productos paginados
   useEffect(() => {
@@ -167,28 +167,10 @@ const ProductTable = ({ pageSize = 6, reload, setReload }) => {
           Categoría: product.category.name,
           Imagen: (
             <div className={styles.containerImage}>
-              <img
-                className={styles.prodImage}
-                src={`${baseUrl}${product.images[0].url}`}
+              <ProductImage
+                src={`${product.images[0].url}`}
                 alt={product.name}
-                onError={(e) => {
-                  const fallback1 = `${baseUrl}/${product.images[0].url}`; // First fallback image
-                  const fallback2 = `${baseUrl}/public${product.images[0].url}`; // Second fallback image
-                  const fallback3 = "placeholder.svg"; // Third fallback image
-
-                  if (
-                    e.target.src ===
-                    `${baseUrl}${product.images[0].url}`
-                  ) {
-                    e.target.src = fallback1; // Switch to the first fallback
-                  } else if (e.target.src === fallback1) {
-                    e.target.src = fallback2; // Switch to the second fallback
-                  } else if (e.target.src === fallback2) {
-                    e.target.src = fallback3; // Switch to the third fallback
-                  } else {
-                    e.target.onerror = null; // Prevent infinite fallback loop
-                  }
-                }}
+                className={styles.prodImage}
               />
             </div>
           ),

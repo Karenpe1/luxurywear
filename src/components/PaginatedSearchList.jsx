@@ -1,17 +1,14 @@
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import styles from "../styles/PaginatedProductList.module.css";
-import { formatCurrency } from "../Utils/currencyFormatter";
-import HeartButton from "./HeartButton";
 import Pagination from "./Pagination";
 import useAxios from "../Utils/axiosInstance";
 import DetailHeader from "./DetailHeader";
+import CardProduct from "./CardProduct.jsx";
 
 const PaginatedSearchList = ({ pageSize = 6, searchTerm, startDate, endDate, searchToggle }) => {
   const { categoryName } = useParams(); // Get categoryName from URL
   const { state } = useLocation(); // Get state from navigation
-
-  const navigate = useNavigate();
 
   const categoryDescription = state?.categoryDescription || ""; // Get categoryDescription from state
 
@@ -23,7 +20,6 @@ const PaginatedSearchList = ({ pageSize = 6, searchTerm, startDate, endDate, sea
   const [totalElements, setTotalElements] = useState(0);
   const [numElements, setNumElements] = useState(0);
   const axios = useAxios();
-  const baseUrl=import.meta.env.VITE_API_BASE_URL;
 
   // Fetch products for the current page
   useEffect(() => {
@@ -60,10 +56,6 @@ const PaginatedSearchList = ({ pageSize = 6, searchTerm, startDate, endDate, sea
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryName, currentPage, searchToggle]);
 
-  const handleCardClick = (productId) => {
-    navigate(`/detail/${productId}`); // Navigate to the detail page with productId
-  };
-
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
@@ -87,51 +79,18 @@ const PaginatedSearchList = ({ pageSize = 6, searchTerm, startDate, endDate, sea
         Mostrando {startRange}-{endRange} de {totalElements} productos {categoryName && "con categoría " + categoryName} (Página {currentPage + 1} de {totalPages})
       </p>
 
-      {products.length == 0 && <div style={{textAlign: 'center'}}>
-        <img src="/ohNo2.png" alt={"Cero resultados"} style={{width: '300px'}}/>
-        <h2>No hay resultados para tu búsqueda.</h2>
-      </div>}
+      {products.length === 0 &&
+        <div style={{textAlign: 'center'}}>
+          <img src="/ohNo2.png" alt={"Cero resultados"} style={{width: '300px'}}/>
+          <h2>No hay resultados para tu búsqueda.</h2>
+        </div>}
 
       {/* Loading and Error states */}
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
 
       {/* Display Products */}
-      <div className={styles.products}>
-        {products.map((product) => (
-          <div
-            key={product.productId}
-            className={styles.productCard}
-            onClick={() => handleCardClick(product.productId)}
-          >
-            <HeartButton id={product.productId} className={styles.heart}/>
-            <img
-              src={`${baseUrl}${product.images[0].url}`}
-              alt={product.name}
-              className={styles.productImage}
-              onError={(e) => {
-                const fallback1 = `${baseUrl}/${product.images[0].url}`; // First fallback image
-                const fallback2 = `${baseUrl}/public${product.images[0].url}`; // Second fallback image
-                const fallback3 = "placeholder.svg"; // Second fallback image
-
-                if (e.target.src === `${baseUrl}${product.images[0].url}`) {
-                  e.target.src = fallback1; // Switch to the first fallback
-                } else if (e.target.src === fallback1) {
-                  e.target.src = fallback2; // Switch to the second fallback
-                } else if (e.target.src === fallback2) {
-                  e.target.src = fallback3; // Switch to the third fallback
-                } else {
-                  e.target.onerror = null; // Prevent infinite fallback loop
-                }
-              }}
-            />
-            <div className={styles.contenedor}>
-              <h2>{product.name}</h2>
-              <p>Alquiler: {formatCurrency(product.price, "es-CO", "COP")}</p>
-            </div>
-          </div>
-        ))}
-      </div>
+      <CardProduct products={products}/>
       <Pagination
         currentPage={currentPage}
         totalPage={totalPages}
