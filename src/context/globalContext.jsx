@@ -18,6 +18,7 @@ const initialState = {
   productToEdit: null,
   showModal: false,
   error:"",
+  terminos:false,
   infoUserReservation:{
     nombre:"",apellido:"",cedula:"", telefono:"",pais: "",direccion: "",detalles: "",ciudad: "",provincia: "",codigoPostal: "",
     startDate: "",endDate:"", totalCost:"",addressId:0, saveData:false,productName:"",envio:true,tiendaId:0,
@@ -117,6 +118,10 @@ const reducer = (state, action)=>{
       return{...state, showActions:action.payload}
     case("TOGGLE_CHECK"):
       return{...state,infoUserReservation:{...state.infoUserReservation, saveData: !state.infoUserReservation.saveData} }
+    case "TRUE_CHECK_TERMINOS":
+      return{...state,terminos:true};
+    case "TOOGLE_CHECK_TERMINOS":
+      return{...state,terminos:!state.terminos};
     case "TOGGLE_SHOW_ACTIONS":
       return {...state,
         showActions: state.showActions.map((visible, index) =>
@@ -129,7 +134,7 @@ const reducer = (state, action)=>{
         showActions: state.showActions.map(() => false), // Resetea todos los menús de acciones
       };
     case"TOGGLE_OPEN":
-      return{...state,isVisible:!isVisible};
+      return{...state,isVisible:!state.isVisible};
     case "SET_ERROR":
       return {...state,error:action.payload}
     case "SHOW_MODAL_GLOBAL":

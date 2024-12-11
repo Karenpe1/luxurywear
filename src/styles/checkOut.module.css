@@ -400,3 +400,10 @@
 .error{
     color: red;
 }
+.terminos{
+    cursor: pointer;
+    color: #9581d8;
+}
+.terminos:hover{
+    text-decoration: underline;
+}

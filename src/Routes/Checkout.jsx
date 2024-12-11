@@ -11,18 +11,18 @@ import axiosInstance from "../Utils/axiosInstance";
 import { formatCurrency } from "../Utils/currencyFormatter";
 import { differenceInDays, set } from 'date-fns';
 import ModalGlobal from "../components/ModalGlobal";
-import AuthContext from "../context/AuthContext";
+import TerminosCondiciones from "../components/TerminosCondiciones";
 
 const Checkout = () => {
   const {state,dispatch}=useContextGlobal();
-  const [cupon,setCupon] = useState(true)
+  const [cupon,setCupon] = useState(false)
   const [selectedOption, setSelectedOption] = useState("regular");
   const [daysDifference,setDaysDifference]=useState(0)
   const [envio, setEnvio]=useState(12000)
   const [paisesTitle, setPaisesTitle] = useState([]);
   const [estadosTitle, setEstadosTitle] = useState([]);
-  const [terminos,setTerminos]=useState(false);
   const [isDisabled,setIsDisabled]= useState(false)
+  const [isOpen,setIsOpen]=useState(false)
   const location = useLocation();
   const axios=axiosInstance();
   const noNumbersRegex = /^\D*$/;
@@ -270,8 +270,14 @@ const Checkout = () => {
     dispatch({type:"TOGGLE_CHECK"})
   }
   const handleTerminos=()=>{
-    setTerminos(!terminos)
+    dispatch({type:"TOOGLE_CHECK_TERMINOS"})  
   }
+  const handleAccept=()=>{
+    setIsOpen(false)
+    dispatch({type:"TRUE_CHECK_TERMINOS"})
+
+  }
+
 
   const handleNombre=(e)=>{
     dispatch({type:"SET_USER_INFO_RESERVA", payload:{nombre:e.target.value}})
@@ -384,7 +390,7 @@ const Checkout = () => {
         errors.ciudad="La ciudad debe ser valida"
         formIsValid=false
       }
-      if(terminos===false){
+      if(state.terminos===false){
         errors.terminos="Debes aceptar los terminos y condiciones"
         formIsValid=false
       }
@@ -465,7 +471,9 @@ const Checkout = () => {
       }
     }
   }
-  
+  const handleCondiciones=()=>{
+    setIsOpen(true);
+  }
 
   return (
     <div className={styleCheckout.contenedor}>
@@ -770,16 +778,20 @@ const Checkout = () => {
           </div>
         </div>
         <label className={styleCheckout.condiciones}>
-          <input type="checkbox" onChange={handleTerminos}/> He leído y acepto los <a>Términos y Condiciones</a>
-          {!terminos &&(
+          <input type="checkbox" checked={state.terminos} onChange={handleTerminos}/> He leído y acepto los 
+        </label>
+          <span onClick={handleCondiciones} className={styleCheckout.terminos}> Términos y Condiciones</span>
+          {!state.terminos &&(
             <div className={styleCheckout.error}>{state.errorReservation.terminos}</div>
           )}
-        </label>
         <div className={styleCheckout.buttonReservar}>
           <Button onClick={handleSubmit} disabled={isDisabled}>Reservar</Button>
         </div>
       </div>
         <ModalGlobal/>
+        {isOpen && (
+            <TerminosCondiciones isOpen={setIsOpen} onAccept={handleAccept}/>
+          )}
     </div>
   );
 };

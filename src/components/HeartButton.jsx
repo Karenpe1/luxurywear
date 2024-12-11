@@ -3,7 +3,6 @@ import AuthContext from "../context/AuthContext";
 import stylesHeart from "../styles/heart.module.css";
 import useAxios from "../Utils/axiosInstance";
 import { useContextGlobal } from "../context/globalContext";
-import { faL } from "@fortawesome/free-solid-svg-icons";
 
 const HeartButton = ({id,onToggle }) => {
   const [liked, setLiked] = useState(false);
