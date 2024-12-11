@@ -7,6 +7,7 @@ import Button from "../components/Button";
 import Modal from "../components/Modal";
 import AuthContext from "../context/AuthContext";
 import { useContextGlobal } from "../context/globalContext";
+import Swal from "sweetalert2";
 
 const NewRegister = () => {
   const { loginUser } = useContext(AuthContext);

@@ -78,7 +78,7 @@ const reducer = (state, action)=>{
       return{...state, errorLogin: action.payload,} // obtengo la informacion de los inputs de errores del login
     case "SET_USER_INFO_REGISTER":
       return {
-        ...state,userLogin: {...state.userRegister,...action.payload,}, // Actualiza solo las propiedades enviadas en el payload      
+        ...state,userRegister: {...state.userRegister,...action.payload,}, // Actualiza solo las propiedades enviadas en el payload      
       };
     case "SET_ERROR_REGISTER":
       return{...state, errorRegister: action.payload,} // obtengo la informacion de los inputs 
